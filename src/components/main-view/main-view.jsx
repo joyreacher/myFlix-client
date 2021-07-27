@@ -26,7 +26,7 @@ export default class MainView extends React.Component{
     if(movies.length === 0)return <div className="main-view">The list is empty!</div>;
     return(
       <div className='main-view'>
-        {movies.map(movie => <MovieCard  key={movie._id} movie={movie} onClick={()=>{this.state.selectedMovie = movie}}/>)}
+        {movies.map(movie => <MovieCard  key={movie._id} movie={movie} onMovieClick={(newSelectedMovie)=>{this.state.selectedMovie = newSelectedMovie}}/>)}
       </div>
     );
   }
