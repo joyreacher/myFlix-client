@@ -1,4 +1,5 @@
 import React from 'react';
+import MovieCard from '../movie-card/movie-card'
 
 export default class MainView extends React.Component{
   constructor(){
@@ -22,9 +23,7 @@ export default class MainView extends React.Component{
     if(movies.length === 0)return <div className="main-view">The list is empty!</div>;
     return(
       <div className='main-view'>
-        {movies.map(movie=>{
-          return <div key={movie._id}>{movie.Title}</div>
-        })}
+        {movies.map(movie => <MovieCard  key={movie._id} movie={movie} />)}
       </div>
     );
   }
