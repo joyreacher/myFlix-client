@@ -1,10 +1,12 @@
 import React from 'react';
 import MovieCard from '../movie-card/movie-card'
+import MovieView from '../movie-view/movie-view'
 
 export default class MainView extends React.Component{
   constructor(){
     super();
     this.state = {
+      selectedMovie: null,
       movies:[
         {
           _id: 1, Title: "Inception", description: 'Inception description', ImagePath: 'inception.png'
@@ -19,11 +21,12 @@ export default class MainView extends React.Component{
     }
   }
   render(){
-    const { movies } = this.state
+    const { movies, selectedMovie } = this.state
+    if(selectedMovie) return <MovieView movie={selectedMovie} />;
     if(movies.length === 0)return <div className="main-view">The list is empty!</div>;
     return(
       <div className='main-view'>
-        {movies.map(movie => <MovieCard  key={movie._id} movie={movie} />)}
+        {movies.map(movie => <MovieCard  key={movie._id} movie={movie} onClick={()=>{this.state.selectedMovie = movie}}/>)}
       </div>
     );
   }
