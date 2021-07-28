@@ -1,6 +1,11 @@
 import React from 'react'
 
 class MovieView extends React.Component {
+  // refer to the callback function when adding and removing the listener
+  keypressCallback (event) {
+    console.log(event.key)
+  }
+
   // runs after render()
   componentDidMount () {
     document.addEventListener('keypress', event => {
