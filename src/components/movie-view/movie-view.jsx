@@ -8,9 +8,12 @@ class MovieView extends React.Component {
 
   // runs after render()
   componentDidMount () {
-    document.addEventListener('keypress', event => {
-      console.log(event.key)
-    })
+    document.addEventListener('keypress', this.keypressCallback)
+  }
+
+  // remove the event listener when component is about to be unmounted
+  componentWillUnmount () {
+    document.removeEventListener('keypress', this.keypressCallback)
   }
 
   render () {
