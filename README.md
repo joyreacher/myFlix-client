@@ -22,7 +22,7 @@ Install dependencies
 Start the server/build
 
 ```bash
-  parcel src/index.html
+  npm start
 ```
 
   
