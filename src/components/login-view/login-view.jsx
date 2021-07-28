@@ -12,7 +12,7 @@ export function LoginView () {
   return (
     <form>
       <label>
-        
+        <input type='text' value={username} onChange={e => setUsername(e.target.value)} />
       </label>
     </form>
   )
