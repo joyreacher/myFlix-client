@@ -5,7 +5,7 @@
   "main": "src/index.html",
   "scripts": {
     "test": "standard",
-    "start": "parcel src/index.jsx"
+    "start": "parcel src/index.html"
   },
   "author": "",
   "license": "ISC",
