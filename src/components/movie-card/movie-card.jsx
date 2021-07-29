@@ -6,7 +6,7 @@ export default class MovieCard extends React.Component {
     return (
       <div className='movie-card' onClick={() => { onMovieClick(movie) }}>
         {movie.Title}
-        {movie.ImagePath}   //! movie.ImagePath holds value stored in DB
+        {movie.ImagePath}
       </div>
     )
   }
@@ -16,7 +16,7 @@ MovieCard.propTypes = {
   movie: PropTypes.shape({
     Title: PropTypes.string.isRequired,
     Description: PropTypes.string.isRequired,
-    ImagePath: PropTypes.string.isRequired    //! prop types error -- movie.ImagePath marked but is null
+    ImagePath: PropTypes.string
   }).isRequired,
   onMovieClick: PropTypes.func.isRequired
 }
