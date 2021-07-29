@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import axios from 'axios'
 
 import { RegistrationView } from '../registration-view/registration-view'
@@ -67,4 +68,15 @@ export default class MainView extends React.Component {
       </div>
     )
   }
+}
+
+MainView.propTypes = {
+  movies: PropTypes.shape({
+    Title: PropTypes.string,
+    Description: PropTypes.string,
+    ImagePath: PropTypes.string
+  }),
+  selectedMovie: PropTypes.string,
+  user: PropTypes.string,
+  register: PropTypes.bool
 }
