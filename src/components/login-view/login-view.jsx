@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import './login-view.scss'
 export function LoginView (props) {
   const [username, setUsername] = useState('')
@@ -28,4 +29,9 @@ export function LoginView (props) {
       </form>
     </div>
   )
+}
+
+LoginView.propTypes = {
+  onLoggedIn: PropTypes.func.isRequired,
+  onRegisterClick: PropTypes.func.isRequired
 }
