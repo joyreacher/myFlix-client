@@ -1,5 +1,5 @@
 import React from 'react'
-
+import PropTypes from 'prop-types'
 class MovieView extends React.Component {
   // refer to the callback function when adding and removing the listener
   keypressCallback (event) {
@@ -38,3 +38,10 @@ class MovieView extends React.Component {
 }
 
 export default MovieView
+
+MovieView.propTypes = {
+  movie: PropTypes.shape({
+    Title: PropTypes.string.isRequired
+  }).isRequired,
+  onBackClick: PropTypes.func.isRequired
+}

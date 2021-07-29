@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import './login-view.scss'
 export function LoginView (props) {
   const [username, setUsername] = useState('')
@@ -6,7 +7,13 @@ export function LoginView (props) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(username, password)
+    console.log(
+      'This is the username: %c' + username + '%c and password: %c' + password + '. %c',
+      'font-size: 1.3rem; color: #fff; background: #1e90ff; padding: 4px',
+      '',
+      'font-size: 1.3rem; color: #f00; font-weight: bold',
+      ''
+    )
     // send request to server for auth
     // then call props.onLoggedIn(username)
 
@@ -28,4 +35,9 @@ export function LoginView (props) {
       </form>
     </div>
   )
+}
+
+LoginView.propTypes = {
+  onLoggedIn: PropTypes.func.isRequired,
+  onRegisterClick: PropTypes.func.isRequired
 }

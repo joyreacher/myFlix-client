@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import axios from 'axios'
 
 import { RegistrationView } from '../registration-view/registration-view'
@@ -46,7 +47,6 @@ export default class MainView extends React.Component {
     this.setState({
       register: true
     })
-    console.log(this.state.register)
   }
 
   render () {
@@ -58,7 +58,7 @@ export default class MainView extends React.Component {
       <div className='main-view'>
         {
           selectedMovie
-          // onBackClick(null) -- will run the movies.map condition and display the MovieCard
+            // onBackClick(null) -- resets the selectedMovie to null, which then maps through movies
             ? <MovieView movie={selectedMovie} onBackClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie) }} />
             : movies.map(movie => (
               <MovieCard key={movie._id} movie={movie} onMovieClick={movie => { this.setSelectedMovie(movie) }} />
@@ -67,4 +67,15 @@ export default class MainView extends React.Component {
       </div>
     )
   }
+}
+
+MainView.propTypes = {
+  movies: PropTypes.shape({
+    Title: PropTypes.string,
+    Description: PropTypes.string,
+    ImagePath: PropTypes.string
+  }),
+  selectedMovie: PropTypes.string,
+  user: PropTypes.string,
+  register: PropTypes.bool
 }
