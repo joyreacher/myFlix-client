@@ -47,7 +47,6 @@ export default class MainView extends React.Component {
     this.setState({
       register: true
     })
-    console.log(this.state.register)
   }
 
   render () {
@@ -59,7 +58,7 @@ export default class MainView extends React.Component {
       <div className='main-view'>
         {
           selectedMovie
-          // onBackClick(null) -- will run the movies.map condition and display the MovieCard
+            // onBackClick(null) -- resets the selectedMovie to null, which then maps through movies
             ? <MovieView movie={selectedMovie} onBackClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie) }} />
             : movies.map(movie => (
               <MovieCard key={movie._id} movie={movie} onMovieClick={movie => { this.setSelectedMovie(movie) }} />
