@@ -16,6 +16,7 @@ export function LoginView (props) {
   return (
     <div className='login__container'>
       <form className='login__form'>
+        <h1>Sign in</h1>
         <label>
           <input type='text' value={username} onChange={e => setUsername(e.target.value)} />
         </label>
@@ -23,6 +24,7 @@ export function LoginView (props) {
           <input type='password' value={password} onChange={e => setPassword(e.target.value)} />
         </label>
         <button type='submit' onClick={handleSubmit}>Submit</button>
+        <a onClick={() => props.onRegisterClick()}>Register</a>
       </form>
     </div>
   )

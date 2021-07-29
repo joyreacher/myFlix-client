@@ -1,4 +1,4 @@
-.login{
+.registration{
   &__container{
     display:flex;
     height: 100vh;
@@ -8,16 +8,11 @@
   }
   &__form{
     padding: 1.5em;
-    background-color: green;
     text-align: center;
     border-radius: 28px;
     background: #ffffff;
     box-shadow:  41px 41px 55px #ebebeb,
             -41px -41px 55px #ffffff;
-    
-    a{
-      font-size:.9rem;
-    }
     input{
       height: 2rem;
       margin: 2em 0;
@@ -28,10 +23,9 @@
       -o-border-radius: 8px;
 }
     button{
-      width: 100%;
+      width: 9em;
       height: 3em;
       border-radius: 10px;
-      margin-bottom:2em;
       -webkit-border-radius: 10px;
       -moz-border-radius: 10px;
       -ms-border-radius: 10px;
