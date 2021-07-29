@@ -10,7 +10,17 @@ export function RegistrationView (props) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(username, password, email, birthday)
+    // console.log(username, password, email, birthday)
+    console.log(
+      'This is the username: %c' + username + '%c and password: %c' + password + '. %c. Your email is: %c' + email + '%c and your birthday is: %c' + birthday,
+      'font-size: 1.3rem; color: #fff; background: #1e90ff; padding: 4px',
+      '',
+      'font-size: 1.3rem; color: #f00; font-weight: bold',
+      '',
+      'font-size: 1.3rem; color: black; background: yellow; padding: 4px',
+      '',
+      'font-size: 1.3rem; color: #f00; font-weight: bold'
+    )
 
     /**
       CREATES USER AND SET REGISTRATION TO FALSE
