@@ -71,9 +71,20 @@ export default class MainView extends React.Component {
 
 MainView.propTypes = {
   movies: PropTypes.shape({
-    Title: PropTypes.string,
-    Description: PropTypes.string,
-    ImagePath: PropTypes.string
+    Title: PropTypes.string.isRequired,
+    Description: PropTypes.string.isRequired,
+    ImagePath: PropTypes.string.isRequired,
+    Featured: PropTypes.bool.isRequired,
+    Genre: PropTypes.shape({
+      Name: PropTypes.string.isRequired,
+      Description: PropTypes.string.isRequired
+    }).isRequired,
+    Director: PropTypes.shape({
+      Name: PropTypes.string.isRequired,
+      Bio: PropTypes.string.isRequired,
+      DOB: PropTypes.string.isRequired,
+      YOD: PropTypes.string.isRequired
+    }).isRequired
   }),
   selectedMovie: PropTypes.string,
   user: PropTypes.string,
