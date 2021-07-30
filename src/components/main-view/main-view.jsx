@@ -68,7 +68,11 @@ export default class MainView extends React.Component {
               </Col>
               </Row>
             : movies.map(movie => (
-              <MovieCard key={movie._id} movie={movie} onMovieClick={movie => { this.setSelectedMovie(movie) }} />
+              <Row className="justify-content-md-center">
+                <Col md={6} lg={8}>
+                  <MovieCard key={movie._id} movie={movie} onMovieClick={movie => { this.setSelectedMovie(movie) }} />
+                </Col>
+              </Row>
             ))
         }
       </div>
