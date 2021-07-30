@@ -77,7 +77,13 @@ MainView.propTypes = {
     Genre: PropTypes.shape({
       Name: PropTypes.string.isRequired,
       Description: PropTypes.string.isRequired
-    })
+    }).isRequired,
+    Director: PropTypes.shape({
+      Name: PropTypes.string.isRequired,
+      Bio: PropTypes.string.isRequired,
+      DOB: PropTypes.string.isRequired,
+      YOD: PropTypes.string.isRequired
+    }).isRequired
   }),
   selectedMovie: PropTypes.string,
   user: PropTypes.string,
