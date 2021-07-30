@@ -7,6 +7,10 @@ import { LoginView } from '../login-view/login-view'
 import MovieCard from '../movie-card/movie-card'
 import MovieView from '../movie-view/movie-view'
 
+// Bootstrap
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+
 export default class MainView extends React.Component {
   constructor () {
     super()
@@ -55,16 +59,19 @@ export default class MainView extends React.Component {
     if (!user) return <LoginView onRegisterClick={() => this.onRegister()} onLoggedIn={user => this.onLoggedIn(user)} />
     if (movies.length === 0) return <div className='main-view'>The list is empty!</div>
     return (
-      <div className='main-view'>
-        {
-          selectedMovie
-            // onBackClick(null) -- resets the selectedMovie to null, which then maps through movies
-            ? <MovieView movie={selectedMovie} onBackClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie) }} />
-            : movies.map(movie => (
-              <MovieCard key={movie._id} movie={movie} onMovieClick={movie => { this.setSelectedMovie(movie) }} />
-            ))
-        }
-      </div>
+      <Row className='main-view justify-content-md-center'>
+        {selectedMovie
+          ? (
+            <Col md={8}>
+              <MovieView movie={selectedMovie} onBackClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie) }} />
+            </Col>
+            )
+          : movies.map(movie => (
+            <Col key={movie._id} xs={12} sm={6} md={3} lg={3} xl={2}>
+              <MovieCard movie={movie} onMovieClick={movie => { this.setSelectedMovie(movie) }} />
+            </Col>
+          ))}
+      </Row>
     )
   }
 }
