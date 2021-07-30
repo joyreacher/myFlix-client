@@ -7,6 +7,9 @@ import { LoginView } from '../login-view/login-view'
 import MovieCard from '../movie-card/movie-card'
 import MovieView from '../movie-view/movie-view'
 
+// Bootstrap
+import Row from 'react-bootstrap/Row'
+
 export default class MainView extends React.Component {
   constructor () {
     super()
@@ -58,8 +61,9 @@ export default class MainView extends React.Component {
       <div className='main-view'>
         {
           selectedMovie
-            // onBackClick(null) -- resets the selectedMovie to null, which then maps through movies
-            ? <MovieView movie={selectedMovie} onBackClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie) }} />
+            ? <Row>
+              <MovieView movie={selectedMovie} onBackClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie) }} />
+              </Row>
             : movies.map(movie => (
               <MovieCard key={movie._id} movie={movie} onMovieClick={movie => { this.setSelectedMovie(movie) }} />
             ))
