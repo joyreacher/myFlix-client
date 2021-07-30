@@ -9,6 +9,7 @@ import MovieView from '../movie-view/movie-view'
 
 // Bootstrap
 import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 
 export default class MainView extends React.Component {
   constructor () {
@@ -62,7 +63,9 @@ export default class MainView extends React.Component {
         {
           selectedMovie
             ? <Row>
-              <MovieView movie={selectedMovie} onBackClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie) }} />
+              <Col md={8}>
+                <MovieView movie={selectedMovie} onBackClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie) }} />
+              </Col>
               </Row>
             : movies.map(movie => (
               <MovieCard key={movie._id} movie={movie} onMovieClick={movie => { this.setSelectedMovie(movie) }} />
