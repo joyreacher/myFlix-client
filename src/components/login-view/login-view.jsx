@@ -6,6 +6,7 @@ import './login-view.scss'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Jumbotron from 'react-bootstrap/Jumbotron'
+import Form from 'react-bootstrap/Form'
 export function LoginView (props) {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -27,10 +28,14 @@ export function LoginView (props) {
 
   return (
     <Row className='justify-content-md-center min-vh-100 align-items-center'>
-      <Col md={6} className=''>
+      <Col md={6}>
         <Jumbotron className='login__form'>
-          <form>
-            <h1>Sign in</h1>
+          <Form>
+            <Form.Group>
+              <Form.Label>
+                <h1 className='display-3'>Sign in</h1>
+              </Form.Label>
+            </Form.Group>
             <label>
               <input type='text' value={username} onChange={e => setUsername(e.target.value)} />
             </label>
@@ -39,7 +44,7 @@ export function LoginView (props) {
             </label>
             <button type='submit' onClick={handleSubmit}>Submit</button>
             <a onClick={() => props.onRegisterClick()}>Register</a>
-          </form>
+          </Form>
         </Jumbotron>
       </Col>
     </Row>
