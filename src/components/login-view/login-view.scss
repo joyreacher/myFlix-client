@@ -1,3 +1,7 @@
+// override bootstrap gutter styles
+*{
+  --bs-gutter-x: 2rem;
+}
 .login{
   &__container{
     display:flex;
