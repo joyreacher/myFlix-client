@@ -59,7 +59,7 @@ export default class MainView extends React.Component {
     if (!user) return <LoginView onRegisterClick={() => this.onRegister()} onLoggedIn={user => this.onLoggedIn(user)} />
     if (movies.length === 0) return <div className='main-view'>The list is empty!</div>
     return (
-      <Row className='main-view justify-content-md-center'>
+      <Row className='main-view justify-content-lg-center'>
         {selectedMovie
           ? (
             <Col md={8}>
@@ -67,7 +67,7 @@ export default class MainView extends React.Component {
             </Col>
             )
           : movies.map(movie => (
-            <Col key={movie._id} xs={12} sm={6} md={3} lg={3} xl={2}>
+            <Col key={movie._id} md={6} lg={4}>
               <MovieCard movie={movie} onMovieClick={movie => { this.setSelectedMovie(movie) }} />
             </Col>
           ))}
