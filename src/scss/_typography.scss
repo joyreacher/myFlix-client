@@ -1,0 +1,46 @@
+@mixin font($type: 'poppins', $style: 'normal', $weight, $size){
+    // font family can be 
+    //? poppins, sweet-titling-no-11, sweet-titling-no-26, sweet-titling-no-22 
+    // font style can be
+    // ?normal, italic
+    //font weight can be 
+    // ?400 or 700
+    font-family: $type, sans-serif;
+    font-style: $style;
+    font-size: $size;
+    @if($weight >= 400){
+      font-weight: 700;
+    }
+}
+
+//POPPINS
+// font-family: poppins, sans-serif;
+// font-weight: 400;
+// font-style: italic;
+
+// font-family: poppins, sans-serif;
+// font-weight: 700;
+// font-style: normal;
+
+// font-family: poppins, sans-serif;
+// font-weight: 700;
+// font-style: italic;
+
+//SWEET TITLING
+// font-family: sweet-titling-no-11, sans-serif;
+// font-weight: 400;
+// font-style: normal;
+
+//SWEET TITLING 26
+// font-family: sweet-titling-no-26, sans-serif;
+// font-weight: 400;
+// font-style: normal;
+
+// font-family: sweet-titling-no-26, sans-serif;
+// font-weight: 700;
+// font-style: normal;
+
+//SWEET TITLING 22
+// font-family: sweet-titling-no-22, serif;
+// font-weight: 400;
+// font-style: normal;
