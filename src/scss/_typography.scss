@@ -1,16 +1,15 @@
+// font family can be 
+//? poppins, sweet-titling-no-11, sweet-titling-no-26, sweet-titling-no-22 
+// font style can be
+// ?normal, italic
+//font weight can be 
+// ?100, 200, 300, 400 or 700
+
 @mixin font($type: 'poppins', $style: 'normal', $weight, $size){
-    // font family can be 
-    //? poppins, sweet-titling-no-11, sweet-titling-no-26, sweet-titling-no-22 
-    // font style can be
-    // ?normal, italic
-    //font weight can be 
-    // ?400 or 700
     font-family: $type, sans-serif;
     font-style: $style;
     font-size: $size;
-    @if($weight >= 400){
-      font-weight: 700;
-    }
+    font-weight: $weight;
 }
 
 //POPPINS
