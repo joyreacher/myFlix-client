@@ -33,7 +33,7 @@ export function LoginView (props) {
         <Form className='login__form jumbotron p-5'>
           <Form.Group>
             <Form.Label>
-              <h1 className='display-3'>Sign in</h1>
+              <h1>Sign in</h1>
             </Form.Label>
           </Form.Group>
           <Form.Group>
