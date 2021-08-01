@@ -47,8 +47,10 @@ export function LoginView (props) {
           <Button variant='success' type='submit' onClick={handleSubmit}>
             Submit
           </Button>
-          {/* <button type='submit' onClick={handleSubmit}>Submit</button> */}
-          <a className='text-primary' onClick={() => props.onRegisterClick()}>Register</a>
+          <div className='d-flex justify-content-start mt-5'>
+            <p className='me-2'>Dont have an account?</p>
+            <a className='' onClick={() => props.onRegisterClick()}>Register</a>
+          </div>
         </Form>
       </Col>
     </Row>
