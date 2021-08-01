@@ -5,3 +5,13 @@
   --color-accent-1: #4392F1;
   --color-accent-2: #F44336;
 }
+canvas{
+  display: none;
+}
+.app-container{
+  min-height: 100vh;
+  background-color: var(--color-light);
+}
+.container{
+  background-color: var(--color-light);
+  }
