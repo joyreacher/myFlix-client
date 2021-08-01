@@ -1,7 +1,5 @@
-// override bootstrap gutter styles
-*{
-  --bs-gutter-x: 2rem;
-}
+@import '../../scss/typography';
+@import '../../scss/abstracts';
 .login{
   &__container{
     display:flex;
@@ -12,13 +10,13 @@
   }
   &__form{
     padding: 1.5em;
-    background-color: green;
     text-align: center;
     border-radius: 28px;
-    background: #ffffff;
-    box-shadow:  41px 41px 55px #ebebeb,
-            -41px -41px 55px #ffffff;
-    
+    background-color: var(--color-light);
+    box-shadow:  $shadow-1;
+    h1{
+      @include font(poppins, normal, 200, 3rem);
+    }
     a{
       font-size:.9rem;
     }
