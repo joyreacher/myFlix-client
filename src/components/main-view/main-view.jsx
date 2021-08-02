@@ -6,6 +6,7 @@ import { RegistrationView } from '../registration-view/registration-view'
 import { LoginView } from '../login-view/login-view'
 import MovieCard from '../movie-card/movie-card'
 import MovieView from '../movie-view/movie-view'
+import ErrorBoundary from '../ErrorBoundary'
 
 // Bootstrap
 import Row from 'react-bootstrap/Row'
@@ -18,7 +19,8 @@ export default class MainView extends React.Component {
       selectedMovie: null,
       movies: [],
       user: null,
-      register: false
+      register: false,
+      hasError: false
     }
   }
 
@@ -30,6 +32,9 @@ export default class MainView extends React.Component {
         })
       })
       .catch(error => {
+        this.setState({
+          hasError: true
+        })
         console.log(error)
       })
   }
@@ -57,21 +62,22 @@ export default class MainView extends React.Component {
     const { movies, selectedMovie, user, register } = this.state
     if (register) return <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} onRegisterClick={() => this.onLoggedIn()} />
     if (!user) return <LoginView onRegisterClick={() => this.onRegister()} onLoggedIn={user => this.onLoggedIn(user)} />
-    if (movies.length === 0) return <div className='main-view'>The list is empty!</div>
     return (
-      <Row className='main-view justify-content-lg-center'>
-        {selectedMovie
-          ? (
-            <Col md={8}>
-              <MovieView movie={selectedMovie} onBackClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie) }} />
-            </Col>
-            )
-          : movies.map(movie => (
-            <Col key={movie._id} md={6} lg={4}>
-              <MovieCard movie={movie} onMovieClick={movie => { this.setSelectedMovie(movie) }} />
-            </Col>
-          ))}
-      </Row>
+      <ErrorBoundary hasError={this.state.hasError}>
+        <Row className='main-view justify-content-lg-center'>
+          {selectedMovie
+            ? (
+              <Col md={8}>
+                <MovieView movie={selectedMovie} onBackClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie) }} />
+              </Col>
+              )
+            : movies.map(movie => (  
+              <Col key={movie._id} md={6} lg={4}>
+                <MovieCard movie={movie} onMovieClick={movie => { this.setSelectedMovie(movie) }} />
+              </Col>
+            ))}
+        </Row>
+      </ErrorBoundary>
     )
   }
 }
