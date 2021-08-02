@@ -21,6 +21,7 @@
     a{
       @include font(poppins, normal, 400, 1rem);
       text-decoration: none;
+      cursor: pointer;
     }
     input{
       @include font(poppins, italic, 400, 1rem);
