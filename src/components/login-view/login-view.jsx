@@ -43,10 +43,10 @@ export function LoginView (props) {
             <FloatingLabel label='Password' controlId='floatingInput'>
               <Form.Control placeholder='Password' type='password' value={password} onChange={e => setPassword(e.target.value)} />
             </FloatingLabel>
+            <Button variant='success' type='submit' onClick={handleSubmit}>
+              Submit
+            </Button>
           </Form.Group>
-          <Button variant='success' type='submit' onClick={handleSubmit}>
-            Submit
-          </Button>
           <div className='d-flex justify-content-start mt-5'>
             <p className='me-2'>Dont have an account?</p>
             <a className='' onClick={() => props.onRegisterClick()}>Register</a>
