@@ -1,16 +1,27 @@
 @import '../../scss/typography';
+.section{
+  &__start{
+    margin-top:2em;
+    height:30vh;
+    display:grid;
+    place-content: bottom;
+    h1{
+      align-self: flex-end;
+    }
+  }
+}
 h1{
-  @include font(poppins, normal, 700);
+  @include font(sweet-titling-no-22, normal, 700);
 }
 h2{
-  @include font(sweet-titling-no-26, normal, 400);
+  @include font(poppins, italic, 700);
 }
 p, span, a, button{
-  @include font(poppins, normal, 1 100);
+  @include font(poppins, normal, 400);
   color: var(--color-dark);
   text-decoration: none;
 }
 
 .card-header{
-  @include font(sweet-titling-no-26, normal, 400);
+  @include font(poppins, normal, 200);
 }
