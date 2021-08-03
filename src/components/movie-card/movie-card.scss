@@ -1,0 +1,16 @@
+@import '../../scss/typography';
+h1{
+  @include font(poppins, normal, 700, 4.8rem);
+}
+h2{
+  @include font(sweet-titling-no-26, normal, 400, 20.8rem);
+}
+p, span, a, button{
+  @include font(poppins, normal, 1 100, .8rem);
+  color: var(--color-dark);
+  text-decoration: none;
+}
+
+.card-header{
+  @include font(sweet-titling-no-26, normal, 400, 1.8rem);
+}
