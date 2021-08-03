@@ -18,17 +18,17 @@ export default class MovieCard extends React.Component {
             if (movie.Featured === true) {
               return (
                 <>
-                <CardGroup className='my-5'>
-                  <Col xs={12} sm={12} md={12} lg={12}>
+                  <CardGroup className='my-5'>
+                    <Col xs={12} sm={12} md={12} lg={12}>
                       <Card key={movie._id} className='m-2 bg-light mb-sm-1'>
                         <Card.Header>{movie.Title}</Card.Header>
                         <Card.Img variant='top' src={movie.ImagePath} />
-                          <Card.Body className='p-2'>
-                            <Card.Text className='text-truncate'>{movie.Description}</Card.Text>
-                          </Card.Body>
+                        <Card.Body className='p-2'>
+                          <Card.Text className='text-truncate'>{movie.Description}</Card.Text>
+                        </Card.Body>
                         <Button className='btn btn-dark' onClick={() => onMovieClick(movie)}>Open</Button>
                       </Card>
-                  </Col>
+                    </Col>
                   </CardGroup>
                 </>
               )
@@ -40,11 +40,11 @@ export default class MovieCard extends React.Component {
           <h1 className='display-1'>Browse</h1>
         </div>
         <Row>
-        {
+          {
           movies.map(movie => {
             if (!movie.Featured) {
               return (
-                <Row className='mb-5 justify-content-between d-flex' >
+                <Row className='mb-5 justify-content-between d-flex'>
                   <Col xs={12} sm={12} md={4} lg={3} className='d-sm-flex justify-content-sm-center'>
                     <Image className='mt-5' src={movie.ImagePath} />
                   </Col>

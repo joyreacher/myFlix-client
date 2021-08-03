@@ -30,7 +30,7 @@ class MovieView extends React.Component {
     return (
       <ErrorBoundary>
         <Row lg={6}>
-          <Col className='my-5 movie-poster d-flex justify-content-center' sm={12} >
+          <Col className='my-5 movie-poster d-flex justify-content-center' sm={12}>
             <img src={movie.ImagePath} />
           </Col>
         </Row>
