@@ -5,6 +5,10 @@ import ErrorBoundary from '../ErrorBoundary'
 // Bootstrap
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Button from 'react-bootstrap/Button'
+
+// Custom styles
+import './movie-view.scss'
 class MovieView extends React.Component {
   // refer to the callback function when adding and removing the listener
   keypressCallback (event) {
@@ -25,20 +29,20 @@ class MovieView extends React.Component {
     const { movie, onBackClick } = this.props
     return (
       <ErrorBoundary>
-        <Row className='movie-view'>
-          <Col className='movie-poster'>
+        <Row className='movie-view' lg={12}>
+          <Col className='movie-poster' lg={4}>
             <img src={movie.ImagePath} />
           </Col>
-          <Col>
+          <Col lg={8}>
             <div className='movie-title'>
-              <span className='label'>Title: </span>
-              <span className='value'>{movie.Title}</span>
+              <span className='label color-accent-2'>Title: </span>
+              <h1 className='value d-inline-block'>{movie.Title}</h1>
             </div>
             <div className='movie-description'>
-              <span className='label'>Description: </span>
+              <span className='label color-accent-2'>Description: </span>
               <span className='value'>{movie.Description}</span>
             </div>
-            <button onClick={() => onBackClick(null)}>Back</button>
+            <Button className='btn btn-dark' onClick={() => onBackClick(null)}>Back</Button>
           </Col>
         </Row>
       </ErrorBoundary>
