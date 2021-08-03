@@ -29,10 +29,10 @@ export function LoginView (props) {
 
   return (
     <Row className='justify-content-center min-vh-100 align-items-center'>
-      <Col xs={10} sm={10} md={7} lg={6} xl={5}>
+      <Col xs={10} sm={10} md={7} lg={6} xl={7}>
         <Form className='login__form jumbotron p-5'>
           <Form.Group>
-            <Form.Label>
+            <Form.Label column='sm' lg={2}>
               <h1>Sign in</h1>
             </Form.Label>
           </Form.Group>
@@ -47,10 +47,10 @@ export function LoginView (props) {
               Submit
             </Button>
           </Form.Group>
-          <div className='d-flex justify-content-start mt-5'>
-            <p className='me-2'>Dont have an account?</p>
+          <Form.Group className='d-flex justify-content-start mt-5'>
+            <p className='me-2 text-start'>Dont have an account?</p>
             <a className='' onClick={() => props.onRegisterClick()}>Register</a>
-          </div>
+          </Form.Group>
         </Form>
       </Col>
     </Row>
