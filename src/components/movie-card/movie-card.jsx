@@ -56,12 +56,11 @@ export default class MovieCard extends React.Component {
   }
 }
 // set the static propTypes property on MovieCard to an object that contains special values provided as utilties by prop-types
-// TODO: FIX: proptypes expects object but got an array 
 MovieCard.propTypes = {
-  movie: PropTypes.shape({
+  movies: PropTypes.arrayOf(PropTypes.shape({
     Title: PropTypes.string.isRequired,
     Description: PropTypes.string.isRequired,
     ImagePath: PropTypes.string
-  }).isRequired,
+  })),
   onMovieClick: PropTypes.func.isRequired
 }
