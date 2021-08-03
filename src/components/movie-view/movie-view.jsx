@@ -29,18 +29,20 @@ class MovieView extends React.Component {
     const { movie, onBackClick } = this.props
     return (
       <ErrorBoundary>
-        <Row className='movie-view' lg={12}>
-          <Col className='movie-poster' lg={4}>
+        <Row lg={6}>
+          <Col className='my-5 movie-poster d-flex justify-content-center' sm={12} >
             <img src={movie.ImagePath} />
           </Col>
-          <Col lg={8}>
+        </Row>
+        <Row className='movie-view mt-4 d-flex justify-content-center' sm={12} md={12} lg={12}>
+          <Col className='w-75' lg={12}>
             <div className='movie-title'>
               <span className='label color-accent-2'>Title: </span>
-              <h1 className='value d-inline-block'>{movie.Title}</h1>
+              <h2 className='value d-inline-block'>{movie.Title}</h2>
             </div>
             <div className='movie-description'>
               <span className='label color-accent-2'>Description: </span>
-              <span className='value'>{movie.Description}</span>
+              <p className='value'>{movie.Description}</p>
             </div>
             <Button className='btn btn-dark' onClick={() => onBackClick(null)}>Back</Button>
           </Col>
