@@ -5,10 +5,10 @@
 //font weight can be 
 // ?100, 200, 300, 400 or 700
 
-@mixin font($type: 'poppins', $style: 'normal', $weight, $size){
+@mixin font($type: 'poppins', $style: 'normal', $weight){
     font-family: $type, sans-serif;
     font-style: $style;
-    font-size: $size;
+    font-size: clamp(1rem, 1vw, 10em);
     font-weight: $weight;
 }
 
