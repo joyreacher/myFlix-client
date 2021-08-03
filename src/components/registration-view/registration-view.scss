@@ -8,15 +8,15 @@
     background-color: var(--color-light);
     box-shadow:  $shadow-1;
     h1{
-      @include font(poppins, normal, 100, 4rem);
+      @include font(poppins, normal, 100);
     }
     a{
-      @include font(poppins, normal, 400, 1rem);
+      @include font(poppins, normal, 400);
       text-decoration: none;
       cursor: pointer;
     }
     input{
-      @include font(poppins, italic, 400, 1rem);
+      @include font(poppins, italic, 400);
       background: var(--color-light);
       border: var(--color-dark) solid 1px;
       height: 2rem;
@@ -28,7 +28,7 @@
       -o-border-radius: 8px;
     }
     button{
-      @include font(poppins, normal, 300, 1.3rem);
+      @include font(poppins, normal, 300);
       border:none;
       color: var(--color-light);
       background-color: var(--color-dark);

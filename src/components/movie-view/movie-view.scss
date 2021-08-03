@@ -2,13 +2,13 @@
 @import '../../scss/abstracts';
 
 h1{
-  @include font(poppins, normal, 700, 4.8rem);
+  @include font(poppins, normal, 700);
 }
 h2{
-  @include font(sweet-titling-no-26, normal, 400, 20.8rem);
+  @include font(sweet-titling-no-26, normal, 400);
 }
 p, span, a, button{
-  @include font(poppins, normal, 1 100, .8rem);
+  @include font(poppins, normal, 1 100);
   color: var(--color-dark);
   text-decoration: none;
 }
