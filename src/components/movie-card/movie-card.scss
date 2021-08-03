@@ -4,12 +4,13 @@
 }
 .section{
   &__start{
-    margin-top:2em;
-    height:30vh;
+    margin:3em 0;
+    height:20vh;
     display:grid;
-    place-content: bottom;
+    place-items: center left;
     h1{
-      align-self: flex-end;
+      color: var(--color-light);
+      background-color:var(--color-dark);
     }
   }
 }
