@@ -6,10 +6,12 @@ import { RegistrationView } from '../registration-view/registration-view'
 import { LoginView } from '../login-view/login-view'
 import MovieCard from '../movie-card/movie-card'
 import MovieView from '../movie-view/movie-view'
+import ErrorBoundary from '../ErrorBoundary'
 
 // Bootstrap
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Spinner from 'react-bootstrap/Spinner'
 
 export default class MainView extends React.Component {
   constructor () {
@@ -18,7 +20,8 @@ export default class MainView extends React.Component {
       selectedMovie: null,
       movies: [],
       user: null,
-      register: false
+      register: false,
+      hasError: false
     }
   }
 
@@ -30,6 +33,9 @@ export default class MainView extends React.Component {
         })
       })
       .catch(error => {
+        this.setState({
+          hasError: true
+        })
         console.log(error)
       })
   }
@@ -55,23 +61,21 @@ export default class MainView extends React.Component {
 
   render () {
     const { movies, selectedMovie, user, register } = this.state
-    if (register) return <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} />
+    if (register) return <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} onRegisterClick={() => this.onLoggedIn()} />
     if (!user) return <LoginView onRegisterClick={() => this.onRegister()} onLoggedIn={user => this.onLoggedIn(user)} />
-    if (movies.length === 0) return <div className='main-view'>The list is empty!</div>
+    if (movies.length === 0) return <Spinner animation='border'><span>..loading..</span></Spinner>
     return (
-      <Row className='main-view justify-content-md-center'>
-        {selectedMovie
-          ? (
-            <Col md={8}>
-              <MovieView movie={selectedMovie} onBackClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie) }} />
-            </Col>
-            )
-          : movies.map(movie => (
-            <Col key={movie._id} xs={12} sm={6} md={3} lg={3} xl={2}>
-              <MovieCard movie={movie} onMovieClick={movie => { this.setSelectedMovie(movie) }} />
-            </Col>
-          ))}
-      </Row>
+      <ErrorBoundary hasError={this.state.hasError}>
+        <Row className='main-view justify-content-lg-center'>
+          {selectedMovie
+            ? (
+              <Col>
+                <MovieView movie={selectedMovie} onBackClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie) }} />
+              </Col>
+              )
+            : <MovieCard movies={movies} onMovieClick={movie => { this.setSelectedMovie(movie) }} />}
+        </Row>
+      </ErrorBoundary>
     )
   }
 }

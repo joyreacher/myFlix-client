@@ -1,0 +1,14 @@
+@import '../../scss/typography';
+
+.btn{
+  @include font(sweet-titling-no-11, normal, 700);
+}
+.movie-title, .movie-description{
+  span{
+    @include font(sweet-titling-no-11, normal, 700);
+  }
+  
+}
+.color-accent-2{
+  color: var(--color-accent-2);
+}

@@ -1,5 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import ErrorBoundary from '../ErrorBoundary'
+
+// Bootstrap
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import Button from 'react-bootstrap/Button'
+
+// Custom styles
+import './movie-view.scss'
 class MovieView extends React.Component {
   // refer to the callback function when adding and removing the listener
   keypressCallback (event) {
@@ -19,20 +28,26 @@ class MovieView extends React.Component {
   render () {
     const { movie, onBackClick } = this.props
     return (
-      <div className='movie-view'>
-        <div className='movie-poster'>
-          <img src={movie.ImagePath} />
-        </div>
-        <div className='movie-title'>
-          <span className='label'>Title: </span>
-          <span className='value'>{movie.Title}</span>
-        </div>
-        <div className='movie-description'>
-          <span className='label'>Description: </span>
-          <span className='value'>{movie.Description}</span>
-        </div>
-        <button onClick={() => onBackClick(null)}>Back</button>
-      </div>
+      <ErrorBoundary>
+        <Row lg={6}>
+          <Col className='my-5 movie-poster d-flex justify-content-center' sm={12}>
+            <img src={movie.ImagePath} />
+          </Col>
+        </Row>
+        <Row className='movie-view mt-4 d-flex justify-content-center' sm={12} md={12} lg={12}>
+          <Col className='w-75' lg={12}>
+            <div className='movie-title'>
+              <span className='label color-accent-2'>Title: </span>
+              <h2 className='value d-inline-block'>{movie.Title}</h2>
+            </div>
+            <div className='movie-description'>
+              <span className='label color-accent-2'>Description: </span>
+              <p className='value'>{movie.Description}</p>
+            </div>
+            <Button className='btn btn-dark' onClick={() => onBackClick(null)}>Back</Button>
+          </Col>
+        </Row>
+      </ErrorBoundary>
     )
   }
 }

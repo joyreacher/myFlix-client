@@ -1,0 +1,31 @@
+@import '../../scss/typography';
+.display-2{
+  @include font(poppins, normal, 700);
+}
+.section{
+  &__start{
+    margin:3em 0;
+    height:20vh;
+    display:grid;
+    place-items: center left;
+    h1{
+      color: var(--color-light);
+      background-color:var(--color-dark);
+    }
+  }
+}
+h1{
+  @include font(sweet-titling-no-22, normal, 700);
+}
+h2{
+  @include font(poppins, italic, 700);
+}
+p, span, a, button{
+  @include font(poppins, normal, 400);
+  color: var(--color-dark);
+  text-decoration: none;
+}
+
+.card-header{
+  @include font(poppins, normal, 200);
+}
