@@ -37,7 +37,7 @@ export default class MovieCard extends React.Component {
         }
         </Row>
         <div className='section__start'>
-          <h1 className='ps-2 display-1'>Browse</h1>
+          <h1 className='display-1'>Browse</h1>
         </div>
         <Row>
         {
@@ -45,10 +45,10 @@ export default class MovieCard extends React.Component {
             if (!movie.Featured) {
               return (
                 <Row className='mb-5 justify-content-between d-flex' >
-                  <Col xs={12} sm={12} md={2} lg={3} className='d-sm-flex justify-content-sm-center'>
-                    <Image className='ms-2 mt-5' src={movie.ImagePath} />
+                  <Col xs={12} sm={12} md={4} lg={3} className='d-sm-flex justify-content-sm-center'>
+                    <Image className='mt-5' src={movie.ImagePath} />
                   </Col>
-                  <Col xs={12} sm={12} md={7} lg={8} className='d-sm-flex justify-content-sm-center flex-column'>
+                  <Col xs={12} sm={12} md={6} lg={8} className='text-sm-center text-md-start'>
                     <h2 className='display-2'>{movie.Title}</h2>
                     <p className='text-truncate'>{movie.Description}</p>
                     <Button className='btn btn-dark' onClick={() => onMovieClick(movie)} variant='button'>Open</Button>
