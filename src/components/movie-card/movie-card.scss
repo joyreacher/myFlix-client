@@ -1,4 +1,7 @@
 @import '../../scss/typography';
+.display-2{
+  @include font(poppins, normal, 700);
+}
 .section{
   &__start{
     margin-top:2em;
