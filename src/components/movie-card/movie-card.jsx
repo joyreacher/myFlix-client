@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Row, Col, Container, Card } from 'react-bootstrap'
-import Button from 'react-bootstrap/Button'
+import { Row, Col, Container, Card, Button } from 'react-bootstrap'
 export default class MovieCard extends React.Component {
   render () {
     const { movies, onMovieClick } = this.props
@@ -19,7 +18,7 @@ export default class MovieCard extends React.Component {
                     <Col lg={6}>
                       <h1>{movie.Title}</h1>
                       <p>{movie.Description}</p>
-                      <a onClick={() => onMovieClick(movie)} variant='link'>Open</a>
+                      <Button className='btn btn-dark' onClick={() => onMovieClick(movie)} variant='button'>Open</Button>
                     </Col>
                   </Row>
                 </Row>
@@ -35,14 +34,17 @@ export default class MovieCard extends React.Component {
               return (
                 <>
                   <Col lg={2}>
-                    <Card key={movie._id} className='m-2'>
-                      <Card.Img src={movie.ImagePath} />
-                      <Card.Body>
-                        <Card.Title>
-                          {movie.Title}
-                        </Card.Title>
+                    <Card key={movie._id} className='m-2 bg-light'>
+                      <Card.Img variant='top' src={movie.ImagePath} />
+                      <Card.Title className='p-2 text-justify'>
+                        {movie.Title}
+                      </Card.Title>
+                      <Card.Body className='p-2'>
+                        <Card.Text className='text-truncate'>
+                          {movie.Description}
+                        </Card.Text>
                       </Card.Body>
-                      <Button onClick={() => onMovieClick(movie)} variant='link'>Open</Button>
+                      <Button className='btn btn-dark' onClick={() => onMovieClick(movie)}>Open</Button>
                     </Card>
                   </Col>
                 </>
