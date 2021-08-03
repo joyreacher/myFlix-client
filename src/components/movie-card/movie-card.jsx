@@ -44,13 +44,13 @@ export default class MovieCard extends React.Component {
           movies.map(movie => {
             if (!movie.Featured) {
               return (
-                <Row md={2} className='mb-5 align-items-center justify-content-between' >
-                  <Col sm={3} md={12} lg={3}>
+                <Row className='mb-5 justify-content-between d-flex' >
+                  <Col xs={12} sm={12} md={2} lg={3} className='d-sm-flex justify-content-sm-center'>
                     <Image className='ms-2 mt-5' src={movie.ImagePath} />
                   </Col>
-                  <Col lg={6}>
+                  <Col xs={12} sm={12} md={7} lg={8} className='d-sm-flex justify-content-sm-center flex-column'>
                     <h2 className='display-2'>{movie.Title}</h2>
-                    <p>{movie.Description}</p>
+                    <p className='text-truncate'>{movie.Description}</p>
                     <Button className='btn btn-dark' onClick={() => onMovieClick(movie)} variant='button'>Open</Button>
                   </Col>
                 </Row>
