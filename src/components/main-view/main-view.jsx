@@ -64,7 +64,7 @@ export default class MainView extends React.Component {
     if (register) return <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} onRegisterClick={() => this.onLoggedIn()} />
     if (!user) return <LoginView onRegisterClick={() => this.onRegister()} onLoggedIn={user => this.onLoggedIn(user)} />
     // if (movies.length === 0) return <Spinner animation='border'><span>..loading..</span></Spinner>
-    if (movies) return <Loading />
+    if (movies.length === 0) return <Loading />
     return (
       <ErrorBoundary hasError={this.state.hasError}>
         <Row className='main-view justify-content-lg-center'>
