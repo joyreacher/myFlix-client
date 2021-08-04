@@ -15,7 +15,7 @@ export default class MovieCard extends React.Component {
         <Row className='align-items-center'>
           <Container>
             <CardGroup className='my-5'>
-            {
+              {
             movies.map(movie => {
               if (movie.Featured === true) {
                 return (
