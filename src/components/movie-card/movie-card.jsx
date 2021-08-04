@@ -12,29 +12,27 @@ export default class MovieCard extends React.Component {
         <div className='section__start'>
           <h1 className='display-1'>Featured</h1>
         </div>
-        <Row xs={2} sm={2} md={4} lg={6} className='align-items-center'>
-          {
-          movies.map(movie => {
-            if (movie.Featured === true) {
-              return (
-                <Container key={`featured-${movie._id}`}>
-                  <Col xs={12} sm={12} md={12} lg={12}>
-                    <CardGroup className='my-5'>
-                      <Card className='m-2 bg-light mb-sm-1'>
-                        <Card.Header>{movie.Title}</Card.Header>
-                        <Card.Img variant='top' src={movie.ImagePath} />
-                        <Card.Body className='p-2'>
-                          <Card.Text className='text-truncate'>{movie.Description}</Card.Text>
-                        </Card.Body>
-                        <Button className='btn btn-dark' onClick={() => onMovieClick(movie)}>Open</Button>
-                      </Card>
-                    </CardGroup>
-                  </Col>
-                </Container>
-              )
-            }
-          })
-        }
+        <Row className='align-items-center'>
+          <Container>
+            <CardGroup className='my-5'>
+            {
+            movies.map(movie => {
+              if (movie.Featured === true) {
+                return (
+                  <Card className='m-2 bg-light mb-sm-1' key={`featured-${movie._id}`}>
+                    <Card.Header>{movie.Title}</Card.Header>
+                    <Card.Img variant='top' src={movie.ImagePath} />
+                    <Card.Body className='p-2'>
+                      <Card.Text className='text-truncate'>{movie.Description}</Card.Text>
+                    </Card.Body>
+                    <Button className='btn btn-dark' onClick={() => onMovieClick(movie)}>Open</Button>
+                  </Card>
+                )
+              }
+            })
+          }
+            </CardGroup>
+          </Container>
         </Row>
         <div className='section__start'>
           <h1 className='display-1'>Browse</h1>
