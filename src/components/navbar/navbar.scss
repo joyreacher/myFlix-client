@@ -1,0 +1,12 @@
+@import '../../scss/typography';
+
+.cinema{
+  @include font(sweet-titling-no-26, normal, 400);
+  font-size:4rem;
+  line-height: 1.1em;
+}
+.barn{
+  @include font(sweet-titling-no-22, normal, 400);
+  font-size:2.1rem;
+  line-height:0;
+}
