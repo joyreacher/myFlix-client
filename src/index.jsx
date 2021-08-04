@@ -12,10 +12,10 @@ class MyFlixApplication extends React.Component {
   render () {
     return (
       <>
-      <Navbar/>
-      <Container>
-        <MainView />
-      </Container>
+        <Navbar />
+        <Container>
+          <MainView />
+        </Container>
       </>
     )
   }
