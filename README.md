@@ -1,4 +1,8 @@
 
+# MyFlix
+
+This is the clent to the [Movie API](https://github.com/joyreacher/movie_api) backend.
+
 ## Run Locally
 
 Clone the project

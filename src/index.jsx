@@ -1,13 +1,22 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import MainView from './components/main-view/main-view'
+import Navbar from './components/navbar/navbar'
+
+// Bootstrap
+import Container from 'react-bootstrap/Container'
 // styles
 import './index.scss'
 
 class MyFlixApplication extends React.Component {
   render () {
     return (
-      <MainView />
+      <>
+        <Navbar />
+        <Container>
+          <MainView />
+        </Container>
+      </>
     )
   }
 }
