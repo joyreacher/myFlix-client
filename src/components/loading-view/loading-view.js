@@ -14,8 +14,8 @@ function Loading () {
   return (
     <Container>
       <Row className='d-grid'>
-        <h1 className='loading__text'>Loading</h1>
         <Spinner animation='border' />
+        <h1 className='loading__text'>Loading</h1>
       </Row>
     </Container>
   )
