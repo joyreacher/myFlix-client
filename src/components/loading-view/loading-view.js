@@ -6,10 +6,10 @@ import { Container, Spinner, Row } from 'react-bootstrap'
 import './loading-view.scss'
 
 function Loading () {
-  useEffect(()=>{
-    let LoadingText = document.querySelector('.loading__text');
-    let tl = gsap.timeline({yoyo: true})
-    tl.from(LoadingText, { duration: 1.2, opacity: 0, yoyo: true, repeat: -1})
+  useEffect(() => {
+    const LoadingText = document.querySelector('.loading__text')
+    const tl = gsap.timeline({ yoyo: true })
+    tl.from(LoadingText, { duration: 1.2, opacity: 0, yoyo: true, repeat: -1 })
   }, [])
   return (
     <Container>
