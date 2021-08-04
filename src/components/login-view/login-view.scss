@@ -17,6 +17,7 @@
     box-shadow:  $shadow-1;
     h1{
       @include font(poppins, normal, 100);
+      font-size:5rem;
     }
     a{
       @include font(poppins, normal, 400);
