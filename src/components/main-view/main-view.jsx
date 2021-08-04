@@ -7,11 +7,11 @@ import { LoginView } from '../login-view/login-view'
 import MovieCard from '../movie-card/movie-card'
 import MovieView from '../movie-view/movie-view'
 import ErrorBoundary from '../ErrorBoundary'
+import Loading from '../loading-view/loading-view'
 
 // Bootstrap
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Spinner from 'react-bootstrap/Spinner'
 
 export default class MainView extends React.Component {
   constructor () {
@@ -63,7 +63,8 @@ export default class MainView extends React.Component {
     const { movies, selectedMovie, user, register } = this.state
     if (register) return <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} onRegisterClick={() => this.onLoggedIn()} />
     if (!user) return <LoginView onRegisterClick={() => this.onRegister()} onLoggedIn={user => this.onLoggedIn(user)} />
-    if (movies.length === 0) return <Spinner animation='border'><span>..loading..</span></Spinner>
+    // if (movies.length === 0) return <Spinner animation='border'><span>..loading..</span></Spinner>
+    if (movies) return <Loading />
     return (
       <ErrorBoundary hasError={this.state.hasError}>
         <Row className='main-view justify-content-lg-center'>
