@@ -9,8 +9,8 @@ export default class MovieCard extends React.Component {
     const { movies, onMovieClick } = this.props
     return (
       <Container className='d-flex flex-column'>
-        <div className='section__start'>
-          <h1 className='display-1 fs-1'>Featured</h1>
+        <div className='section__start mt-5'>
+          <h1 className='display-1 fs-1 mt-5'>Featured</h1>
         </div>
         <Row className='align-items-center'>
           <Container>
@@ -34,8 +34,8 @@ export default class MovieCard extends React.Component {
             </CardGroup>
           </Container>
         </Row>
-        <div className='section__start'>
-          <h1 className='display-1 fs-1'>Browse</h1>
+        <div className='section__start mt-5'>
+          <h1 className='display-1 fs-1 mt-5'>Browse</h1>
         </div>
         <Row>
           {
