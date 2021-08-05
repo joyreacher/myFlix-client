@@ -66,13 +66,13 @@ export default class MainView extends React.Component {
     if (movies.length === 0) return <Loading />
     return (
       <ErrorBoundary hasError={this.state.hasError}>
-          {selectedMovie
-            ? (
-              <Col>
-                <MovieView movie={selectedMovie} onBackClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie) }} />
-              </Col>
-              )
-            : <MovieCard movies={movies} onMovieClick={movie => { this.setSelectedMovie(movie) }} />}
+        {selectedMovie
+          ? (
+            <Col>
+              <MovieView movie={selectedMovie} onBackClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie) }} />
+            </Col>
+            )
+          : <MovieCard movies={movies} onMovieClick={movie => { this.setSelectedMovie(movie) }} />}
       </ErrorBoundary>
     )
   }
