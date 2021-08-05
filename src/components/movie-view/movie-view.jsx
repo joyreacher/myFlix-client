@@ -6,7 +6,7 @@ import ErrorBoundary from '../ErrorBoundary'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
-import Container from 'react-bootstrap/Container'
+import Image from 'react-bootstrap/Image'
 
 // Custom styles
 import './movie-view.scss'
@@ -30,26 +30,16 @@ class MovieView extends React.Component {
     const { movie, onBackClick } = this.props
     return (
       <ErrorBoundary>
-        <Container className='mb-5'>
-          <Row lg={6}>
-            <Col className='my-5 movie-poster d-flex justify-content-center' sm={12}>
-              <img src={movie.ImagePath} />
-            </Col>
-          </Row>
-          <Row className='movie-view mt-4 d-flex justify-content-center' sm={12} md={12} lg={12}>
-            <Col className='w-75' lg={12}>
-              <div className='movie-title'>
-                <span className='label color-accent-2 fs-4'>Title: </span>
-                <h2 className='value d-inline-block fs-1'>{movie.Title}</h2>
-              </div>
-              <div className='movie-description'>
-                <span className='label color-accent-2 fs-4'>Description: </span>
-                <p className='value fs-6'>{movie.Description}</p>
-              </div>
-              <Button className='btn btn-dark' onClick={() => onBackClick(null)}>Back</Button>
-            </Col>
-          </Row>
-        </Container>
+        <Row md={6} lg={6} xl={6} className='my-5 d-flex justify-content-center min-vh-100 align-items-center'>
+          <Col lg={6}>
+            <Image src={movie.ImagePath} />
+          </Col>
+          <Col lg={6}>
+            <h2 className='display-1 fs-1 movie__title'>{movie.Title}</h2>
+            <p className='fs-3'>{movie.Description}</p>
+            <Button className='btn btn-dark fs-1' onClick={() => onBackClick(null)}>Back</Button>
+          </Col>
+        </Row>
       </ErrorBoundary>
     )
   }
