@@ -8,7 +8,7 @@ function Footer () {
   return (
     <Navbar className='footer'>
       <Container>
-        <Col className='footer__col d-flex flex-column align-items-sm-start align-items-md-center ps-3' sm={6} md={6} lg={6}>
+        <Col className='footer__col d-flex flex-column align-items-sm-center ps-5' sm={6} md={6} lg={6}>
           <div>
             <h3 className='fs-3'>Cinema Barn</h3>
             <p>API Documentation</p>
@@ -16,7 +16,7 @@ function Footer () {
             <p>Github (API)</p>
           </div>
         </Col>
-        <Col className='footer__col d-flex flex-column align-items-sm-start align-items-md-center pe-3' sm={6} md={6} lg={6}>
+        <Col className='footer__col d-flex flex-column align-items-sm-center pe-5' sm={6} md={6} lg={6}>
           <div>
             <h3 className='fs-3'>My Account</h3>
             <p>My Profile</p>
