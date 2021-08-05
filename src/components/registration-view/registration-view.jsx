@@ -42,7 +42,7 @@ export function RegistrationView (props) {
         <Form className='registration__form jumbotron p-5 d-flex flex-column'>
           <Form.Group>
             <Form.Label>
-              <h1>Register</h1>
+              <h1 className='fs-1 display-1'>Register</h1>
             </Form.Label>
           </Form.Group>
           <Form.Group>
