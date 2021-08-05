@@ -42,7 +42,7 @@ export default class MovieCard extends React.Component {
           movies.map(movie => {
             if (!movie.Featured) {
               return (
-                <Row className='mb-5 justify-content-between d-flex' key={`not-featured-${movie._id}`}>
+                <Row className='mb-5 justify-content-between align-items-center d-flex' key={`not-featured-${movie._id}`}>
                   <Col xs={12} sm={12} md={4} lg={3} className='d-sm-flex justify-content-sm-center px-4 my-4'>
                     <Image className='mt-5' src={movie.ImagePath} />
                   </Col>
