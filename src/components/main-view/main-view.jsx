@@ -63,11 +63,9 @@ export default class MainView extends React.Component {
     const { movies, selectedMovie, user, register } = this.state
     if (register) return <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} onRegisterClick={() => this.onLoggedIn()} />
     if (!user) return <LoginView onRegisterClick={() => this.onRegister()} onLoggedIn={user => this.onLoggedIn(user)} />
-    // if (movies.length === 0) return <Spinner animation='border'><span>..loading..</span></Spinner>
     if (movies.length === 0) return <Loading />
     return (
       <ErrorBoundary hasError={this.state.hasError}>
-        <Row className='main-view justify-content-lg-center'>
           {selectedMovie
             ? (
               <Col>
@@ -75,7 +73,6 @@ export default class MainView extends React.Component {
               </Col>
               )
             : <MovieCard movies={movies} onMovieClick={movie => { this.setSelectedMovie(movie) }} />}
-        </Row>
       </ErrorBoundary>
     )
   }
