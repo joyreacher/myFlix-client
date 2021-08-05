@@ -4,10 +4,9 @@
 }
 .section{
   &__start{
-    margin:3em 0;
-    height:20vh;
+    height:10vh;
     display:grid;
-    place-items: center left;
+    place-items: center right;
     h1{
       color: var(--color-light);
       background-color:var(--color-dark);
