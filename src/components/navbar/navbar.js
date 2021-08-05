@@ -7,7 +7,7 @@ import { Navbar, Container, Row } from 'react-bootstrap'
 import './navbar.scss'
 function Nav () {
   return (
-    <Navbar>
+    <Navbar className='mt-2 mb-5'>
       <Container>
         <Navbar.Brand>
           <Row className='d-flex justify-content-start align-items-center'>

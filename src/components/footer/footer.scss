@@ -1,0 +1,18 @@
+@import '../../scss/typography';
+.footer{
+  position: relative;
+  z-index: 100;
+  min-height: 257px;
+  background-color: var(--color-dark);
+  &__col{
+    min-width: 20vw;
+    p{
+      color:var(--color-white);
+    }
+  }
+  h3{
+    @include font(poppins, 'black', 900);
+    word-break: keep-all;
+    color: var(--color-light);
+  }
+}

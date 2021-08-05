@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import MainView from './components/main-view/main-view'
 import Navbar from './components/navbar/navbar'
+import Footer from './components/footer/footer'
 
 // Bootstrap
 import Container from 'react-bootstrap/Container'
@@ -16,6 +17,7 @@ class MyFlixApplication extends React.Component {
         <Container>
           <MainView />
         </Container>
+        <Footer />
       </>
     )
   }

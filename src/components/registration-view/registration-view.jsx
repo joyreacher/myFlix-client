@@ -38,11 +38,11 @@ export function RegistrationView (props) {
 
   return (
     <Row className='justify-content-center min-vh-100 align-items-center'>
-      <Col xs={10} sm={10} md={7} lg={6} xl={5}>
+      <Col xs={10} sm={10} md={7} lg={6} xl={7}>
         <Form className='registration__form jumbotron p-5 d-flex flex-column'>
           <Form.Group>
             <Form.Label>
-              <h1>Register</h1>
+              <h1 className='fs-1 display-1'>Register</h1>
             </Form.Label>
           </Form.Group>
           <Form.Group>

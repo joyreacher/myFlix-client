@@ -1,7 +1,11 @@
 @import '../../scss/typography';
-
+.movie{
+  &__title{
+    @include font(sweet-titling-no-22, normal, 400);
+  }
+}
 .btn{
-  @include font(sweet-titling-no-11, normal, 700);
+  @include font(sweet-titling-no-22, normal, 700);
 }
 .movie-title, .movie-description{
   span{
