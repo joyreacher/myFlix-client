@@ -6,6 +6,7 @@ import ErrorBoundary from '../ErrorBoundary'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
+import Container from 'react-bootstrap/Container'
 
 // Custom styles
 import './movie-view.scss'
@@ -29,24 +30,26 @@ class MovieView extends React.Component {
     const { movie, onBackClick } = this.props
     return (
       <ErrorBoundary>
-        <Row lg={6}>
-          <Col className='my-5 movie-poster d-flex justify-content-center' sm={12}>
-            <img src={movie.ImagePath} />
-          </Col>
-        </Row>
-        <Row className='movie-view mt-4 d-flex justify-content-center' sm={12} md={12} lg={12}>
-          <Col className='w-75' lg={12}>
-            <div className='movie-title'>
-              <span className='label color-accent-2'>Title: </span>
-              <h2 className='value d-inline-block'>{movie.Title}</h2>
-            </div>
-            <div className='movie-description'>
-              <span className='label color-accent-2'>Description: </span>
-              <p className='value'>{movie.Description}</p>
-            </div>
-            <Button className='btn btn-dark' onClick={() => onBackClick(null)}>Back</Button>
-          </Col>
-        </Row>
+        <Container className='mb-5'>
+          <Row lg={6}>
+            <Col className='my-5 movie-poster d-flex justify-content-center' sm={12}>
+              <img src={movie.ImagePath} />
+            </Col>
+          </Row>
+          <Row className='movie-view mt-4 d-flex justify-content-center' sm={12} md={12} lg={12}>
+            <Col className='w-75' lg={12}>
+              <div className='movie-title'>
+                <span className='label color-accent-2'>Title: </span>
+                <h2 className='value d-inline-block'>{movie.Title}</h2>
+              </div>
+              <div className='movie-description'>
+                <span className='label color-accent-2'>Description: </span>
+                <p className='value'>{movie.Description}</p>
+              </div>
+              <Button className='btn btn-dark' onClick={() => onBackClick(null)}>Back</Button>
+            </Col>
+          </Row>
+        </Container>
       </ErrorBoundary>
     )
   }
