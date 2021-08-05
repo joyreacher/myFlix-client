@@ -10,7 +10,7 @@ export default class MovieCard extends React.Component {
     return (
       <Container className='d-flex flex-column'>
         <div className='section__start'>
-          <h1 className='display-1'>Featured</h1>
+          <h1 className='display-1 fs-1'>Featured</h1>
         </div>
         <Row className='align-items-center'>
           <Container>
@@ -35,7 +35,7 @@ export default class MovieCard extends React.Component {
           </Container>
         </Row>
         <div className='section__start'>
-          <h1 className='display-1'>Browse</h1>
+          <h1 className='display-1 fs-1'>Browse</h1>
         </div>
         <Row>
           {
