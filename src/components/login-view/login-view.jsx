@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
+import axios from 'axios'
 import './login-view.scss'
 
 // Bootstrap
@@ -14,17 +15,15 @@ export function LoginView (props) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(
-      'This is the username: %c' + username + '%c and password: %c' + password + '. %c',
-      'font-size: 1.3rem; color: #fff; background: #1e90ff; padding: 4px',
-      '',
-      'font-size: 1.3rem; color: #f00; font-weight: bold',
-      ''
-    )
-    // send request to server for auth
-    // then call props.onLoggedIn(username)
-
-    props.onLoggedIn(username)
+    axios.post('https://cinema-barn.herokuapp.com/login', {
+      Username: username,
+      Password: password
+    }).then(res => {
+      const data = res.data
+      props.onLoggedIn(data)
+    }).catch(e => {
+      console.log('no such user')
+    })
   }
 
   return (
