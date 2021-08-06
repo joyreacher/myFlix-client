@@ -1,11 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Row, Col, Container, Card, Button, CardGroup, Image } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Row, Container, CardGroup } from 'react-bootstrap'
+// components
+import NotFeatured from '../not-featured/not-featured'
+import Featured from '../featured/featured'
 
 // custom styles
 import './movie-card.scss'
-import NotFeatured from '../not-featured/not-featured'
 export default class MovieCard extends React.Component {
   render () {
     const { movies } = this.props
@@ -17,24 +18,7 @@ export default class MovieCard extends React.Component {
         <Row className='align-items-center'>
           <Container>
             <CardGroup className='my-5'>
-              {
-            movies.map(movie => {
-              if (movie.Featured === true) {
-                return (
-                  <Card className='m-2 bg-light mb-sm-1' key={`featured-${movie._id}`}>
-                    <Card.Header>{movie.Title}</Card.Header>
-                    <Card.Img variant='top' src={movie.ImagePath} />
-                    <Card.Body className='p-2'>
-                      <Card.Text className='text-truncate'>{movie.Description}</Card.Text>
-                    </Card.Body>
-                    <Link to={`/movies/${movie._id}`}>
-                      <Button className='btn btn-dark'>Open</Button>
-                    </Link>
-                  </Card>
-                )
-              }
-            })
-          }
+              <Featured movies={movies} />
             </CardGroup>
           </Container>
         </Row>
