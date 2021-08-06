@@ -124,7 +124,16 @@ export default class MainView extends React.Component {
             // match and history are objects we can use
             render={({ match, history }) => {
               console.log(match, history)
+              if (!user) return <LoginView onLoggedin={user => this.onLoggedIn(user)} />
               return <>build director view</>
+            }}
+          />
+          <Route
+            exact
+            path='/genres/:name'
+            render={({ match, history }) => {
+              if(!user) return <LoginView onLoggedin={user => this.onLoggedIn(user)} />
+              return <>build genre view</>
             }}
           />
         </Router>
