@@ -5,9 +5,8 @@ import axios from 'axios'
 
 import { RegistrationView } from '../registration-view/registration-view'
 import { LoginView } from '../login-view/login-view'
-import MovieCard from '../movie-card/movie-card'
+import MovieContainer from '../movie-card/movie-container'
 import MovieView from '../movie-view/movie-view'
-import ErrorBoundary from '../ErrorBoundary'
 import Loading from '../loading-view/loading-view'
 
 // Bootstrap
@@ -90,7 +89,7 @@ export default class MainView extends React.Component {
           render={() => {
             if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
             if (movies.length === 0) return <Loading />
-            return <MovieCard movies={movies} />
+            return <MovieContainer movies={movies} />
           }}/>
         <Route
           exact
