@@ -12,6 +12,7 @@ import Loading from '../loading-view/loading-view'
 // Bootstrap
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Button from 'react-bootstrap/Button'
 
 export default class MainView extends React.Component {
   constructor () {
@@ -57,6 +58,14 @@ export default class MainView extends React.Component {
     this.getMovies(authData.token)
   }
 
+  onLoggedOut () {
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    this.setState({
+      user: null
+    })
+  }
+
   getMovies (token) {
     axios.get('https://cinema-barn.herokuapp.com/movies', {
       headers: { Authorization: `Bearer ${token}` }
@@ -83,6 +92,7 @@ export default class MainView extends React.Component {
     if (movies.length === 0) return <Loading />
     return (
       <ErrorBoundary hasError={this.state.hasError}>
+        <Button onClick={()=>this.onLoggedOut()}>Logout</Button>
         {selectedMovie
           ? (
             <Col>
