@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import './movie-card.scss'
 export default class MovieCard extends React.Component {
   render () {
-    const { movies, onMovieClick } = this.props
+    const { movies } = this.props
     return (
       <Container className='d-flex flex-column'>
         <div className='section__start mt-5'>
@@ -72,6 +72,5 @@ MovieCard.propTypes = {
     Title: PropTypes.string.isRequired,
     Description: PropTypes.string.isRequired,
     ImagePath: PropTypes.string
-  })),
-  onMovieClick: PropTypes.func.isRequired
+  }))
 }
