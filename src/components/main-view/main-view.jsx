@@ -118,6 +118,15 @@ export default class MainView extends React.Component {
               return <MovieView movie={movies.find(m => m._id === match.params.movieId)} onBackClick={() => history.goBack()} />
             }}
           />
+          <Route
+            exact
+            path='/directors/:name'
+            // match and history are objects we can use
+            render={({ match, history }) => {
+              console.log(match, history)
+              return <>build director view</>
+            }}
+          />
         </Router>
       </ErrorBoundary>
     )
