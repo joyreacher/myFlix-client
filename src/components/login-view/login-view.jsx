@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import axios from 'axios'
 import './login-view.scss'
@@ -48,7 +49,7 @@ export function LoginView (props) {
           </Form.Group>
           <Form.Group className='d-flex justify-content-start mt-5'>
             <p className='me-2 text-start'>Dont have an account?</p>
-            <a className='' onClick={() => props.onRegisterClick()}>Register</a>
+            <Link className='fs-6' to={`/register`} >Register</Link>
           </Form.Group>
         </Form>
       </Col>
