@@ -52,7 +52,9 @@ export default class MovieCard extends React.Component {
                   <Col xs={12} sm={12} md={6} lg={8} className='text-sm-center text-md-start'>
                     <h2 className='fs-1'>{movie.Title}</h2>
                     <p className='text-truncate fs-4'>{movie.Description}</p>
-                    <Button className='btn btn-dark px-5 ms-4' onClick={() => onMovieClick(movie)} variant='button'>Open</Button>
+                    <Link to={`/movies/${movie._id}`}>
+                      <Button className='btn btn-dark'>Open</Button>
+                    </Link>
                   </Col>
                 </Row>
               )
