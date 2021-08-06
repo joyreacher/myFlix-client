@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Row, Col, Container, Card, Button, CardGroup, Image } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 
 // custom styles
 import './movie-card.scss'
@@ -25,7 +26,9 @@ export default class MovieCard extends React.Component {
                     <Card.Body className='p-2'>
                       <Card.Text className='text-truncate'>{movie.Description}</Card.Text>
                     </Card.Body>
-                    <Button className='btn btn-dark' onClick={() => onMovieClick(movie)}>Open</Button>
+                    <Link to={`/movies/${movie._id}`}>
+                      <Button className='btn btn-dark'>Open</Button>
+                    </Link>
                   </Card>
                 )
               }
