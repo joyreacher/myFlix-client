@@ -1,4 +1,5 @@
 import React from 'react'
+import { BrowserRouter as Router, Route, Redirect} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import axios from 'axios'
 
@@ -87,19 +88,22 @@ export default class MainView extends React.Component {
 
   render () {
     const { movies, selectedMovie, user, register } = this.state
-    if (register) return <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} onRegisterClick={() => this.onLoggedIn()} />
-    if (!user) return <LoginView onRegisterClick={() => this.onRegister()} onLoggedIn={user => this.onLoggedIn(user)} />
-    if (movies.length === 0) return <Loading />
+    // if (register) return <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} onRegisterClick={() => this.onLoggedIn()} />
+    // if (!user) return <LoginView onRegisterClick={() => this.onRegister()} onLoggedIn={user => this.onLoggedIn(user)} />
+    // if (movies.length === 0) return <Loading />
     return (
       <ErrorBoundary hasError={this.state.hasError}>
-        <Button onClick={()=>this.onLoggedOut()}>Logout</Button>
-        {selectedMovie
-          ? (
-            <Col>
-              <MovieView movie={selectedMovie} onBackClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie) }} />
-            </Col>
-            )
-          : <MovieCard movies={movies} onMovieClick={movie => { this.setSelectedMovie(movie) }} />}
+        <Router>
+          <Button onClick={() => this.onLoggedOut()}>Logout</Button>
+          <Route
+            exact
+            path='/'
+            render={() => {
+              if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
+              if (movies.length === 0) return <Loading />
+              return <MovieCard movies={movies} />
+            }}/>
+        </Router>
       </ErrorBoundary>
     )
   }
