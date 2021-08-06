@@ -26,7 +26,18 @@ export default class MainView extends React.Component {
   }
 
   componentDidMount () {
-    
+    //! persistant data
+    // get token
+    const accessToken = localStorage.getItem('token')
+    // if accessToken is not set
+    if (accessToken != null) {
+      // set the user state to what is in the localstorage labeled 'user'
+      this.setState({
+        user: localStorage.getItem('user')
+      })
+      // get movies with token in localStorage : 'token'
+      this.getMovies(accessToken)
+    }
   }
 
   setSelectedMovie (newSelectedMovie) {
