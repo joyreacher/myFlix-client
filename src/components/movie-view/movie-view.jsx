@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import ErrorBoundary from '../ErrorBoundary'
 
@@ -37,6 +38,12 @@ class MovieView extends React.Component {
           <Col lg={6}>
             <h2 className='display-1 fs-1 movie__title'>{movie.Title}</h2>
             <p className='fs-3'>{movie.Description}</p>
+            <Link to={`/directors/${movie.Director.Name}`}>
+              <Button>Director</Button>
+            </Link>
+            <Link to={`/genres/${movie.Genre.Name}`}>
+              <Button>Genre</Button>
+            </Link>
             <Button className='btn btn-dark fs-1' onClick={() => onBackClick(null)}>Back</Button>
           </Col>
         </Row>
