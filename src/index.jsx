@@ -8,17 +8,18 @@ import Footer from './components/footer/footer'
 import Container from 'react-bootstrap/Container'
 // styles
 import './index.scss'
+import ErrorBoundary from './components/ErrorBoundary'
 
 class MyFlixApplication extends React.Component {
   render () {
     return (
-      <>
+      <ErrorBoundary>
         <Navbar />
         <Container>
           <MainView />
         </Container>
         <Footer />
-      </>
+      </ErrorBoundary>
     )
   }
 }
