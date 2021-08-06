@@ -82,52 +82,50 @@ export default class MainView extends React.Component {
   render () {
     const { movies, user } = this.state
     return (
-      <ErrorBoundary hasError={this.state.hasError}>
-        <Router>
-          <Button onClick={() => this.onLoggedOut()}>Logout</Button>
-          <Route
-            exact
-            path='/'
-            render={() => {
-              if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
-              if (movies.length === 0) return <Loading />
-              return <MovieCard movies={movies} />
-            }}/>
-          <Route
-            exact
-            path='/register'
-            render={() => {
-              if (user) return <Redirect to='/' />
-              return <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} onRegisterClick={() => this.onLoggedIn()} />
-            }}/>
-          <Route
-            exact
-            path='/movies/:movieId'
-            render={({ match, history }) => {
-              if (!user) return <Redirect to='/' />
-              return <MovieView movie={movies.find(m => m._id === match.params.movieId)} onBackClick={() => history.goBack()} />
-            }}
-          />
-          <Route
-            exact
-            path='/directors/:name'
-            // match and history are objects we can use
-            render={({ match, history }) => {
-              console.log(match, history)
-              if (!user) return <Redirect to='/' />
-              return <>build director view</>
-            }}
-          />
-          <Route
-            exact
-            path='/genres/:name'
-            render={({ match, history }) => {
-              if (!user) return <Redirect to='/' />
-              return <>build genre view</>
-            }}
-          />
-        </Router>
-      </ErrorBoundary>
+      <Router>
+        <Button onClick={() => this.onLoggedOut()}>Logout</Button>
+        <Route
+          exact
+          path='/'
+          render={() => {
+            if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
+            if (movies.length === 0) return <Loading />
+            return <MovieCard movies={movies} />
+          }}/>
+        <Route
+          exact
+          path='/register'
+          render={() => {
+            if (user) return <Redirect to='/' />
+            return <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} onRegisterClick={() => this.onLoggedIn()} />
+          }}/>
+        <Route
+          exact
+          path='/movies/:movieId'
+          render={({ match, history }) => {
+            if (!user) return <Redirect to='/' />
+            return <MovieView movie={movies.find(m => m._id === match.params.movieId)} onBackClick={() => history.goBack()} />
+          }}
+        />
+        <Route
+          exact
+          path='/directors/:name'
+          // match and history are objects we can use
+          render={({ match, history }) => {
+            console.log(match, history)
+            if (!user) return <Redirect to='/' />
+            return <>build director view</>
+          }}
+        />
+        <Route
+          exact
+          path='/genres/:name'
+          render={({ match, history }) => {
+            if (!user) return <Redirect to='/' />
+            return <>build genre view</>
+          }}
+        />
+      </Router>
     )
   }
 }
