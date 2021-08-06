@@ -11,8 +11,6 @@ import ErrorBoundary from '../ErrorBoundary'
 import Loading from '../loading-view/loading-view'
 
 // Bootstrap
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 
 export default class MainView extends React.Component {
@@ -28,16 +26,11 @@ export default class MainView extends React.Component {
   }
 
   componentDidMount () {
-    //! persistant data
-    // get token
     const accessToken = localStorage.getItem('token')
-    // if accessToken is not set
     if (accessToken != null) {
-      // set the user state to what is in the localstorage labeled 'user'
       this.setState({
         user: localStorage.getItem('user')
       })
-      // get movies with token in localStorage : 'token'
       this.getMovies(accessToken)
     }
   }
@@ -87,10 +80,7 @@ export default class MainView extends React.Component {
   }
 
   render () {
-    const { movies, selectedMovie, user, register } = this.state
-    // if (register) return <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} onRegisterClick={() => this.onLoggedIn()} />
-    // if (!user) return <LoginView onRegisterClick={() => this.onRegister()} onLoggedIn={user => this.onLoggedIn(user)} />
-    // if (movies.length === 0) return <Loading />
+    const { movies, user } = this.state
     return (
       <ErrorBoundary hasError={this.state.hasError}>
         <Router>
@@ -114,7 +104,7 @@ export default class MainView extends React.Component {
             exact
             path='/movies/:movieId'
             render={({ match, history }) => {
-              if(!user) return <LoginView onLoggedin={user => this.onLoggedIn(user)} />
+              if (!user) return <Redirect to='/' />
               return <MovieView movie={movies.find(m => m._id === match.params.movieId)} onBackClick={() => history.goBack()} />
             }}
           />
@@ -124,7 +114,7 @@ export default class MainView extends React.Component {
             // match and history are objects we can use
             render={({ match, history }) => {
               console.log(match, history)
-              if (!user) return <LoginView onLoggedin={user => this.onLoggedIn(user)} />
+              if (!user) return <Redirect to='/' />
               return <>build director view</>
             }}
           />
@@ -132,7 +122,7 @@ export default class MainView extends React.Component {
             exact
             path='/genres/:name'
             render={({ match, history }) => {
-              if(!user) return <LoginView onLoggedin={user => this.onLoggedIn(user)} />
+              if (!user) return <Redirect to='/' />
               return <>build genre view</>
             }}
           />
