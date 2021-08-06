@@ -26,18 +26,7 @@ export default class MainView extends React.Component {
   }
 
   componentDidMount () {
-    axios.get('https://cinema-barn.herokuapp.com/movies')
-      .then((res) => {
-        this.setState({
-          movies: res.data
-        })
-      })
-      .catch(error => {
-        this.setState({
-          hasError: true
-        })
-        console.log(error)
-      })
+    
   }
 
   setSelectedMovie (newSelectedMovie) {
@@ -46,10 +35,27 @@ export default class MainView extends React.Component {
     })
   }
 
-  onLoggedIn (user) {
+  onLoggedIn (authData) {
+    console.log(authData.user.username)
     this.setState({
-      user: user,
+      user: authData.user.username,
       register: false
+    })
+    localStorage.setItem('token', authData.token)
+    localStorage.setItem('user', authData.user.username)
+    this.getMovies(authData.token)
+  }
+
+  getMovies (token) {
+    axios.get('https://cinema-barn.herokuapp.com/movies', {
+      headers: { Authorization: `Bearer ${token}` }
+    }).then(res => {
+      // assign the result to state
+      this.setState({
+        movies: res.data
+      })
+    }).catch(function (error) {
+      console.log(error)
     })
   }
 
