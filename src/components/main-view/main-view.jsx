@@ -8,6 +8,7 @@ import { LoginView } from '../login-view/login-view'
 import MovieContainer from '../movie-card/movie-container'
 import MovieView from '../movie-view/movie-view'
 import GenreView from '../genre-view/genre-view'
+import DirectorView from '../director-view/director-view'
 import Loading from '../loading-view/loading-view'
 import Navbar from '../navbar/navbar'
 
@@ -21,6 +22,7 @@ export default class MainView extends React.Component {
       selectedMovie: null,
       movies: [],
       genre: [],
+      directors: [],
       user: null,
       register: false,
       hasError: false
@@ -126,8 +128,9 @@ export default class MainView extends React.Component {
           // match and history are objects we can use
           render={({ match, history }) => {
             console.log(match, history)
+            if (!genre) return <Loading />
             if (!user) return <Redirect to='/' />
-            return <>build director view</>
+            return <DirectorView movies={movies} name={match.params.name} onBackClick={() => history.goBack()} />
           }}
         />
         <Route
