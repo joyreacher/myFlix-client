@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 // Bootstrap
-import { Navbar, Container, Row } from 'react-bootstrap'
+import { Navbar, Container, Row, Button } from 'react-bootstrap'
 
 // Custom styles
 import './navbar.scss'
@@ -20,12 +20,12 @@ function Nav ({ onLoggedIn, user }) {
         </Navbar.Brand>
         <Navbar.Collapse className='justify-content-end'>
           <Navbar.Text onClick={() => onLoggedIn()}>
-            Signed in as: {user}
+            Signed in as: <Link to={`/user/${user}`}>{user}</Link>
           </Navbar.Text>
         </Navbar.Collapse>
         <Navbar.Collapse className='justify-content-end'>
           <Navbar.Text onClick={() => onLoggedIn()}>
-            Logout
+            <Button className='btn bg-dark'>Logout</Button>
           </Navbar.Text>
         </Navbar.Collapse>
       </Container>
