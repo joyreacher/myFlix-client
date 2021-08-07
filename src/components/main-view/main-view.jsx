@@ -7,6 +7,7 @@ import { RegistrationView } from '../registration-view/registration-view'
 import { LoginView } from '../login-view/login-view'
 import MovieContainer from '../movie-card/movie-container'
 import MovieView from '../movie-view/movie-view'
+import GenreView from '../genre-view/genre-view'
 import Loading from '../loading-view/loading-view'
 
 // Bootstrap
@@ -18,6 +19,7 @@ export default class MainView extends React.Component {
     this.state = {
       selectedMovie: null,
       movies: [],
+      genre: [],
       user: null,
       register: false,
       hasError: false
@@ -32,12 +34,6 @@ export default class MainView extends React.Component {
       })
       this.getMovies(accessToken)
     }
-  }
-
-  setSelectedMovie (newSelectedMovie) {
-    this.setState({
-      selectedMovie: newSelectedMovie
-    })
   }
 
   onLoggedIn (authData) {
@@ -72,6 +68,22 @@ export default class MainView extends React.Component {
     })
   }
 
+  getMoviesByGenre (movies) {
+    const accessToken = localStorage.getItem('token')
+    axios.get(`https://cinema-barn.herokuapp.com/genre/${movies}`, {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    }).then(res => {
+      console.log(res.data)
+      // assign the result to state
+      this.setState({
+        genre: res.data
+      })
+      // return res.data
+    }).catch(function (error) {
+      console.log(error)
+    })
+  }
+
   onRegister () {
     this.setState({
       register: true
@@ -79,7 +91,7 @@ export default class MainView extends React.Component {
   }
 
   render () {
-    const { movies, user } = this.state
+    const { movies, user, genre } = this.state
     return (
       <Router>
         <Button onClick={() => this.onLoggedOut()}>Logout</Button>
@@ -118,10 +130,12 @@ export default class MainView extends React.Component {
         />
         <Route
           exact
-          path='/genres/:name'
+          path='/genres/:genre'
           render={({ match, history }) => {
+            // console.log(match)
+            if (!genre) return <Loading />
             if (!user) return <Redirect to='/' />
-            return <>build genre view</>
+            return <GenreView movies={movies} genre={match.params.genre} onBackClick={() => history.goBack()} />
           }}
         />
       </Router>
