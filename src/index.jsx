@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import MainView from './components/main-view/main-view'
-import Navbar from './components/navbar/navbar'
 import Footer from './components/footer/footer'
 
 // Bootstrap
@@ -14,7 +13,6 @@ class MyFlixApplication extends React.Component {
   render () {
     return (
       <ErrorBoundary>
-        <Navbar />
         <Container>
           <MainView />
         </Container>
