@@ -29,6 +29,7 @@ class MovieView extends React.Component {
 
   render () {
     const { movie, onBackClick } = this.props
+    // console.log(movie.Genre)
     return (
       <ErrorBoundary>
         <Row md={6} lg={6} xl={6} className='my-5 d-flex justify-content-center min-vh-100 align-items-center'>
@@ -37,7 +38,10 @@ class MovieView extends React.Component {
           </Col>
           <Col lg={6}>
             <h2 className='display-1 fs-1 movie__title'>{movie.Title}</h2>
-            <p className='fs-3'>{movie.Description}</p>
+            <p className='fs-5'>{movie.Director.Name}</p>
+            <p className='fs-5'>{movie.Genre.Name}</p>
+            {/* <p className='fs-5'>{movie.Director}</p> */}
+            <p className='fs-6'>{movie.Description}</p>
             <Link to={`/directors/${movie.Director.Name}`}>
               <Button>Director</Button>
             </Link>
