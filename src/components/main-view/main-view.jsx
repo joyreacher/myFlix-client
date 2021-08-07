@@ -9,6 +9,7 @@ import MovieContainer from '../movie-card/movie-container'
 import MovieView from '../movie-view/movie-view'
 import GenreView from '../genre-view/genre-view'
 import Loading from '../loading-view/loading-view'
+import Navbar from '../navbar/navbar'
 
 // Bootstrap
 import Button from 'react-bootstrap/Button'
@@ -94,6 +95,7 @@ export default class MainView extends React.Component {
     const { movies, user, genre } = this.state
     return (
       <Router>
+        <Navbar />
         <Button onClick={() => this.onLoggedOut()}>Logout</Button>
         <Route
           exact
