@@ -9,6 +9,7 @@ import MovieContainer from '../movie-card/movie-container'
 import MovieView from '../movie-view/movie-view'
 import GenreView from '../genre-view/genre-view'
 import DirectorView from '../director-view/director-view'
+import ProfileView from '../profile-view/profile-view'
 import Loading from '../loading-view/loading-view'
 import Navbar from '../navbar/navbar'
 
@@ -97,7 +98,7 @@ export default class MainView extends React.Component {
     const { movies, user, genre } = this.state
     return (
       <Router>
-        <Navbar />
+        <Navbar onLogOutClick={() => this.onLoggedOut()} user={user}/>
         <Button onClick={() => this.onLoggedOut()}>Logout</Button>
         <Route
           exact
@@ -141,6 +142,13 @@ export default class MainView extends React.Component {
             if (!genre) return <Loading />
             if (!user) return <Redirect to='/' />
             return <GenreView movies={movies} genre={match.params.genre} onBackClick={() => history.goBack()} />
+          }}
+        />
+        <Route
+          exact
+          path='/user/:name'
+          render={({ match, history }) => {
+            return <ProfileView />
           }}
         />
       </Router>
