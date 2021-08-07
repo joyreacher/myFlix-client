@@ -1,5 +1,9 @@
 @import '../../scss/typography';
-
+.home-link{
+  display:flex;
+  flex-direction: column;
+  text-decoration: none;
+}
 .cinema{
   @include font(sweet-titling-no-26, normal, 400);
   font-size:4rem;
