@@ -98,8 +98,8 @@ export default class MainView extends React.Component {
     const { movies, user, genre } = this.state
     return (
       <Router>
-        <Navbar onLogOutClick={() => this.onLoggedOut()} user={user}/>
-        <Button onClick={() => this.onLoggedOut()}>Logout</Button>
+        <Navbar onLogOutClick={() => this.onLoggedOut()} user={user} />
+        {/* <Button onClick={() => this.onLoggedOut()}>Logout</Button> */}
         <Route
           exact
           path='/'
@@ -148,7 +148,8 @@ export default class MainView extends React.Component {
           exact
           path='/user/:name'
           render={({ match, history }) => {
-            return <ProfileView />
+            if (!user) return <Redirect to='/' />
+            return <ProfileView user={user} />
           }}
         />
       </Router>
