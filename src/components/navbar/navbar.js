@@ -1,5 +1,5 @@
 import React from 'react'
-
+import { Link } from 'react-router-dom'
 // Bootstrap
 import { Navbar, Container, Row } from 'react-bootstrap'
 
@@ -11,8 +11,10 @@ function Nav () {
       <Container>
         <Navbar.Brand>
           <Row className='d-flex justify-content-start align-items-center'>
-            <span className='cinema'>Cinema</span>
-            <span className='barn'>Barn</span>
+            <Link className='home-link' to={'/'}>
+              <span className='cinema'>Cinema</span>
+              <span className='barn'>Barn</span>
+            </Link>
           </Row>
         </Navbar.Brand>
       </Container>
