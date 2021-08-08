@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Redirect} from 'react-router-dom'
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import axios from 'axios'
 
@@ -99,7 +99,6 @@ export default class MainView extends React.Component {
     return (
       <Router>
         <Navbar onLogOutClick={() => this.onLoggedOut()} user={user} />
-        {/* <Button onClick={() => this.onLoggedOut()}>Logout</Button> */}
         <Route
           exact
           path='/'
