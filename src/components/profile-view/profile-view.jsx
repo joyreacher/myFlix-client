@@ -9,7 +9,8 @@ export default function ProfileView ({ user }) {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [birthday, setBirthday] = useState('')
-  const [favoriteMovies, setFavorite_movies] = useState([])
+  const [favoriteMovies, setFavorite_movies] = useState({})
+  const [profile, setProfile] = useState([])
   const [email, setEmail] = useState('')
   const updateInformation = (e) =>{
     setUpdate(true)
@@ -37,12 +38,23 @@ export default function ProfileView ({ user }) {
       headers: { Authorization: `Bearer ${accessToken}` }
     }).then(res => {
       setFavorite_movies(user.favorite_movies)
-      return setList(res.data)
+      setList(res.data)
+      return axios.get(`https://randomuser.me/api/?gender=female`)
+    }).then(res => {
+      console.log(res.data.results[0].picture)
+      const data = res.data
+      setProfile(
+        {
+          picture: res.data.results[0].picture.medium
+        }
+      )
+      return data
     }).catch(function (error) {
       console.log(error)
     })
   }, [])
-  console.log(list.favorite_movies)
+  // console.log(list.favorite_movies)
+  console.log(profile.picture)
   if (list.length === 0) return <Loading />
   if (update) return (
     <Container className=''>
@@ -51,7 +63,7 @@ export default function ProfileView ({ user }) {
         <Form>
         <Row lg={12}>
           <Col>
-            <img src='' alt='Image goes here' />
+            <img src={profile.picture} alt='Image goes here' />
             <Form.Group>
               <FloatingLabel label={user} controlId='Username'>
                 <Form.Control placeholder={user} type='text' value={username} onChange={e => setUsername(e.target.value)} />
@@ -94,7 +106,7 @@ export default function ProfileView ({ user }) {
       <div className='d-flex justify-content-center p-2 my-5'>
         <Row lg={12}>
           <Col>
-            <img src='' alt='Image goes here' />
+            <img src={profile.picture} alt='Image goes here' />
             <p>{list.username}</p>
             {
               list.favorite_movies.length === 0
