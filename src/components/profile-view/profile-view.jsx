@@ -63,12 +63,18 @@ export default function ProfileView ({ user, onLoggedIn }) {
 
   if (list.length === 0) return <Loading />
   if (update) return (
-    <Container className=''>
+    <Container>
       <h1 className='my-5 bg-dark text-light d-inline-block'>{list.username}'s Profile</h1>
+      <Row className='my-5'>
+        <Col lg={4} className='d-flex'>
+          <Form.Control type='submit' value='submit' />
+          <Form.Control type='submit' value='cancel' onClick={() => cancelChanges()} />  
+        </Col>
+      </Row>
       <div className='d-flex justify-content-center p-2 my-5'>
         <Form onSubmit={handleSubmit}>
-          <Row lg={12}>
-            <Col>
+          <Row>
+            <Col col={12}>
               <img src={profile.picture} alt='Image goes here' />
               <Form.Group>
                 <FloatingLabel label={user} controlId='Username'>
@@ -78,6 +84,8 @@ export default function ProfileView ({ user, onLoggedIn }) {
                   <Form.Control placeholder='Password' type='text' value={password} onChange={e => setPassword(e.target.value)} />
                 </FloatingLabel>
               </Form.Group>
+            </Col>
+            <Col>
               <CardGroup>
                 {
                   list.favorite_movies.length === 0
@@ -93,30 +101,19 @@ export default function ProfileView ({ user, onLoggedIn }) {
                 }
               </CardGroup>
             </Col>
-          <Col lg={2}>
-            <Form.Group>
-              <FloatingLabel label='Email' controlId='Email'>
-                <Form.Control placeholder='Email' type='text' value={email} onChange={e => setEmail(e.target.value)} />
-              </FloatingLabel>
-            </Form.Group>
-            {/* <p className='fs-6'>{list.email}</p> */}
-            <Form.Group>
-              <FloatingLabel label='Birthday' controlId='floatingInput'>
-                <Form.Control placeholder='Birthday' type='date' value={birthday} onChange={e => { setBirthday(e.target.value) }} />
-              </FloatingLabel>
-            </Form.Group>
-            <Form.Control type='submit' value='submit' />
-            {/* <p className='fs-6'>{list.birthday}</p> */}
-          </Col>
-          <Row>
-            {/* <Col md={6}>
-              <Button className='btn bg-dark' onClick={() => updateInformation()}>Update</Button>
-            </Col> */}
-            <Col md={6}>
-              <Button className='btn bg-dark' onClick={() => cancelChanges()}>Cancel</Button>
+            <Col lg={6}>
+              <Form.Group>
+                <FloatingLabel label='Email' controlId='Email'>
+                  <Form.Control placeholder='Email' type='text' value={email} onChange={e => setEmail(e.target.value)} />
+                </FloatingLabel>
+              </Form.Group>
+              <Form.Group>
+                <FloatingLabel label='Birthday' controlId='floatingInput'>
+                  <Form.Control placeholder='Birthday' type='date' value={birthday} onChange={e => { setBirthday(e.target.value) }} />
+                </FloatingLabel>
+              </Form.Group>
             </Col>
           </Row>
-        </Row>
         </Form>
       </div>
     </Container>
@@ -124,6 +121,11 @@ export default function ProfileView ({ user, onLoggedIn }) {
   return (
     <Container className=''>
       <h1 className='my-5 bg-dark text-light d-inline-block'>{username}'s Profile</h1>
+      <Row className='my-5'>
+        <Col lg={4} className='d-flex'>
+          <Form.Control type='submit' value='update' onClick={() => updateInformation()} />
+        </Col>
+      </Row>
       <div className='d-flex justify-content-center p-2 my-5'>
         <Row lg={12}>
           <Col>
@@ -149,7 +151,7 @@ export default function ProfileView ({ user, onLoggedIn }) {
             <p className='fs-6'>{birthday}</p>
           </Col>
           <Row>
-            <Form.Control type='submit' value='update' onClick={() => updateInformation()} />
+            
             {/* <Col md={6}>
               <Button className='btn bg-dark' onClick={() => updateInformation()}>Update</Button>
             </Col> */}
