@@ -30,7 +30,7 @@ export function LoginView (props) {
   return (
     <Row className='justify-content-center min-vh-100 align-items-center'>
       <Col xs={10} sm={10} md={7} lg={6} xl={7}>
-        <Form className='login__form jumbotron p-5'>
+        <Form className='login__form jumbotron p-5' onSubmit={handleSubmit} noValidate>
           <Form.Group>
             <Form.Label column='sm'>
               <h1 className='fs-1 display-1'>Sign in</h1>
