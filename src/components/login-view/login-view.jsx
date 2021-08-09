@@ -14,7 +14,7 @@ export function LoginView (props) {
     value: '',
     errMsg: ''
   })
-  console.log(username.value == undefined)
+  console.log(username.value == false)
   const [password, setPassword] = useState({
     value: '',
     errMsg: ''
@@ -22,13 +22,19 @@ export function LoginView (props) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (!password.value) {
+    const pattern = new RegExp(/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/)
+    console.log(username.value)
+    if (!password.value || password.value.length == 0) {
       setPassword({ errMsg: 'Enter your password' })
-      console.log(username)
-    } if (!username.value) {
+      // console.log(password)
+    } if (!username.value || username.value.length == 0) {
       setUsername({ errMsg: 'Enter a username' })
+      // console.log(username)
+    } if (pattern.test(username.value)) {
+      console.log('unwanted chars')
+      setUsername({ value: false, errMsg: 'Please only use letters and numbers in your username' })
       console.log(username)
-    } else if (username.value && password.value) {
+    } else {
       axios.post('https://cinema-barn.herokuapp.com/login', {
         Username: username.value,
         Password: password.value
@@ -56,7 +62,7 @@ export function LoginView (props) {
             </FloatingLabel>
             <label className='text-danger'>
               {
-                !username.value ? username.errMsg : ''
+                username.errMsg ? username.errMsg : ''
               }
             </label>
             <FloatingLabel label='Password' controlId='floatingInput'>
