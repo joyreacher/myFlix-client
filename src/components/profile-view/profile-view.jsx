@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import Loading from '../loading-view/loading-view'
-import { Row, Col, Container, Button, Form, FloatingLabel } from 'react-bootstrap'
+import { Row, Col, Container, Button, Form, FloatingLabel, CardGroup, Card } from 'react-bootstrap'
 
 export default function ProfileView ({ user }) {
   const [list, setList] = useState([])
@@ -57,7 +57,7 @@ export default function ProfileView ({ user }) {
       console.log(error)
     })
   }, [])
-  // console.log(list.favorite_movies)
+  console.log(list.favorite_movies)
   console.log(profile.picture)
   if (list.length === 0) return <Loading />
   if (update) return (
@@ -119,13 +119,20 @@ export default function ProfileView ({ user }) {
           <Col>
             <img src={profile.picture} alt='Image goes here' />
             <p>{list.username}</p>
-            {
-              list.favorite_movies.length === 0
-                ? <p>You have no moves saved.</p>
-                : list.favorite_movies.map(movie => {
-                  return <h1 key={movie._id}>{movie.Title}</h1>
-                })
-            }
+            <CardGroup>
+              {
+                list.favorite_movies.length === 0
+                  ? <p>You have no moves saved.</p>
+                  : list.favorite_movies.map(movie => {
+                    return (
+                      <Card key={movie._id}>
+                        <Card.Img src={movie.ImagePath} />
+                        <Card.Title>{movie.Title}</Card.Title>
+                      </Card>
+                    )
+                  })
+              }
+            </CardGroup>
           </Col>
           <Col lg={2}>
             <p className='fs-6'>{list.email}</p>
