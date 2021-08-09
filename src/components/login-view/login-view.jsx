@@ -49,7 +49,7 @@ export function LoginView (props) {
           </Form.Group>
           <Form.Group className='d-flex justify-content-start mt-5'>
             <p className='me-2 text-start'>Dont have an account?</p>
-            <Link className='fs-6' to={`/register`} >Register</Link>
+            <Link className='fs-6' to={'/register'} >Register</Link>
           </Form.Group>
         </Form>
       </Col>
