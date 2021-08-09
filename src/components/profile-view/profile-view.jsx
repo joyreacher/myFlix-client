@@ -49,7 +49,7 @@ export default function ProfileView ({ user }) {
       const data = res.data
       setProfile(
         {
-          picture: res.data.results[0].picture.medium
+          picture: res.data.results[0].picture.large
         }
       )
       return data
@@ -76,13 +76,20 @@ export default function ProfileView ({ user }) {
                 <Form.Control placeholder='Password' type='text' value={password} onChange={e => setPassword(e.target.value)} />
               </FloatingLabel>
             </Form.Group>
-            {
-              list.favorite_movies.length === 0
-                ? <p>You have no moves saved.</p>
-                : list.favorite_movies.map(movie => {
-                  return <h1 key={movie._id}>{movie.Title}</h1>
-                })
-            }
+            <CardGroup>
+              {
+                list.favorite_movies.length === 0
+                  ? <p>You have no moves saved.</p>
+                  : list.favorite_movies.map(movie => {
+                    return (
+                      <Card key={movie._id}>
+                        <Card.Img src={movie.ImagePath} />
+                        <Card.Title>{movie.Title}</Card.Title>
+                      </Card>
+                    )
+                  })
+              }
+            </CardGroup>
           </Col>
           <Col lg={2}>
             <Form.Group>
