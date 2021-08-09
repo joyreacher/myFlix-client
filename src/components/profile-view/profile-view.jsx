@@ -74,18 +74,18 @@ export default function ProfileView ({ user, onLoggedIn }) {
       <div className='d-flex justify-content-center p-2 my-5'>
         <Form onSubmit={handleSubmit}>
           <Row>
-            <Col col={12}>
+            <Col col={4}>
               <img src={profile.picture} alt='Image goes here' />
               <Form.Group>
                 <FloatingLabel label={user} controlId='Username'>
                   <Form.Control placeholder={user} type='text' value={username} onChange={e => setUsername(e.target.value)} />
                 </FloatingLabel>
                 <FloatingLabel label='password' controlId='Password'>
-                  <Form.Control placeholder='Password' type='text' value={password} onChange={e => setPassword(e.target.value)} />
+                  <Form.Control placeholder='Password' type='password' value={password} onChange={e => setPassword(e.target.value)} />
                 </FloatingLabel>
               </Form.Group>
             </Col>
-            <Col>
+            <Col lg={4}>
               <CardGroup>
                 {
                   list.favorite_movies.length === 0
@@ -101,7 +101,7 @@ export default function ProfileView ({ user, onLoggedIn }) {
                 }
               </CardGroup>
             </Col>
-            <Col lg={6}>
+            <Col lg={4}>
               <Form.Group>
                 <FloatingLabel label='Email' controlId='Email'>
                   <Form.Control placeholder='Email' type='text' value={email} onChange={e => setEmail(e.target.value)} />
@@ -127,10 +127,12 @@ export default function ProfileView ({ user, onLoggedIn }) {
         </Col>
       </Row>
       <div className='d-flex justify-content-center p-2 my-5'>
-        <Row lg={12}>
-          <Col>
+        <Row>
+          <Col lg={4}>
             <img src={profile.picture} alt='Image goes here' />
             <p>{username}</p>
+          </Col>
+          <Col lg={4}>
             <CardGroup>
               {
                 list.favorite_movies.length === 0
@@ -146,7 +148,7 @@ export default function ProfileView ({ user, onLoggedIn }) {
               }
             </CardGroup>
           </Col>
-          <Col lg={2}>
+          <Col lg={4}>
             <p className='fs-6'>{email}</p>
             <p className='fs-6'>{birthday}</p>
           </Col>
