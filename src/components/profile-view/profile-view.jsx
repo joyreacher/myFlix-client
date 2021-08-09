@@ -12,7 +12,11 @@ export default function ProfileView ({ user }) {
   const [favoriteMovies, setFavorite_movies] = useState({})
   const [profile, setProfile] = useState([])
   const [email, setEmail] = useState('')
-  const updateInformation = (e) =>{
+
+  const cancelChanges = () => {
+    setUpdate(false)
+  }
+  const updateInformation = (e) => {
     setUpdate(true)
   }
   const handleSubmit = (e) => {
@@ -94,7 +98,14 @@ export default function ProfileView ({ user }) {
             </Form.Group>
             {/* <p className='fs-6'>{list.birthday}</p> */}
           </Col>
-          <Button onClick={handleSubmit}>Submit Changes</Button>
+          <Row>
+            <Col md={6}>
+              <Button className='btn bg-dark' onClick={() => updateInformation()}>Update</Button>
+            </Col>
+            <Col md={6}>
+              <Button className='btn bg-dark' onClick={() => cancelChanges()}>Cancel</Button>
+            </Col>
+          </Row>
         </Row>
         </Form>
       </div>
@@ -120,7 +131,14 @@ export default function ProfileView ({ user }) {
             <p className='fs-6'>{list.email}</p>
             <p className='fs-6'>{list.birthday}</p>
           </Col>
-          <Button onClick={() => updateInformation()}>Update</Button>
+          <Row>
+            <Col md={6}>
+              <Button className='btn bg-dark' onClick={() => updateInformation()}>Update</Button>
+            </Col>
+            <Col md={6}>
+              <Button className='btn bg-dark' onClick={() => cancelChanges()}>Cancel</Button>
+            </Col>
+          </Row>
         </Row>
       </div>
     </Container>
