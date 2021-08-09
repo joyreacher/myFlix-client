@@ -9,29 +9,21 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
 import FloatingLabel from 'react-bootstrap/FloatingLabel'
-import Button from 'react-bootstrap/Button'
 export function LoginView (props) {
-  // const [username, setUsername] = useState('')
-  // const [password, setPassword] = useState('')
   const [username, setUsername] = useState({
-    value: "",
-    placeholder: 'Username',
-    valid: true,
-    typeMismatch: false,
-    errMsg: null
+    value: '',
+    errMsg: ''
   })
+  console.log(username.value == undefined)
   const [password, setPassword] = useState({
-    value: "",
-    placeholder: 'Password',
-    valid: true,
-    typeMismatch: false,
-    errMsg: null
+    value: '',
+    errMsg: ''
   })
 
   const handleSubmit = (e) => {
     e.preventDefault()
     if (!password.value) {
-      setUsername({ errMsg: 'Enter your password' })
+      setPassword({ errMsg: 'Enter your password' })
       console.log(username)
     } if (!username.value) {
       setUsername({ errMsg: 'Enter a username' })
@@ -60,15 +52,22 @@ export function LoginView (props) {
           </Form.Group>
           <Form.Group>
             <FloatingLabel label='Username' controlId='floatingInput'>
-              <Form.Control name='username' placeholder='Username' type='text' value={username.value} onChange={e => setUsername({ value: e.target.value })} />
+              <Form.Control name='username' placeholder='Username' type='text' value={username.value || ''} onChange={e => setUsername({ value: e.target.value })} />
             </FloatingLabel>
+            <label className='text-danger'>
+              {
+                !username.value ? username.errMsg : ''
+              }
+            </label>
             <FloatingLabel label='Password' controlId='floatingInput'>
-              <Form.Control name='pass' placeholder='Password' type='password' value={password.value} onChange={e => setPassword({ value: e.target.value })} />
+              <Form.Control name='pass' placeholder='Password' type='password' value={password.value || ''} onChange={e => setPassword({ value: e.target.value })} />
             </FloatingLabel>
-            <Form.Control type='submit' value='submit'/>
-            {/* <Button variant='success' type='submit' onClick={handleSubmit}>
-              Submit
-            </Button> */}
+            <label className='text-danger'>
+              {
+                !password.value ? password.errMsg : ''
+              }
+            </label>
+            <Form.Control type='submit' value='submit' />
           </Form.Group>
           <Form.Group className='d-flex justify-content-start mt-5'>
             <p className='me-2 text-start'>Dont have an account?</p>
