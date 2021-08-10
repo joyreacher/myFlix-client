@@ -31,6 +31,7 @@ export default class MainView extends React.Component {
   }
 
   componentDidMount () {
+    // TODO: deleted users will hang up the browser because the accessToken can still be found -- change the length of the access token
     const accessToken = localStorage.getItem('token')
     if (accessToken != null) {
       this.setState({
@@ -148,7 +149,7 @@ export default class MainView extends React.Component {
           path='/user/:name'
           render={({ match, history }) => {
             if (!user) return <Redirect to='/' />
-            return <ProfileView user={user} />
+            return <ProfileView user={user} onLoggedIn={user => this.onLoggedIn(user)} getMovies={user => this.getMovies(user)} />
           }}
         />
       </Router>
