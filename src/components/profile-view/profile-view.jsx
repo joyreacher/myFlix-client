@@ -29,17 +29,14 @@ export default function ProfileView ({ user, onLoggedIn }) {
   }
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (!username || username.length == 0) {
-      return setError({username: true})
-    }
-    if (!password || password.length == 0) {
-      return setError({password: true})
-    }
-    if (!email || email.length == 0) {
-      return setError({email: true})
-    }
-    if (!birthday || birthday.length == 0) {
-      return setError({birthday: true})
+    if (!username || username.length == 0 && password || password.length == 0 && email || email.length == 0 && birthday || birthday.length == 0) {
+      return setError({
+        username: true,
+        password: true,
+        email: true,
+        birthday: true
+      }
+      )
     }
     const accessToken = localStorage.getItem('token')
     axios.put(`https://cinema-barn.herokuapp.com/users/${user}`, {
@@ -102,6 +99,7 @@ export default function ProfileView ({ user, onLoggedIn }) {
                 <FloatingLabel label={user} controlId='Username'>
                   <Form.Control placeholder={user} type='text' value={username} onChange={e => setUsername(e.target.value)} />
                 </FloatingLabel>
+                {error.password ? <Form.Label className='text-danger'>Please enter a password</Form.Label> : <Form.Label> </Form.Label>}
                 <FloatingLabel label='Password' controlId='Password'>
                   <Form.Control placeholder='Password' type='password' value={password} onChange={e => setPassword(e.target.value)} />
                 </FloatingLabel>
@@ -111,7 +109,7 @@ export default function ProfileView ({ user, onLoggedIn }) {
               <CardGroup>
                 {
                   list.favorite_movies.length === 0
-                    ? <p>You have no moves saved.</p>
+                    ? <p className='text-muted'>Bummer, you have no moves saved.</p>
                     : list.favorite_movies.map(movie => {
                       return (
                         <Card key={movie._id} className='m-3'>
@@ -127,11 +125,13 @@ export default function ProfileView ({ user, onLoggedIn }) {
               </CardGroup>
             </Col>
             <Col lg={4}>
+              {error.email ? <Form.Label className='text-danger'>Please enter a email</Form.Label> : <Form.Label> </Form.Label>}
               <Form.Group>
                 <FloatingLabel label={list.email} controlId='Email'>
                   <Form.Control type='text' value={email} onChange={e => setEmail(e.target.value)} />
                 </FloatingLabel>
               </Form.Group>
+              {error.birthday ? <Form.Label className='text-danger'>Please enter a birthday</Form.Label> : <Form.Label> </Form.Label>}
               <Form.Group>
                 <FloatingLabel label={list.birthday} controlId='floatingInput'>
                   <Form.Control type='date' value={birthday} onChange={e => { setBirthday(e.target.value) }} />
