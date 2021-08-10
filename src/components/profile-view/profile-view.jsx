@@ -185,8 +185,8 @@ export default function ProfileView ({ user, onLoggedIn, getMovies }) {
               <CardGroup>
                 {movies.length == 0 ? '..loading' : movies.map(movie => {
                   return (
-                    <Col lg={6} className='p-3'>
-                      <Card key={movie._id}>
+                    <Col key={movie._id} lg={6} className='p-3'>
+                      <Card>
                         <Card.Title className='movie__title'>{movie.title}</Card.Title>
                       < Card.Img src={movie.ImgPath} className='movie__img' />
                       </Card>
