@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import axios from 'axios'
 import Loading from '../loading-view/loading-view'
 import { Row, Col, Container, Button, Form, FloatingLabel, CardGroup, Card } from 'react-bootstrap'
+import './profile-view.scss'
 
 export default function ProfileView ({ user, onLoggedIn, getMovies }) {
   const [list, setList] = useState([])
@@ -177,14 +178,22 @@ export default function ProfileView ({ user, onLoggedIn, getMovies }) {
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title">Modal title</h5>
+              <h5 className="modal-title">Add movie to your favorites list</h5>
               <button onClick={()=> setModal(false)} type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div className="modal-body">
-              {console.log(movies)}
-              {movies.length == 0 ? '..loading' : movies.map(movie => {
-                return <img key={movie._id} src={movie.ImgPath} />
+              <CardGroup>
+                {movies.length == 0 ? '..loading' : movies.map(movie => {
+                  return (
+                    <Col lg={6} className='p-3'>
+                      <Card key={movie._id}>
+                        <Card.Title className='movie__title'>{movie.title}</Card.Title>
+                      < Card.Img src={movie.ImgPath} className='movie__img' />
+                      </Card>
+                    </Col>
+                  )
                 })}
+              </CardGroup>
             </div>
             <div className="modal-footer">
               <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
