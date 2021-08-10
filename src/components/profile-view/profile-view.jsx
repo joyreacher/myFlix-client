@@ -4,8 +4,7 @@ import axios from 'axios'
 import Loading from '../loading-view/loading-view'
 import { Row, Col, Container, Button, Form, FloatingLabel, CardGroup, Card } from 'react-bootstrap'
 
-export default function ProfileView ({ user, onLoggedIn }) {
-  console.log(onLoggedIn)
+export default function ProfileView ({ user, onLoggedIn, getMovies }) {
   const [list, setList] = useState([])
   const [update, setUpdate] = useState(false)
   const [username, setUsername] = useState('')
@@ -20,6 +19,8 @@ export default function ProfileView ({ user, onLoggedIn }) {
     email: false,
     birthday: false
   })
+  const [modal, setModal] = useState(false)
+  const [movies, setMovies] = useState([])
 
   const cancelChanges = () => {
     setUpdate(false)
@@ -27,6 +28,29 @@ export default function ProfileView ({ user, onLoggedIn }) {
   const updateInformation = (e) => {
     setUpdate(true)
   }
+
+  // GETS ALL MOVIES
+  const getAllMovies = () => {
+    const accessToken = localStorage.getItem('token')
+    axios.get('https://cinema-barn.herokuapp.com/movies', {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    }).then(res => {
+      console.log(res.data)
+      const movieData = res.data.map(item => {
+        movies.push({
+          _id: item._id,
+          title: item.Title,
+          ImgPath: item.ImagePath
+        })
+      })
+      setModal(true)
+      return movieData
+    }).catch(function (error) {
+      console.log(error)
+    })
+  }
+
+  // SUBMITS CHANGES MADE TO THE PROFILE
   const handleSubmit = (e) => {
     e.preventDefault()
     if (!username || username.length == 0 && password || password.length == 0 && email || email.length == 0 && birthday || birthday.length == 0) {
@@ -47,7 +71,6 @@ export default function ProfileView ({ user, onLoggedIn }) {
     }, { headers: { Authorization: `Bearer ${accessToken}` } })
       .then(res => {
         const data = res.data
-        console.log(data)
         setUpdate(false)
         setList({email: data.email})
       }).catch(e => {
@@ -55,6 +78,7 @@ export default function ProfileView ({ user, onLoggedIn }) {
       })
   }
 
+  // GET USER DATA ON LOAD INCLUDING PICTURE
   useEffect(() => {
     const accessToken = localStorage.getItem('token')
     axios.get(`https://cinema-barn.herokuapp.com/user/${user}`, {
@@ -65,7 +89,6 @@ export default function ProfileView ({ user, onLoggedIn }) {
       setList(res.data)
       return axios.get(`https://randomuser.me/api/?gender=female`)
     }).then(res => {
-      console.log(res.data.results[0].picture)
       const data = res.data
       setProfile(
         {
@@ -78,7 +101,12 @@ export default function ProfileView ({ user, onLoggedIn }) {
     })
   }, [])
 
-  console.log(list)
+  // Axios req to get all movies
+  // useEffect(()=>{
+  //   console.log('use effect for modal')
+    
+  // }, [modal])
+
   if (list.length === 0) return <Loading />
   if (update) return (
     <Container>
@@ -144,7 +172,28 @@ export default function ProfileView ({ user, onLoggedIn }) {
     </Container>
   )
   return (
-    <Container className=''>
+    <>
+      <div className="modal" tabIndex="-1" id="exampleModal">
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">Modal title</h5>
+              <button onClick={()=> setModal(false)} type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div className="modal-body">
+              {console.log(movies)}
+              {movies.length == 0 ? '..loading' : movies.map(movie => {
+                return <img key={movie._id} src={movie.ImgPath} />
+                })}
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" className="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <Container className=''>
       <h1 className='my-5 bg-dark text-light d-inline-block'>{list.username}'s Profile</h1>
       <Row className='my-5'>
         <Col lg={8} className='d-flex justify-content-lg-between w-100'>
@@ -163,7 +212,10 @@ export default function ProfileView ({ user, onLoggedIn }) {
             <CardGroup>
               {
                 list.favorite_movies.length === 0
-                  ? <p>You have no moves saved.</p>
+                  ? <Container>
+                    <p>Bummer, you have no moves saved.</p>
+                    <Button className='btn bg-dark' onClick={()=>getAllMovies()} data-bs-toggle="modal" data-bs-target="#exampleModal" >Add a movie!</Button>
+                    </Container>
                   : list.favorite_movies.map(movie => {
                     return (
                       <Card key={movie._id} className='m-3'>
@@ -185,5 +237,6 @@ export default function ProfileView ({ user, onLoggedIn }) {
         </Row>
       </div>
     </Container>
+    </>
   )
 }
