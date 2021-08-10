@@ -32,6 +32,15 @@ export default function ProfileView ({ user, onLoggedIn }) {
     if (!username || username.length == 0) {
       return setError({username: true})
     }
+    if (!password || password.length == 0) {
+      return setError({password: true})
+    }
+    if (!email || email.length == 0) {
+      return setError({email: true})
+    }
+    if (!birthday || birthday.length == 0) {
+      return setError({birthday: true})
+    }
     const accessToken = localStorage.getItem('token')
     axios.put(`https://cinema-barn.herokuapp.com/users/${user}`, {
       Username: username,
