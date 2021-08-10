@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
 import Loading from '../loading-view/loading-view'
 import { Row, Col, Container, Button, Form, FloatingLabel, CardGroup, Card } from 'react-bootstrap'
@@ -13,6 +14,12 @@ export default function ProfileView ({ user, onLoggedIn }) {
   const [favoriteMovies, setFavorite_movies] = useState({})
   const [profile, setProfile] = useState([])
   const [email, setEmail] = useState('')
+  const [error, setError] = useState({
+    username: false,
+    password: false,
+    email: false,
+    birthday: false
+  })
 
   const cancelChanges = () => {
     setUpdate(false)
@@ -22,6 +29,9 @@ export default function ProfileView ({ user, onLoggedIn }) {
   }
   const handleSubmit = (e) => {
     e.preventDefault()
+    if (!username || username.length == 0) {
+      return setError({username: true})
+    }
     const accessToken = localStorage.getItem('token')
     axios.put(`https://cinema-barn.herokuapp.com/users/${user}`, {
       Username: username,
@@ -33,7 +43,7 @@ export default function ProfileView ({ user, onLoggedIn }) {
         const data = res.data
         console.log(data)
         setUpdate(false)
-        setEmail(data.email)
+        setList({email: data.email})
       }).catch(e => {
         console.log(e)
       })
@@ -44,7 +54,8 @@ export default function ProfileView ({ user, onLoggedIn }) {
     axios.get(`https://cinema-barn.herokuapp.com/user/${user}`, {
       headers: { Authorization: `Bearer ${accessToken}` }
     }).then(res => {
-      setFavorite_movies(user.favorite_movies)
+      // setUsername(res.data.username)
+      // setFavorite_movies(res.data.favorite_movies)
       setList(res.data)
       return axios.get(`https://randomuser.me/api/?gender=female`)
     }).then(res => {
@@ -61,14 +72,15 @@ export default function ProfileView ({ user, onLoggedIn }) {
     })
   }, [])
 
+  console.log(list)
   if (list.length === 0) return <Loading />
   if (update) return (
     <Container>
       <h1 className='my-5 bg-dark text-light d-inline-block'>{list.username}'s Profile</h1>
       <Row className='my-5'>
-        <Col lg={4} className='d-flex'>
-          <Form.Control type='submit' value='submit' />
-          <Form.Control type='submit' value='cancel' onClick={() => cancelChanges()} />  
+        <Col lg={4} className='d-flex justify-content-lg-between w-100'>
+          <Form.Control className='mx-5 w-25' type='submit' value='submit' onClick={handleSubmit} />
+          <Form.Control className='mx-5 w-25' type='submit' value='cancel' onClick={() => cancelChanges()} />
         </Col>
       </Row>
       <div className='d-flex justify-content-center p-2 my-5'>
@@ -77,10 +89,11 @@ export default function ProfileView ({ user, onLoggedIn }) {
             <Col col={4}>
               <img src={profile.picture} alt='Image goes here' />
               <Form.Group>
+                {error.username ? <Form.Label className='text-danger'>Please enter a username</Form.Label> : <Form.Label> </Form.Label>}
                 <FloatingLabel label={user} controlId='Username'>
                   <Form.Control placeholder={user} type='text' value={username} onChange={e => setUsername(e.target.value)} />
                 </FloatingLabel>
-                <FloatingLabel label='password' controlId='Password'>
+                <FloatingLabel label='Password' controlId='Password'>
                   <Form.Control placeholder='Password' type='password' value={password} onChange={e => setPassword(e.target.value)} />
                 </FloatingLabel>
               </Form.Group>
@@ -92,9 +105,12 @@ export default function ProfileView ({ user, onLoggedIn }) {
                     ? <p>You have no moves saved.</p>
                     : list.favorite_movies.map(movie => {
                       return (
-                        <Card key={movie._id}>
+                        <Card key={movie._id} className='m-3'>
                           <Card.Img src={movie.ImagePath} />
                           <Card.Title>{movie.Title}</Card.Title>
+                          <Link to={`/movies/${movie._id}`}>
+                            <Button>Delete</Button>
+                          </Link>
                         </Card>
                       )
                     })
@@ -103,13 +119,13 @@ export default function ProfileView ({ user, onLoggedIn }) {
             </Col>
             <Col lg={4}>
               <Form.Group>
-                <FloatingLabel label='Email' controlId='Email'>
-                  <Form.Control placeholder='Email' type='text' value={email} onChange={e => setEmail(e.target.value)} />
+                <FloatingLabel label={list.email} controlId='Email'>
+                  <Form.Control type='text' value={email} onChange={e => setEmail(e.target.value)} />
                 </FloatingLabel>
               </Form.Group>
               <Form.Group>
-                <FloatingLabel label='Birthday' controlId='floatingInput'>
-                  <Form.Control placeholder='Birthday' type='date' value={birthday} onChange={e => { setBirthday(e.target.value) }} />
+                <FloatingLabel label={list.birthday} controlId='floatingInput'>
+                  <Form.Control type='date' value={birthday} onChange={e => { setBirthday(e.target.value) }} />
                 </FloatingLabel>
               </Form.Group>
             </Col>
@@ -120,10 +136,12 @@ export default function ProfileView ({ user, onLoggedIn }) {
   )
   return (
     <Container className=''>
-      <h1 className='my-5 bg-dark text-light d-inline-block'>{username}'s Profile</h1>
+      <h1 className='my-5 bg-dark text-light d-inline-block'>{list.username}'s Profile</h1>
       <Row className='my-5'>
-        <Col lg={4} className='d-flex'>
-          <Form.Control type='submit' value='update' onClick={() => updateInformation()} />
+        <Col lg={8} className='d-flex justify-content-lg-between w-100'>
+          <Form.Control className='mx-5 w-25' type='submit' value='update profile' onClick={() => updateInformation()} />
+          {/*//  TODO: add a function to add fav movie to fav movie array */}
+          <Form.Control className='mx-5 w-25' type='submit' value='Add a favorite movie' onClick={() => updateInformation()} />
         </Col>
       </Row>
       <div className='d-flex justify-content-center p-2 my-5'>
@@ -139,9 +157,12 @@ export default function ProfileView ({ user, onLoggedIn }) {
                   ? <p>You have no moves saved.</p>
                   : list.favorite_movies.map(movie => {
                     return (
-                      <Card key={movie._id}>
-                        <Card.Img src={movie.ImagePath} />
+                      <Card key={movie._id} className='m-3'>
+                        <Card.Img src={movie.ImagePath} alt='no image available' />
                         <Card.Title>{movie.Title}</Card.Title>
+                        <Link to={`/movies/${movie._id}`}>
+                          <Card.Text>Details</Card.Text>
+                        </Link>
                       </Card>
                     )
                   })
@@ -149,18 +170,9 @@ export default function ProfileView ({ user, onLoggedIn }) {
             </CardGroup>
           </Col>
           <Col lg={4}>
-            <p className='fs-6'>{email}</p>
-            <p className='fs-6'>{birthday}</p>
+            <p className='fs-6'>{list.email}</p>
+            <p className='fs-6'>{list.birthday}</p>
           </Col>
-          <Row>
-            
-            {/* <Col md={6}>
-              <Button className='btn bg-dark' onClick={() => updateInformation()}>Update</Button>
-            </Col> */}
-            <Col md={6}>
-              <Button className='btn bg-dark' onClick={() => cancelChanges()}>Cancel</Button>
-            </Col>
-          </Row>
         </Row>
       </div>
     </Container>
