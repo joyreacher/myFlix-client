@@ -4,8 +4,9 @@ import axios from 'axios'
 import Loading from '../loading-view/loading-view'
 import { Row, Col, Container, Button, Form, FloatingLabel, CardGroup, Card } from 'react-bootstrap'
 
-export function ProfileUpdate ({ user, cancelChanges}) {
+export function ProfileUpdate ({ user, cancelChanges, randomProfile }) {
   console.log(cancelChanges)
+  const [remove, setRemove] = useState([])
   const [list, setList] = useState([])
   const [update, setUpdate] = useState(false)
   const [username, setUsername] = useState('')
@@ -23,15 +24,23 @@ export function ProfileUpdate ({ user, cancelChanges}) {
   const [modal, setModal] = useState(false)
   const [movies, setMovies] = useState([])
 
-  // const cancelChanges = () => {
-  //   setUpdate(false)
-  // }
-  // const updateInformation = (e) => {
-  //   setUpdate(true)
-  // }
+  const deleteMovies = (e) => {
+    // console.log(e)
+    // console.log(typeof(e.target.form))
+    // console.log(e.target.form[0])
+    for(let i = 0 ; i < e.target.form.length ; i++){
+      if(e.target.form[i].id == 'delete'){
+        // console.log({movie: e.target.form[i]})
+        setRemove({movie: e.target.form[i]})
+      }
+    }
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    if(remove){
+      return console.log(remove)
+    }
     if (!username || username.length == 0 && password || password.length == 0 && email || email.length == 0 && birthday || birthday.length == 0) {
       return setError({
         username: true,
@@ -66,24 +75,13 @@ export function ProfileUpdate ({ user, cancelChanges}) {
       })
   }
 
-  // GET USER DATA ON LOAD INCLUDING PICTURE
+  // GET USER DATA ON LOAD MONGO DB
   useEffect(() => {
     const accessToken = localStorage.getItem('token')
     axios.get(`https://cinema-barn.herokuapp.com/user/${user}`, {
       headers: { Authorization: `Bearer ${accessToken}` }
     }).then(res => {
-      // setUsername(res.data.username)
-      // setFavorite_movies(res.data.favorite_movies)
       setList(res.data)
-      return axios.get(`https://randomuser.me/api/?gender=female`)
-    }).then(res => {
-      const data = res.data
-      setProfile(
-        {
-          picture: res.data.results[0].picture.large
-        }
-      )
-      return data
     }).catch(function (error) {
       console.log(error)
     })
@@ -104,7 +102,7 @@ export function ProfileUpdate ({ user, cancelChanges}) {
         <Form onSubmit={handleSubmit}>
           <Row>
             <Col col={4}>
-              <img src={profile.picture} alt='Image goes here' />
+              <img src={randomProfile.picture} alt='Image goes here' />
               <Form.Group>
                 {error.username ? <Form.Label className='text-danger'>Please enter a username</Form.Label> : <Form.Label> </Form.Label>}
                 <FloatingLabel label={user} controlId='Username'>
@@ -126,18 +124,21 @@ export function ProfileUpdate ({ user, cancelChanges}) {
                     </Container>
                       : list.favorite_movies.map(movie => {
                       return (
-                        <Card key={movie._id} className='m-3'>
-                          <label className="btn btn-secondary" for="delete" >
+                        <Card key={movie._id} className='m-3 p-2'>
+                          <Form.Label className="btn btn-secondary" htmlFor='delete'>
                             <Card.Img src={movie.ImagePath} />
-                          </label>
+                          </Form.Label>
                           <Card.Title>{movie.Title}</Card.Title>
                           {/* <Link to={`/movies/${movie._id}`}>
                             <Button>Delete</Button>
                           </Link> */}
-                          <input type="radio" className="btn-check" name="delete" id="delete" autoComplete="off" checked onChange={() => {console.log('delete')}} />
-                          <label className="btn btn-secondary" for="option1">Delete</label>
+                          {/* //TODO: SET value to the id of the movie */}
+                          <Form.Check type='checkbox' id='delete' label='Delete' value={remove} onChange={e => deleteMovies(e)} />
+                          {/* <Form.Check type="checkbox" className="btn-check" label="delete" id="delete" autoComplete="off" onChange={e => setRemove(e.target.value)} checked /> */}
+                          {/* <input type="radio" className="btn-check" name="delete" id="delete" autoComplete="off" onChange={() => {console.log('delete')}} unchecked /> */}
+                          {/* <label className="btn btn-secondary" htmlFor="option1">Delete</label>
                           <input type="radio" className="btn-check" name="options" id="option2" autoComplete="off" />
-                          <label className="btn btn-secondary" for="option2">Radio</label>
+                          <label className="btn btn-secondary" htmlFor="option2">Radio</label> */}
                         </Card>
                       )
                     })
@@ -159,6 +160,8 @@ export function ProfileUpdate ({ user, cancelChanges}) {
                 </FloatingLabel>
               </Form.Group>
             </Col>
+            <p>movies to delete </p>
+            {remove.length == 0 ? 'loading' : console.log(remove)}
           </Row>
         </Form>
       </div>
