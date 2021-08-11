@@ -24,12 +24,13 @@ export function ProfileUpdate ({ user, cancelChanges, randomProfile }) {
   const [movies, setMovies] = useState([])
 
   let removeMovie = []
-  
+
+  // adds a checked movie to removeMovie array for deletion
   const deleteMovies = (e) => {
-    console.log(e.target.checked)
+    // console.log(e.target.checked)
     list.favorite_movies.forEach(movie => {
       if(e.target.value == movie._id) {
-        console.log(movie.Title + ' has got to go.')
+        // console.log(movie.Title + ' has got to go.')
         removeMovie.push(movie)
       }
     })
@@ -39,6 +40,7 @@ export function ProfileUpdate ({ user, cancelChanges, randomProfile }) {
     e.preventDefault()
     const accessToken = localStorage.getItem('token')
 
+    // deletes movies stored in removeMoves array
     if (removeMovie.length != 0) {
       removeMovie.map(movie => {
         console.log(movie.Title)
@@ -48,18 +50,9 @@ export function ProfileUpdate ({ user, cancelChanges, randomProfile }) {
           Title: movie.Title
         }, { headers: { Authorization: `Bearer ${accessToken}` } })
           .then(res => {
+            //TODO -- reload updated user movie favorite list
             const data = res.data
-            console.log(data)
-            // setUpdate(false)
-            // setList(
-            //   {
-            //     username: data.username,
-            //     password: data.password,
-            //     email: data.email,
-            //     birthday: data.birthday,
-            //     favorite_movies: data.favorite_movies
-            //   }
-            // )
+            console.log(data) // so and so was deleted
           }).catch(e => {
             console.log(e)
           })
