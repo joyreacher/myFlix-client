@@ -5,7 +5,6 @@ import Loading from '../loading-view/loading-view'
 import { Row, Col, Container, Button, Form, FloatingLabel, CardGroup, Card } from 'react-bootstrap'
 
 export function ProfileUpdate ({ user, cancelChanges, randomProfile }) {
-  console.log(cancelChanges)
   const [remove, setRemove] = useState([])
   const [list, setList] = useState([])
   const [update, setUpdate] = useState(false)
@@ -24,23 +23,51 @@ export function ProfileUpdate ({ user, cancelChanges, randomProfile }) {
   const [modal, setModal] = useState(false)
   const [movies, setMovies] = useState([])
 
+  let removeMovie = []
+  
   const deleteMovies = (e) => {
-    // console.log(e)
-    // console.log(typeof(e.target.form))
-    // console.log(e.target.form[0])
-    for(let i = 0 ; i < e.target.form.length ; i++){
-      if(e.target.form[i].id == 'delete'){
-        // console.log({movie: e.target.form[i]})
-        setRemove({movie: e.target.form[i]})
+    console.log(e.target.checked)
+    list.favorite_movies.forEach(movie => {
+      if(e.target.value == movie._id) {
+        console.log(movie.Title + ' has got to go.')
+        removeMovie.push(movie)
       }
-    }
+    })
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if(remove){
-      return console.log(remove)
+    const accessToken = localStorage.getItem('token')
+
+    if (removeMovie.length != 0) {
+      removeMovie.map(movie => {
+        console.log(movie.Title)
+        console.log(username)
+        axios.post(`https://cinema-barn.herokuapp.com/users/mymovies/delete`, {
+          Username: list.username,
+          Title: movie.Title
+        }, { headers: { Authorization: `Bearer ${accessToken}` } })
+          .then(res => {
+            const data = res.data
+            console.log(data)
+            // setUpdate(false)
+            // setList(
+            //   {
+            //     username: data.username,
+            //     password: data.password,
+            //     email: data.email,
+            //     birthday: data.birthday,
+            //     favorite_movies: data.favorite_movies
+            //   }
+            // )
+          }).catch(e => {
+            console.log(e)
+          })
+      })
+      return console.log(removeMovie)
     }
+
+    // Error check
     if (!username || username.length == 0 && password || password.length == 0 && email || email.length == 0 && birthday || birthday.length == 0) {
       return setError({
         username: true,
@@ -50,7 +77,7 @@ export function ProfileUpdate ({ user, cancelChanges, randomProfile }) {
       }
       )
     }
-    const accessToken = localStorage.getItem('token')
+
     axios.put(`https://cinema-barn.herokuapp.com/users/${user}`, {
       Username: username,
       Password: password,
@@ -87,7 +114,6 @@ export function ProfileUpdate ({ user, cancelChanges, randomProfile }) {
     })
   }, [])
 
-  console.log(list)
   if (list.length === 0) return <Loading />
   return (
     <Container>
@@ -129,22 +155,13 @@ export function ProfileUpdate ({ user, cancelChanges, randomProfile }) {
                             <Card.Img src={movie.ImagePath} />
                           </Form.Label>
                           <Card.Title>{movie.Title}</Card.Title>
-                          {/* <Link to={`/movies/${movie._id}`}>
-                            <Button>Delete</Button>
-                          </Link> */}
-                          {/* //TODO: SET value to the id of the movie */}
-                          <Form.Check type='checkbox' id='delete' label='Delete' value={remove} onChange={e => deleteMovies(e)} />
-                          {/* <Form.Check type="checkbox" className="btn-check" label="delete" id="delete" autoComplete="off" onChange={e => setRemove(e.target.value)} checked /> */}
-                          {/* <input type="radio" className="btn-check" name="delete" id="delete" autoComplete="off" onChange={() => {console.log('delete')}} unchecked /> */}
-                          {/* <label className="btn btn-secondary" htmlFor="option1">Delete</label>
-                          <input type="radio" className="btn-check" name="options" id="option2" autoComplete="off" />
-                          <label className="btn btn-secondary" htmlFor="option2">Radio</label> */}
+                          <Form.Check id='delete' label='Delete' value={movie._id} onChange={(e) => { deleteMovies(e) }} />
                         </Card>
                       )
                     })
                 }
               </CardGroup>
-              <Button className='btn bg-dark' onClick={()=>getAllMovies()} data-bs-toggle="modal" data-bs-target="#exampleModal" >Add a movie!</Button>
+              {/* <Button className='btn bg-dark' onClick={()=>getAllMovies()} data-bs-toggle="modal" data-bs-target="#exampleModal" >Add a movie!</Button> */}
             </Col>
             <Col lg={4}>
               {error.email ? <Form.Label className='text-danger'>Please enter a email</Form.Label> : <Form.Label> </Form.Label>}
