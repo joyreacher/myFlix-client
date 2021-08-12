@@ -57,6 +57,7 @@ export function ProfileUpdate ({ user, cancelChanges, randomProfile }) {
             console.log(e)
           })
       })
+      // TODO -- remove return
       return console.log(removeMovie)
     }
 
@@ -138,7 +139,7 @@ export function ProfileUpdate ({ user, cancelChanges, randomProfile }) {
                 {
                   list.favorite_movies.length === 0
                     ? <Container>
-                      <p>Bummer, you have no moves saved.</p>
+                      <p>No movies to show 🤦 </p>
                       {/* <Button className='btn bg-dark' onClick={()=>getAllMovies()} data-bs-toggle="modal" data-bs-target="#exampleModal" >Add a movie!</Button> */}
                     </Container>
                       : list.favorite_movies.map(movie => {
@@ -170,8 +171,6 @@ export function ProfileUpdate ({ user, cancelChanges, randomProfile }) {
                 </FloatingLabel>
               </Form.Group>
             </Col>
-            <p>movies to delete </p>
-            {remove.length == 0 ? 'loading' : console.log(remove)}
           </Row>
         </Form>
       </div>

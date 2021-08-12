@@ -14,7 +14,7 @@ export function LoginView (props) {
     value: '',
     errMsg: ''
   })
-  console.log(username.value == false)
+  // console.log(username.value == false)
   const [password, setPassword] = useState({
     value: '',
     errMsg: ''
