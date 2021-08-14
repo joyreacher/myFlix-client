@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import './registration-view.scss'
 
@@ -62,7 +63,8 @@ export function RegistrationView (props) {
           </Form.Group>
           <div className='d-flex justify-content-start mt-5'>
             <p className='me-2'>Have an account?</p>
-            <a className='' onClick={() => props.onRegisterClick()}>Sign in</a>
+            {/* <a className='' onClick={() => props.onRegisterClick()}>Sign in</a> */}
+            <Link className='fs-6' to='/'>Sign in</Link>
           </div>
         </Form>
       </Col>
