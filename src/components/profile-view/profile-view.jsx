@@ -6,168 +6,64 @@ import { Row, Col, Container, Button, Form, FloatingLabel, CardGroup, Card } fro
 import './profile-view.scss'
 import { ProfileUpdate } from './profile-view-update'
 
-export default function ProfileView ({ user, onLoggedIn, getMovies }) {
+export default function ProfileView ({ user, onLoggedIn, getMovies, username }) {
+  const [match, setMatch] = useState(null)
   const [list, setList] = useState([])
   const [update, setUpdate] = useState(false)
   const [profile, setProfile] = useState([])
   const [modal, setModal] = useState(false)
   const [movies, setMovies] = useState([])
   const [favorites, setFavorites] = useState([])
-  const [selected, setSelected] = useState([])
+  const [sub, setSub] = useState('')
   const [error, setError] = useState({
     add: ' '
   })
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(favorites)
     const accessToken = localStorage.getItem('token')
-    if (favorites.length != 0) {
-      favorites.map(movie => {
-        console.log(list.username)
-        console.log(movie)
-        axios.post(`https://cinema-barn.herokuapp.com/users/mymovies/add`, {
-          Username: list.username,
-          Title: movie.title
-        }, {
-          headers: { Authorization: `Bearer ${accessToken}` }
-        })
-          .then(res => {
-            const data = res.data
-            console.log(data)
-          })
-          .catch(e => {
-            console.log(e)
-          })
+    // console.log(favorites.title)
+    return axios.post(`https://cinema-barn.herokuapp.com/users/mymovies/add`, {
+      Username: list.username,
+      Title: favorites.title
+    }, {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    }).then(res => {
+      setSub(null)
+      const data = res.data
+      console.log(data)
+    })
+      .catch(e => {
+        console.log(e)
       })
+  }
+
+  useEffect((e) => {
+    if (match !== null) {
+      const input = document.querySelector('input[match="true"')
+      input.insertAdjacentHTML('afterend', "<span style='color:red'>This movie is in your favorites 86</span>")
+    }
+  }, [match])
+
+  const addMovies = (e) => {
+    if (e.target.checked) {
+      const result = movies.find(({ _id }) => _id === e.target.value)
+      if (!result) {
+        return console.log('Could not find that movie')
+      }
+      const matchFavs = list.favorite_movies.find(({ _id }) => _id === e.target.value)
+      if (matchFavs) {
+        e.target.setAttribute('match', true)
+        e.target.setAttribute('disabled', 'disabled')
+        console.log('there is a match')
+        setMatch('This movie already exists in your favorites')
+      } else {
+        setSub(result)
+        setFavorites(result)
+      }
     }
   }
 
-  useEffect(() => {
-    console.log('use effect watching selected state ' + selected)
-  }, [selected])
-
-  const addMovies = (e) => {
-    selected.push(e.target.value)
-    selected.forEach((id, index) => {
-      console.log(id, index)
-      if (id != list.favorite_movies[index]._id) {
-        const result = movies.find(({ _id }) => _id === id)
-        list.favorite_movies.push(result)
-        let findDuplicates = arr => list.favorite_movies.filter((item, index) => list.favorite_movies.indexOf(item) != index)
-
-        if (findDuplicates(list.favorite_movies)) {
-          console.log('finding dups')
-          const selectedIndex = list.favorite_movies.indexOf(findDuplicates(list.favorite_movies)[0])
-          console.log(selectedIndex)
-          if (selectedIndex > -1) {
-            list.favorite_movies.splice(selectedIndex, 1)
-          }
-        }
-      }
-    })
-    console.log(list.favorite_movies)
-
-    // if (e.target.checked) {
-    //   selected.push(e.target.value)
-    //   selected.forEach((id, index) => {
-    //     console.log(id, index)
-    //     if (id != list.favorite_movies[index]._id) {
-    //       const result = movies.find(({ _id }) => _id === id)
-    //       list.favorite_movies.push(result)
-    //     }
-    //   })
-    //   console.log(list.favorite_movies)
-    // }
-  }
-  // Compare selected to all movies list
-  // const addMovies = (e) => {
-  //   // console.log(e.target)
-  //   if (e.target.checked) {
-  //     //!add the id value to selected array state
-  //     selected.push(e.target.value)
-  //     //!compare selected to fav list
-  //     selected.map((id, i) => {
-  //       // console.log(movie._id == selected)
-  //       // console.log(movie)
-  //       //? CHECK LIST STATE FOR SAME ID
-  //       if (id != list.favorite_movies[i]._id) {
-  //         list.favorite_movies.push(movies[i])
-  //         let result = list.favorite_movies.filter(el => { return el })
-  //         let duplicate = list.favorite_movies.indexOf(result)
-  //         list.favorite_movies.splice(duplicate, 1)
-  //         console.log(result)
-  //       }else{
-  //         console.log(list.favorite_movies[i].title + ' is already in your favorites list.')
-  //       }
-  //       console.log(list.favorite_movies)
-  //     })
-  //     // const dontAdd = selected.filter(x => !list.favorite_movies.includes(x))
-  //     // console.log(dontAdd)
-  //     // console.log(selected)
-  //   }
-  //   else {
-  //     // console.log('unchecked')
-  //     const selectedIndex = selected.indexOf(e.target.value)
-  //     // const listIndex = list.favorite_movies.indexOf(e.target.value)
-  //     if (selectedIndex > -1) {
-  //       selected.splice(selectedIndex, 1)
-  //       // list.favorite_movies.splice(listIndex, 1)
-  //     }
-  //     // console.log(list.favorite_movies)
-  //     // const dontAdd = list.favorite_movies.filter(x => !movies.includes(x))
-  //     // setSelected(dontAdd)
-  //   }
-  //   // console.log(difference)
-  //   //   const dontAdd = difference.map(diff => {
-  //   //     // console.log(diff)
-  //   //     return diff
-  //   //   })
-  //   //   const compare = movies.map(movie => {
-  //   //     return movie
-  //   //     // if (diff._id != e.target.value) {
-  //   //     //   favorites.push(movie)
-  //   //     // }
-  //   //   })
-  //   //   console.log(dontAdd)
-  //   //   console.log(e.target.value)
-  //   //   dontAdd.forEach(existing => {
-  //   //     console.log(existing)
-  //   //     if (e.target.value == existing._id) {
-  //   //       // look into compare for same id as e.target.value
-  //   //       // let newMovie = list.favorite_movies.filter(x => !compare.includes(x))
-  //   //       // console.log(movie.Title + ' was added')
-  //   //       // console.log(newMovie)
-  //   //       // favorites.push(movie)
-  //   //       return console.log('remove ' + existing.title)
-  //   //     } else {
-  //   //       compare.forEach(compare => {
-  //   //         if (e.target.value == compare._id && e.target.value !== existing._id) {
-  //   //           console.log('add ' + compare.Title)
-  //   //         }
-  //   //       })
-  //   //     }
-  //   //   })
-  //   //   // console.log(compare)
-  //   // }
-    // console.log('this is the main list ')
-    // console.log(favorites)
-    // e.target.form.map(input => {
-    //   console.log(input)
-    // })
-    // list.favorite_movies.forEach(movie => {
-    //   if (e.target.value == movie._id) {
-    //     return console.log(e.target.value + ' is already in your favorites')
-    //   }
-    // })
-    // movies.forEach(movie => {
-    //   // if checked movie has same id as movie in main list add it to the favorites array
-    //   if (e.target.value == movie._id) {
-    //     favorites.push(movie)
-    //   }
-    // })
-    // console.log(favorites)
-  // }
   const cancelChanges = () => {
     setUpdate(false)
   }
@@ -199,7 +95,7 @@ export default function ProfileView ({ user, onLoggedIn, getMovies }) {
   // GET USER DATA ON LOAD INCLUDING PICTURE
   useEffect(() => {
     const accessToken = localStorage.getItem('token')
-    axios.get(`https://cinema-barn.herokuapp.com/user/${user}`, {
+    axios.get(`https://cinema-barn.herokuapp.com/user/${!username ? user : username}`, {
       headers: { Authorization: `Bearer ${accessToken}` }
     }).then(res => {
       setList(res.data)
@@ -215,7 +111,7 @@ export default function ProfileView ({ user, onLoggedIn, getMovies }) {
     }).catch(function (error) {
       console.log(error)
     })
-  }, [])
+  }, [update])
 
   if (list.length === 0) return <Loading />
   if (update) return (
