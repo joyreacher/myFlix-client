@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import Loading from '../loading-view/loading-view'
-import { Row, Col, Container, Button, Form, FloatingLabel, CardGroup, Card } from 'react-bootstrap'
+import { Row, Col, Container, Button, Form, CardGroup, Card } from 'react-bootstrap'
 import './profile-view.scss'
 import { ProfileUpdate } from './profile-view-update'
 
-export default function ProfileView ({ user, onLoggedIn, getMovies, username }) {
+export default function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate }) {
   const [match, setMatch] = useState(null)
   const [list, setList] = useState([])
   const [update, setUpdate] = useState(false)
@@ -18,6 +18,25 @@ export default function ProfileView ({ user, onLoggedIn, getMovies, username }) 
   const [error, setError] = useState({
     add: ' '
   })
+
+  const deleteUser = (e) => {
+    e.preventDefault()
+    alert('are you sure you want to delete your profile?')
+    const accessToken = localStorage.getItem('token')
+    axios.post(`https://cinema-barn.herokuapp.com/users/unregister`, {
+      Username: list.username,
+      Email: list.email
+    }, {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    }).then(res => {
+      const data = res.data
+      console.log(data)
+      handleUpdate()
+    })
+      .catch(e => {
+        console.log(e)
+      })
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -115,7 +134,7 @@ export default function ProfileView ({ user, onLoggedIn, getMovies, username }) 
 
   if (list.length === 0) return <Loading />
   if (update) return (
-    <ProfileUpdate user={user} cancelChanges={() => cancelChanges} randomProfile={profile} updateRef={update} />
+    <ProfileUpdate user={user} cancelChanges={() => cancelChanges} randomProfile={profile} updateRef={update} handleUpdate={handleUpdate} />
   )
   return (
     <>
@@ -157,6 +176,7 @@ export default function ProfileView ({ user, onLoggedIn, getMovies, username }) 
         <Row className='my-5'>
           <Col lg={8} className='d-flex justify-content-lg-between w-100'>
             <Form.Control className='mx-5 w-25' type='submit' value='update profile' onClick={() => updateInformation()} />
+            <Form.Control className='mx-5 w-25' type='submit' value='delete profile' onClick={(e) => deleteUser(e)} />
           </Col>
   </Row>
         <div className='d-flex justify-content-center p-2 my-5'>
