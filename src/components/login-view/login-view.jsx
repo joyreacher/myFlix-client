@@ -10,6 +10,10 @@ import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
 import FloatingLabel from 'react-bootstrap/FloatingLabel'
 export function LoginView (props) {
+  const [user, setUser] = useState({
+    value: '',
+    errMsg: ''
+  })
   const [username, setUsername] = useState({
     value: '',
     errMsg: ''
@@ -42,7 +46,7 @@ export function LoginView (props) {
         const data = res.data
         props.onLoggedIn(data)
       }).catch(e => {
-        console.log('no such user')
+        setUser({value: false, errMsg: 'No such user' })
       })
     }
   }
@@ -51,6 +55,7 @@ export function LoginView (props) {
     <Row className='justify-content-center min-vh-100 align-items-center'>
       <Col xs={10} sm={10} md={7} lg={6} xl={7}>
         <Form className='login__form jumbotron p-5' onSubmit={handleSubmit}>
+          <label className='text-danger'>{ user.errMsg ? user.errMsg : '' }</label>
           <Form.Group>
             <Form.Label column='sm'>
               <h1 className='fs-1 display-1'>Sign in</h1>
