@@ -92,8 +92,7 @@ export function ProfileUpdate ({ user, cancelChanges, randomProfile, updateRef, 
           }
         )
         setUpdate(false)
-        localStorage.setItem('user', `${list.username}`)
-        console.log(handleUpdate())
+        handleUpdate()
       }).catch(e => {
         console.log(e)
       })
