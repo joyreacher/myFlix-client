@@ -46,7 +46,7 @@ export function LoginView (props) {
         const data = res.data
         props.onLoggedIn(data)
       }).catch(e => {
-        setUser({value: false, errMsg: 'No such user' })
+        setUser({ value: false, errMsg: 'No such user' })
       })
     }
   }
@@ -55,7 +55,7 @@ export function LoginView (props) {
     <Row className='justify-content-center min-vh-100 align-items-center'>
       <Col xs={10} sm={10} md={7} lg={6} xl={7}>
         <Form className='login__form jumbotron p-5' onSubmit={handleSubmit}>
-          <label className='text-danger'>{ user.errMsg ? user.errMsg : '' }</label>
+          <label className='text-danger'>{user.errMsg ? user.errMsg : ''}</label>
           <Form.Group>
             <Form.Label column='sm'>
               <h1 className='fs-1 display-1'>Sign in</h1>
@@ -82,7 +82,7 @@ export function LoginView (props) {
           </Form.Group>
           <Form.Group className='d-flex justify-content-start mt-5'>
             <p className='me-2 text-start'>Dont have an account?</p>
-            <Link className='fs-6' to={'/register'} >Register</Link>
+            <Link className='fs-6' to='/register'>Register</Link>
           </Form.Group>
         </Form>
       </Col>
@@ -91,5 +91,5 @@ export function LoginView (props) {
 }
 
 LoginView.propTypes = {
-  onLoggedIn: PropTypes.func.isRequired,
+  onLoggedIn: PropTypes.func.isRequired
 }

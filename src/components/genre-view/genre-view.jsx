@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import Loading from '../loading-view/loading-view'
@@ -6,7 +6,7 @@ import Loading from '../loading-view/loading-view'
 import { Container, Row, Col, Button, Image } from 'react-bootstrap'
 export default function Genre ({ genre, onBackClick }) {
   const [list, setList] = useState([])
-  useEffect(()=>{
+  useEffect(() => {
     const accessToken = localStorage.getItem('token')
     axios.get(`https://cinema-barn.herokuapp.com/genre/${genre}`, {
       headers: { Authorization: `Bearer ${accessToken}` }
@@ -24,7 +24,7 @@ export default function Genre ({ genre, onBackClick }) {
       <Container>
         <h1>All {genre}s</h1>
         {
-          list.map(movie =>{
+          list.map(movie => {
             return (
               <Row key={movie._id}>
                 <Col>
@@ -37,7 +37,8 @@ export default function Genre ({ genre, onBackClick }) {
                     <Button className='btn btn-dark'>Open</Button>
                   </Link>
                 </Col>
-              </Row>)
+              </Row>
+            )
           })
         }
       </Container>

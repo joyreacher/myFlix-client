@@ -8,20 +8,22 @@ import { Navbar, Container, Row, Button } from 'react-bootstrap'
 import './navbar.scss'
 
 function Nav ({ onLogOutClick, user }) {
-  if(!user) return (
-    <Navbar className='mt-2 mb-5'>
-      <Container>
-        <Navbar.Brand>
-          <Row className='d-flex justify-content-start align-items-center'>
-            <Link className='home-link' to='/'>
-              <span className='cinema'>Cinema</span>
-              <span className='barn'>Barn</span>
-            </Link>
-          </Row>
-        </Navbar.Brand>
-      </Container>
-    </Navbar>
-  )
+  if (!user) {
+    return (
+      <Navbar className='mt-2 mb-5'>
+        <Container>
+          <Navbar.Brand>
+            <Row className='d-flex justify-content-start align-items-center'>
+              <Link className='home-link' to='/'>
+                <span className='cinema'>Cinema</span>
+                <span className='barn'>Barn</span>
+              </Link>
+            </Row>
+          </Navbar.Brand>
+        </Container>
+      </Navbar>
+    )
+  }
   return (
     <Navbar className='mt-2 mb-5'>
       <Container>
@@ -39,7 +41,7 @@ function Nav ({ onLogOutClick, user }) {
           </Navbar.Text>
         </Navbar.Collapse>
         <Navbar.Collapse className='justify-content-end'>
-          <Navbar.Text onClick={()=>onLogOutClick()}>
+          <Navbar.Text onClick={() => onLogOutClick()}>
             <Button className='btn bg-dark'>Logout</Button>
           </Navbar.Text>
         </Navbar.Collapse>

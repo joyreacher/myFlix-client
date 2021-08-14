@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import Loading from '../loading-view/loading-view'
 // bootstrap
-import { Container, Row, Col, Button, Image, Card, CardGroup, CardImg } from 'react-bootstrap'
+import { Container, Button, Card, CardGroup } from 'react-bootstrap'
 
 export default function Director ({ movies, name, onBackClick }) {
   console.log(movies)
   const [list, setList] = useState([])
-  useEffect(()=>{
+  useEffect(() => {
     const accessToken = localStorage.getItem('token')
     axios.get(`https://cinema-barn.herokuapp.com/directors/${name}`, {
       headers: { Authorization: `Bearer ${accessToken}` }

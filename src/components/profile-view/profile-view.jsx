@@ -23,7 +23,7 @@ export default function ProfileView ({ user, onLoggedIn, getMovies, username, ha
     e.preventDefault()
     alert('are you sure you want to delete your profile?')
     const accessToken = localStorage.getItem('token')
-    axios.post(`https://cinema-barn.herokuapp.com/users/unregister`, {
+    axios.post('https://cinema-barn.herokuapp.com/users/unregister', {
       Username: list.username,
       Email: list.email
     }, {
@@ -42,7 +42,7 @@ export default function ProfileView ({ user, onLoggedIn, getMovies, username, ha
     e.preventDefault()
     const accessToken = localStorage.getItem('token')
     // console.log(favorites.title)
-    return axios.post(`https://cinema-barn.herokuapp.com/users/mymovies/add`, {
+    return axios.post('https://cinema-barn.herokuapp.com/users/mymovies/add', {
       Username: list.username,
       Title: favorites.title
     }, {
@@ -118,7 +118,7 @@ export default function ProfileView ({ user, onLoggedIn, getMovies, username, ha
       headers: { Authorization: `Bearer ${accessToken}` }
     }).then(res => {
       setList(res.data)
-      return axios.get(`https://randomuser.me/api/?results=1`)
+      return axios.get('https://randomuser.me/api/?results=1')
     }).then(res => {
       const data = res.data
       setProfile(
@@ -133,38 +133,42 @@ export default function ProfileView ({ user, onLoggedIn, getMovies, username, ha
   }, [update])
 
   if (list.length === 0) return <Loading />
-  if (update) return (
-    <ProfileUpdate user={user} cancelChanges={() => cancelChanges} randomProfile={profile} updateRef={update} handleUpdate={handleUpdate} />
-  )
+  if (update) {
+    return (
+      <ProfileUpdate user={user} cancelChanges={() => cancelChanges} randomProfile={profile} updateRef={update} handleUpdate={handleUpdate} />
+    )
+  }
   return (
     <>
-      <div className="modal" tabIndex="-1" id="exampleModal">
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Add movie to your favorites list</h5>
-              <button onClick={()=> setModal(false)} type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div className='modal' tabIndex='-1' id='exampleModal'>
+        <div className='modal-dialog'>
+          <div className='modal-content'>
+            <div className='modal-header'>
+              <h5 className='modal-title'>Add movie to your favorites list</h5>
+              <button onClick={() => setModal(false)} type='button' className='btn-close' data-bs-dismiss='modal' aria-label='Close' />
             </div>
-            <div className="modal-body">
+            <div className='modal-body'>
               <Form onSubmit={(e) => handleSubmit(e)}>
                 <CardGroup>
-                  {movies.length == 0 ? '..loading' : movies.map(movie => {
-                    return (
-                      <Col key={movie._id} lg={6} className='p-3'>
-                        <Card>
-                          <Form.Label htmlFor={movie._id} className='btn btn-secondary'>
-                            <Card.Img src={movie.ImgPath} className='movie__img' />
-                          </Form.Label>
-                          <Form.Check id={movie._id} value={movie._id} onChange={(e) => { addMovies(e) }} />
-                          <Card.Title className='movie__title'>{movie.title}</Card.Title>
-                        </Card>
-                      </Col>
-                    )
-                  })}
+                  {movies.length == 0
+                    ? '..loading'
+                    : movies.map(movie => {
+                      return (
+                        <Col key={movie._id} lg={6} className='p-3'>
+                          <Card>
+                            <Form.Label htmlFor={movie._id} className='btn btn-secondary'>
+                              <Card.Img src={movie.ImgPath} className='movie__img' />
+                            </Form.Label>
+                            <Form.Check id={movie._id} value={movie._id} onChange={(e) => { addMovies(e) }} />
+                            <Card.Title className='movie__title'>{movie.title}</Card.Title>
+                          </Card>
+                        </Col>
+                      )
+                    })}
                 </CardGroup>
-                <Form.Group className="modal-footer">
-                  <Form.Control type="button" className="btn btn-secondary" data-bs-dismiss="modal" value='cancel' />
-                  <Form.Control type="submit" className="btn btn-primary" value='Add' />
+                <Form.Group className='modal-footer'>
+                  <Form.Control type='button' className='btn btn-secondary' data-bs-dismiss='modal' value='cancel' />
+                  <Form.Control type='submit' className='btn btn-primary' value='Add' />
                 </Form.Group>
               </Form>
             </div>
@@ -178,7 +182,7 @@ export default function ProfileView ({ user, onLoggedIn, getMovies, username, ha
             <Form.Control className='mx-5 w-25' type='submit' value='update profile' onClick={() => updateInformation()} />
             <Form.Control className='mx-5 w-25' type='submit' value='delete profile' onClick={(e) => deleteUser(e)} />
           </Col>
-  </Row>
+        </Row>
         <div className='d-flex justify-content-center p-2 my-5'>
           <Row>
             <Col lg={4}>
@@ -205,7 +209,7 @@ export default function ProfileView ({ user, onLoggedIn, getMovies, username, ha
                     })
                 }
               </CardGroup>
-              <Button className='btn bg-dark' onClick={()=>getAllMovies()} data-bs-toggle="modal" data-bs-target="#exampleModal" >Add a movie!</Button>
+              <Button className='btn bg-dark' onClick={() => getAllMovies()} data-bs-toggle='modal' data-bs-target='#exampleModal'>Add a movie!</Button>
             </Col>
             <Col lg={4}>
               <p className='fs-6'>{list.email}</p>
@@ -213,7 +217,7 @@ export default function ProfileView ({ user, onLoggedIn, getMovies, username, ha
             </Col>
           </Row>
         </div>
-    </Container>
+      </Container>
     </>
   )
 }

@@ -18,7 +18,7 @@ export function ProfileUpdate ({ user, cancelChanges, randomProfile, updateRef, 
     birthday: false
   })
 
-  let removeMovie = []
+  const removeMovie = []
 
   // if a movie is marked for delation
   const deleteMovies = (e) => {
@@ -46,12 +46,12 @@ export function ProfileUpdate ({ user, cancelChanges, randomProfile, updateRef, 
     if (removeMovie.length != 0) {
       console.log(removeMovie)
       removeMovie.map(movie => {
-        axios.post(`https://cinema-barn.herokuapp.com/users/mymovies/delete`, {
+        axios.post('https://cinema-barn.herokuapp.com/users/mymovies/delete', {
           Username: list.username,
           Title: movie.Title
         }, { headers: { Authorization: `Bearer ${accessToken}` } })
           .then(res => {
-            //TODO -- reload updated user movie favorite list
+            // TODO -- reload updated user movie favorite list
             const data = res.data
             console.log(data) // so and so was deleted
             handleUpdate()
@@ -74,7 +74,7 @@ export function ProfileUpdate ({ user, cancelChanges, randomProfile, updateRef, 
     }
 
     axios.put(`https://cinema-barn.herokuapp.com/users/${user}`, {
-      Username: !username ? list.username : username ,
+      Username: !username ? list.username : username,
       Password: !password ? list.password : password,
       Email: !email ? list.email : email,
       Birthday: !birthday ? list.birthday : birthday,
@@ -147,7 +147,7 @@ export function ProfileUpdate ({ user, cancelChanges, randomProfile, updateRef, 
                     : list.favorite_movies.map(movie => {
                       return (
                         <Card key={movie._id} className='m-3 p-2'>
-                          <Form.Label className="btn btn-secondary" htmlFor={movie._id}>
+                          <Form.Label className='btn btn-secondary' htmlFor={movie._id}>
                             <Card.Img src={movie.ImagePath} />
                           </Form.Label>
                           <Card.Title>{movie.Title}</Card.Title>
@@ -177,5 +177,5 @@ export function ProfileUpdate ({ user, cancelChanges, randomProfile, updateRef, 
         </Form>
       </div>
     </Container>
-  );
+  )
 };

@@ -110,14 +110,16 @@ export default class MainView extends React.Component {
             if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
             if (movies.length === 0) return <Loading />
             return <MovieContainer movies={movies} />
-          }}/>
+          }}
+        />
         <Route
           exact
           path='/register'
           render={() => {
             if (user) return <Redirect to='/' />
             return <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} onRegisterClick={() => this.onLoggedIn()} />
-          }}/>
+          }}
+        />
         <Route
           exact
           path='/movies/:movieId'

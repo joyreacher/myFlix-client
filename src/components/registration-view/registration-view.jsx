@@ -64,7 +64,7 @@ export function RegistrationView (props) {
           <div className='d-flex justify-content-start mt-5'>
             <p className='me-2'>Have an account?</p>
             {/* <a className='' onClick={() => props.onRegisterClick()}>Sign in</a> */}
-            <Link className='fs-6' to={`/`} >Sign in</Link>
+            <Link className='fs-6' to='/'>Sign in</Link>
           </div>
         </Form>
       </Col>

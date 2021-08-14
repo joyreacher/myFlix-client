@@ -1,8 +1,8 @@
-import React, { useEffect } from "react"
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 // bootstrap
 import { Row, Col, Button, Image } from 'react-bootstrap'
-function NotFeatured({ movies }) {
+function NotFeatured ({ movies }) {
   return (
     <>{
       movies.map(movie => {
