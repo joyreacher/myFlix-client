@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import axios from 'axios'
 import Loading from '../loading-view/loading-view'
+import ProfileView from './profile-view'
 import { Row, Col, Container, Button, Form, FloatingLabel, CardGroup, Card } from 'react-bootstrap'
 
-export function ProfileUpdate ({ user, cancelChanges, randomProfile }) {
-  const [remove, setRemove] = useState([])
+export function ProfileUpdate ({ user, cancelChanges, randomProfile, updateRef }) {
   const [list, setList] = useState([])
-  const [update, setUpdate] = useState(false)
+  const [update, setUpdate] = useState(updateRef)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [birthday, setBirthday] = useState('')
-  const [favoriteMovies, setFavorite_movies] = useState({})
-  const [profile, setProfile] = useState([])
   const [email, setEmail] = useState('')
   const [error, setError] = useState({
     username: false,
@@ -20,31 +17,35 @@ export function ProfileUpdate ({ user, cancelChanges, randomProfile }) {
     email: false,
     birthday: false
   })
-  const [modal, setModal] = useState(false)
-  const [movies, setMovies] = useState([])
 
   let removeMovie = []
 
-  // adds a checked movie to removeMovie array for deletion
+  // if a movie is marked for delation
   const deleteMovies = (e) => {
     // console.log(e.target.checked)
-    list.favorite_movies.forEach(movie => {
-      if(e.target.value == movie._id) {
-        // console.log(movie.Title + ' has got to go.')
-        removeMovie.push(movie)
-      }
-    })
+    if (removeMovie < 1) {
+      // IS MOFRE THAN ONE MOVIE
+      list.favorite_movies.forEach(movie => {
+        if (e.target.value == movie._id) {
+          // console.log(movie.Title + ' has got to go.')
+          removeMovie.push(movie)
+        }
+      })
+    } else {
+      // IF THERE IS ONLY ONE MOVIE
+      removeMovie.push(list.favorite_movies[0])
+    }
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
     const accessToken = localStorage.getItem('token')
 
+    console.log(removeMovie)
     // deletes movies stored in removeMoves array
     if (removeMovie.length != 0) {
+      console.log(removeMovie)
       removeMovie.map(movie => {
-        console.log(movie.Title)
-        console.log(username)
         axios.post(`https://cinema-barn.herokuapp.com/users/mymovies/delete`, {
           Username: list.username,
           Title: movie.Title
@@ -55,10 +56,9 @@ export function ProfileUpdate ({ user, cancelChanges, randomProfile }) {
             console.log(data) // so and so was deleted
           }).catch(e => {
             console.log(e)
+            return 'Something went wrong'
           })
       })
-      // TODO -- remove return
-      return console.log(removeMovie)
     }
 
     // Error check
@@ -73,15 +73,14 @@ export function ProfileUpdate ({ user, cancelChanges, randomProfile }) {
     }
 
     axios.put(`https://cinema-barn.herokuapp.com/users/${user}`, {
-      Username: username,
-      Password: password,
-      Email: email,
-      Birthday: birthday,
-      favoriteMovies: favorite_movies
+      Username: !username ? list.username : username ,
+      Password: !password ? list.password : password,
+      Email: !email ? list.email : email,
+      Birthday: !birthday ? list.birthday : birthday,
+      favoriteMovies: list.favorite_movies
     }, { headers: { Authorization: `Bearer ${accessToken}` } })
       .then(res => {
         const data = res.data
-        setUpdate(false)
         setList(
           {
             username: data.username,
@@ -91,6 +90,7 @@ export function ProfileUpdate ({ user, cancelChanges, randomProfile }) {
             favorite_movies: data.favorite_movies
           }
         )
+        setUpdate(false)
       }).catch(e => {
         console.log(e)
       })
@@ -109,6 +109,7 @@ export function ProfileUpdate ({ user, cancelChanges, randomProfile }) {
   }, [])
 
   if (list.length === 0) return <Loading />
+  if (!update) return <ProfileView user={user} username={list.username} />
   return (
     <Container>
       <h1 className='my-5 bg-dark text-light d-inline-block'>{list.username}'s Profile</h1>
@@ -140,16 +141,15 @@ export function ProfileUpdate ({ user, cancelChanges, randomProfile }) {
                   list.favorite_movies.length === 0
                     ? <Container>
                       <p>No movies to show 🤦 </p>
-                      {/* <Button className='btn bg-dark' onClick={()=>getAllMovies()} data-bs-toggle="modal" data-bs-target="#exampleModal" >Add a movie!</Button> */}
                     </Container>
-                      : list.favorite_movies.map(movie => {
+                    : list.favorite_movies.map(movie => {
                       return (
                         <Card key={movie._id} className='m-3 p-2'>
-                          <Form.Label className="btn btn-secondary" htmlFor='delete'>
+                          <Form.Label className="btn btn-secondary" htmlFor={movie._id}>
                             <Card.Img src={movie.ImagePath} />
                           </Form.Label>
                           <Card.Title>{movie.Title}</Card.Title>
-                          <Form.Check id='delete' label='Delete' value={movie._id} onChange={(e) => { deleteMovies(e) }} />
+                          <Form.Check id={movie._id} label='Delete' value={movie._id} onChange={(e) => { deleteMovies(e) }} />
                         </Card>
                       )
                     })
