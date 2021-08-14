@@ -4,7 +4,7 @@ import Loading from '../loading-view/loading-view'
 import ProfileView from './profile-view'
 import { Row, Col, Container, Button, Form, FloatingLabel, CardGroup, Card } from 'react-bootstrap'
 
-export function ProfileUpdate ({ user, cancelChanges, randomProfile, updateRef }) {
+export function ProfileUpdate ({ user, cancelChanges, randomProfile, updateRef, handleUpdate }) {
   const [list, setList] = useState([])
   const [update, setUpdate] = useState(updateRef)
   const [username, setUsername] = useState('')
@@ -54,6 +54,7 @@ export function ProfileUpdate ({ user, cancelChanges, randomProfile, updateRef }
             //TODO -- reload updated user movie favorite list
             const data = res.data
             console.log(data) // so and so was deleted
+            handleUpdate()
           }).catch(e => {
             console.log(e)
             return 'Something went wrong'
@@ -91,6 +92,8 @@ export function ProfileUpdate ({ user, cancelChanges, randomProfile, updateRef }
           }
         )
         setUpdate(false)
+        localStorage.setItem('user', `${list.username}`)
+        console.log(handleUpdate())
       }).catch(e => {
         console.log(e)
       })
