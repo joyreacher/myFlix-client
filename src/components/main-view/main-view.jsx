@@ -117,7 +117,7 @@ export default class MainView extends React.Component {
           path='/register'
           render={() => {
             if (user) return <Redirect to='/' />
-            return <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} onRegisterClick={() => this.onLoggedIn()} />
+            return <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} onRegisterClick={() => this.triggerUpdate()} />
           }}
         />
         <Route
