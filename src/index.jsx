@@ -1,20 +1,20 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+// Bootstrap
+import Container from 'react-bootstrap/Container'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import moviesApp from './reducers/reducers'
 import MainView from './components/main-view/main-view'
 import Footer from './components/footer/footer'
 
-// Bootstrap
-import Container from 'react-bootstrap/Container'
 // styles
 import './index.scss'
 import ErrorBoundary from './components/ErrorBoundary'
 import { devToolsEnhancer } from 'redux-devtools-extension'
 
 // setup store AFTER importing MainView and styles
-const store = createStore(moviesApp, devToolsEnhancer)
+const store = createStore(moviesApp, devToolsEnhancer())
 
 class MyFlixApplication extends React.Component {
   render () {
