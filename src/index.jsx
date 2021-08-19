@@ -1,5 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { Provider } from 'react-redux'
+import moviesApp from './reducers/reducers'
 import MainView from './components/main-view/main-view'
 import Footer from './components/footer/footer'
 
@@ -9,15 +11,20 @@ import Container from 'react-bootstrap/Container'
 import './index.scss'
 import ErrorBoundary from './components/ErrorBoundary'
 
+// setup store AFTER importing MainView and styles
+const store = createStore(moviesApp)
+
 class MyFlixApplication extends React.Component {
   render () {
     return (
-      <ErrorBoundary>
-        <Container>
-          <MainView />
-        </Container>
-        <Footer />
-      </ErrorBoundary>
+      <Provider store={store}>
+        <ErrorBoundary>
+          <Container>
+            <MainView />
+          </Container>
+          <Footer />
+        </ErrorBoundary>
+      </Provider>
     )
   }
 }
