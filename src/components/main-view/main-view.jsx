@@ -2,6 +2,10 @@ import React from 'react'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import axios from 'axios'
+import { connect } from 'react-redux'
+
+import { setMovies } from '../../actions/actions'
+import MoviesList from '../movies-list/movies-list'
 
 import { RegistrationView } from '../registration-view/registration-view'
 import { LoginView } from '../login-view/login-view'
@@ -16,12 +20,12 @@ import Navbar from '../navbar/navbar'
 // Bootstrap
 import Button from 'react-bootstrap/Button'
 
-export default class MainView extends React.Component {
+class MainView extends React.Component {
   constructor () {
     super()
     this.state = {
       selectedMovie: null,
-      movies: [],
+      // movies: [],
       genre: [],
       directors: [],
       user: null,
@@ -64,9 +68,10 @@ export default class MainView extends React.Component {
       headers: { Authorization: `Bearer ${token}` }
     }).then(res => {
       // assign the result to state
-      this.setState({
-        movies: res.data
-      })
+      // this.setState({
+      //   movies: res.data
+      // })
+      this.props.setMovies(res.data)
     }).catch(function (error) {
       console.log(error)
     })
@@ -99,7 +104,8 @@ export default class MainView extends React.Component {
   }
 
   render () {
-    const { movies, user, genre } = this.state
+    const { movies, genre } = this.props
+    const { user } = this.state
     return (
       <Router>
         <Navbar onLogOutClick={() => this.onLoggedOut()} user={user} />
@@ -109,7 +115,7 @@ export default class MainView extends React.Component {
           render={() => {
             if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
             if (movies.length === 0) return <Loading />
-            return <MovieContainer movies={movies} />
+            return <MoviesList movies={movies} />
           }}
         />
         <Route
@@ -161,7 +167,10 @@ export default class MainView extends React.Component {
     )
   }
 }
-
+const mapStateToProps = state =>{
+  return { movies: state.movies }
+}
+export default connect(mapStateToProps, { setMovies })(MainView)
 MainView.propTypes = {
   movies: PropTypes.shape({
     Title: PropTypes.string.isRequired,
