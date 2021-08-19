@@ -3,8 +3,8 @@ import { SET_FILTER, SET_MOVIES } from '../actions/actions'
 
 /**
  *
-  It’s handy here to give a default value to the state parameter (state = '', action). 
-  If state were to be undefined and the action out of scope for a reducer (in the visibilityFilter reducer, 
+  It’s handy here to give a default value to the state parameter (state = '', action).
+  If state were to be undefined and the action out of scope for a reducer (in the visibilityFilter reducer,
   if the action wasn’t SET_FILTER),
   the reducer would return whatever it was passed as the visibilityFilter state—in this case, an empty string ''.
 

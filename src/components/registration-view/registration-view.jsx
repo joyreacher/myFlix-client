@@ -68,11 +68,11 @@ export function RegistrationView (props) {
       }).catch(e => {
         if (e.response.status == 422) {
           console.log(e.response.data.errors[0].msg)
-          setUser({value: false, errMsg: e.response.data.errors[0].msg})
+          setUser({ value: false, errMsg: e.response.data.errors[0].msg })
         }
         if (e.response.status == 400) {
           console.log(e.response.data)
-          setUser({value:false , errMsg: e.response.data})
+          setUser({ value: false, errMsg: e.response.data })
         }
       })
     }
@@ -85,7 +85,7 @@ export function RegistrationView (props) {
           <Form.Group>
             <Form.Label>
               <h1 className='fs-1 display-1'>Register</h1>
-              { user.errMsg ? <h6 className='text-danger'>{user.errMsg}</h6> : ''}
+              {user.errMsg ? <h6 className='text-danger'>{user.errMsg}</h6> : ''}
             </Form.Label>
           </Form.Group>
           <Form.Group>

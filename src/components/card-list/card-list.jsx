@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import { Link } from 'react-router-dom'
 import { Row, Col, Button, Image } from 'react-bootstrap'
 
@@ -16,7 +16,7 @@ const cardList = (props) => {
         </Link>
       </Col>
     </Row>
-  );
-};
+  )
+}
 
-export default cardList;
+export default cardList
