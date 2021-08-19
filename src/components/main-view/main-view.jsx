@@ -9,7 +9,6 @@ import MoviesList from '../movies-list/movies-list'
 
 import { RegistrationView } from '../registration-view/registration-view'
 import { LoginView } from '../login-view/login-view'
-import MovieContainer from '../movie-card/movie-container'
 import MovieView from '../movie-view/movie-view'
 import GenreView from '../genre-view/genre-view'
 import DirectorView from '../director-view/director-view'
@@ -17,15 +16,11 @@ import ProfileView from '../profile-view/profile-view'
 import Loading from '../loading-view/loading-view'
 import Navbar from '../navbar/navbar'
 
-// Bootstrap
-import Button from 'react-bootstrap/Button'
-
 class MainView extends React.Component {
   constructor () {
     super()
     this.state = {
       selectedMovie: null,
-      // movies: [],
       genre: [],
       directors: [],
       user: null,
@@ -67,10 +62,6 @@ class MainView extends React.Component {
     axios.get('https://cinema-barn.herokuapp.com/movies', {
       headers: { Authorization: `Bearer ${token}` }
     }).then(res => {
-      // assign the result to state
-      // this.setState({
-      //   movies: res.data
-      // })
       this.props.setMovies(res.data)
     }).catch(function (error) {
       console.log(error)
@@ -149,7 +140,6 @@ class MainView extends React.Component {
           exact
           path='/genres/:genre'
           render={({ match, history }) => {
-            // console.log(match)
             if (!genre) return <Loading />
             if (!user) return <Redirect to='/' />
             return <GenreView movies={movies} genre={match.params.genre} onBackClick={() => history.goBack()} />
@@ -172,7 +162,7 @@ const mapStateToProps = state => {
 }
 export default connect(mapStateToProps, { setMovies })(MainView)
 MainView.propTypes = {
-  movies: PropTypes.shape({
+  movies: PropTypes.arrayOf(PropTypes.shape({
     Title: PropTypes.string.isRequired,
     Description: PropTypes.string.isRequired,
     ImagePath: PropTypes.string.isRequired,
@@ -187,7 +177,7 @@ MainView.propTypes = {
       DOB: PropTypes.string.isRequired,
       YOD: PropTypes.string.isRequired
     }).isRequired
-  }),
+  })),
   selectedMovie: PropTypes.string,
   user: PropTypes.string,
   register: PropTypes.bool
