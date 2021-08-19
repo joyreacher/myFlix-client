@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { SET_FILTER, SET_MOVIES } from '../actions/actions'
+import { SET_FILTER, SET_MOVIES, LOGIN, REGISTER } from '../actions/actions'
 
 /**
  *
@@ -32,10 +32,36 @@ function movies (state = [], action) {
       return state
   }
 }
+
+function user (state = [], action) {
+  switch (action.type) {
+    case LOGIN:
+      return [
+        ...state,
+        {
+          username: action.username,
+          password: action.password
+        }
+      ]
+    case REGISTER:
+      return [
+        ...state,
+        {
+          username: action.username,
+          password: action.password,
+          email: action.email,
+          birthday: action.birthday
+        }
+      ]
+    default:
+      return state
+  }
+}
 // ? COMBINE REDUCERS ABOVE
 const moviesApp = combineReducers({
   visibilityFilter,
-  movies
+  movies,
+  user
 })
 
 export default moviesApp
