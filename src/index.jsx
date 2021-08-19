@@ -11,9 +11,10 @@ import Container from 'react-bootstrap/Container'
 // styles
 import './index.scss'
 import ErrorBoundary from './components/ErrorBoundary'
+import { devToolsEnhancer } from 'redux-devtools-extension'
 
 // setup store AFTER importing MainView and styles
-const store = createStore(moviesApp)
+const store = createStore(moviesApp, devToolsEnhancer)
 
 class MyFlixApplication extends React.Component {
   render () {
