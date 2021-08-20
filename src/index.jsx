@@ -6,7 +6,6 @@ import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import moviesApp from './reducers/reducers'
 import MainView from './components/main-view/main-view'
-import Footer from './components/footer/footer'
 
 // styles
 import './index.scss'
@@ -24,7 +23,6 @@ class MyFlixApplication extends React.Component {
           <Container>
             <MainView />
           </Container>
-          <Footer />
         </ErrorBoundary>
       </Provider>
     )
