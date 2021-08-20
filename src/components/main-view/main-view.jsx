@@ -15,6 +15,7 @@ import DirectorView from '../director-view/director-view'
 import ProfileView from '../profile-view/profile-view'
 import Loading from '../loading-view/loading-view'
 import Navbar from '../navbar/navbar'
+import Footer from '../footer/footer'
 
 class MainView extends React.Component {
   constructor () {
@@ -153,6 +154,7 @@ class MainView extends React.Component {
             return <ProfileView handleUpdate={() => this.triggerUpdate()} user={user} onLoggedIn={user => this.onLoggedIn(user)} getMovies={user => this.getMovies(user)} />
           }}
         />
+        <Footer user={user} />
       </Router>
     )
   }
@@ -174,6 +176,7 @@ MainView.propTypes = {
     Director: PropTypes.shape({
       Name: PropTypes.string.isRequired,
       Bio: PropTypes.string.isRequired,
+      //TODO: update database with DOB values
       DOB: PropTypes.string.isRequired,
       YOD: PropTypes.string.isRequired
     }).isRequired
