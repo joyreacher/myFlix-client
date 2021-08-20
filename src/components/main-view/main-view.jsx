@@ -2,26 +2,26 @@ import React from 'react'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import axios from 'axios'
+import { connect } from 'react-redux'
+
+import { setMovies } from '../../actions/actions'
+import MoviesList from '../movies-list/movies-list'
 
 import { RegistrationView } from '../registration-view/registration-view'
 import { LoginView } from '../login-view/login-view'
-import MovieContainer from '../movie-card/movie-container'
 import MovieView from '../movie-view/movie-view'
 import GenreView from '../genre-view/genre-view'
 import DirectorView from '../director-view/director-view'
 import ProfileView from '../profile-view/profile-view'
 import Loading from '../loading-view/loading-view'
 import Navbar from '../navbar/navbar'
+import Footer from '../footer/footer'
 
-// Bootstrap
-import Button from 'react-bootstrap/Button'
-
-export default class MainView extends React.Component {
+class MainView extends React.Component {
   constructor () {
     super()
     this.state = {
       selectedMovie: null,
-      movies: [],
       genre: [],
       directors: [],
       user: null,
@@ -63,10 +63,7 @@ export default class MainView extends React.Component {
     axios.get('https://cinema-barn.herokuapp.com/movies', {
       headers: { Authorization: `Bearer ${token}` }
     }).then(res => {
-      // assign the result to state
-      this.setState({
-        movies: res.data
-      })
+      this.props.setMovies(res.data)
     }).catch(function (error) {
       console.log(error)
     })
@@ -99,7 +96,8 @@ export default class MainView extends React.Component {
   }
 
   render () {
-    const { movies, user, genre } = this.state
+    const { movies, genre } = this.props
+    const { user } = this.state
     return (
       <Router>
         <Navbar onLogOutClick={() => this.onLoggedOut()} user={user} />
@@ -109,7 +107,7 @@ export default class MainView extends React.Component {
           render={() => {
             if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
             if (movies.length === 0) return <Loading />
-            return <MovieContainer movies={movies} />
+            return <MoviesList movies={movies} />
           }}
         />
         <Route
@@ -143,7 +141,6 @@ export default class MainView extends React.Component {
           exact
           path='/genres/:genre'
           render={({ match, history }) => {
-            // console.log(match)
             if (!genre) return <Loading />
             if (!user) return <Redirect to='/' />
             return <GenreView movies={movies} genre={match.params.genre} onBackClick={() => history.goBack()} />
@@ -157,13 +154,17 @@ export default class MainView extends React.Component {
             return <ProfileView handleUpdate={() => this.triggerUpdate()} user={user} onLoggedIn={user => this.onLoggedIn(user)} getMovies={user => this.getMovies(user)} />
           }}
         />
+        <Footer user={user} />
       </Router>
     )
   }
 }
-
+const mapStateToProps = state => {
+  return { movies: state.movies }
+}
+export default connect(mapStateToProps, { setMovies })(MainView)
 MainView.propTypes = {
-  movies: PropTypes.shape({
+  movies: PropTypes.arrayOf(PropTypes.shape({
     Title: PropTypes.string.isRequired,
     Description: PropTypes.string.isRequired,
     ImagePath: PropTypes.string.isRequired,
@@ -175,10 +176,11 @@ MainView.propTypes = {
     Director: PropTypes.shape({
       Name: PropTypes.string.isRequired,
       Bio: PropTypes.string.isRequired,
+      //TODO: update database with DOB values
       DOB: PropTypes.string.isRequired,
       YOD: PropTypes.string.isRequired
     }).isRequired
-  }),
+  })),
   selectedMovie: PropTypes.string,
   user: PropTypes.string,
   register: PropTypes.bool
