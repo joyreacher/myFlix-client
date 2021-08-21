@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import { login, setMovies, setLoggedIn } from '../../actions/actions'
 import MoviesList from '../movies-list/movies-list'
 
-import { RegistrationView } from '../registration-view/registration-view'
+import RegistrationView from '../registration-view/registration-view'
 import LoginView from '../login-view/login-view'
 import MovieView from '../movie-view/movie-view'
 import GenreView from '../genre-view/genre-view'
