@@ -14,16 +14,14 @@ export const setFilter = (value) => ({
   value
 })
 
-export const login = (username, password) => ({
+export const login = (username) => ({
   type: LOGIN,
-  username,
-  password
+  username
 })
 
-export const register = (username, password, email, birthday) => ({
+export const register = (username, email, birthday) => ({
   type: REGISTER,
   username,
-  password,
   email,
   birthday
 })
