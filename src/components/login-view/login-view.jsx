@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import axios from 'axios'
+import { connect } from 'react-redux'
+import { login } from '../../actions/actions'
 import './login-view.scss'
 
 // Bootstrap
@@ -9,7 +11,13 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
 import FloatingLabel from 'react-bootstrap/FloatingLabel'
-export function LoginView (props) {
+
+const mapStateToProps = state => {
+  const { profile } = state
+  return {profile}
+}
+function LoginView (props) {
+  const { profile } = props
   const [user, setUser] = useState({
     value: '',
     errMsg: ''
@@ -26,28 +34,37 @@ export function LoginView (props) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    console.log(profile)
     const pattern = new RegExp(/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/)
-    console.log(username.value)
+    // console.log(username.value)
     if (!password.value || password.value.length == 0) {
-      setPassword({ errMsg: 'Enter your password' })
+      return setPassword({ errMsg: 'Enter your password' })
       // console.log(password)
     } if (!username.value || username.value.length == 0) {
-      setUsername({ errMsg: 'Enter a username' })
+      return setUsername({ errMsg: 'Enter a username' })
       // console.log(username)
     } if (pattern.test(username.value)) {
       console.log('unwanted chars')
-      setUsername({ value: false, errMsg: 'Please only use letters and numbers in your username' })
-      console.log(username)
+      return setUsername({ value: false, errMsg: 'Please only use letters and numbers in your username' })
     } else {
+      const value = e.target.value
+      props.login(e.target.value)
       axios.post('https://cinema-barn.herokuapp.com/login', {
-        Username: username.value,
+        Username: profile.username,
         Password: password.value
       }).then(res => {
         console.log(res)
         const data = res.data
+        console.log(data.user.username)
+        console.log(data.token)
         props.onLoggedIn(data)
       }).catch(e => {
-        setUser({ value: false, errMsg: 'No such user' })
+        // contains error response
+        // console.log(e.response)
+        if (e.response.status == 400) {
+          setUser({errMsg: 'This user may not exist.'})
+        }
+        console.log('error')
       })
     }
   }
@@ -64,7 +81,7 @@ export function LoginView (props) {
           </Form.Group>
           <Form.Group>
             <FloatingLabel label='Username' controlId='floatingInput'>
-              <Form.Control name='username' placeholder='Username' type='text' value={username.value || ''} onChange={e => setUsername({ value: e.target.value })} />
+              <Form.Control name='username' placeholder='Username' type='text' value={profile.username} onChange={e => {props.login(e.target.value); setUsername({value: e.target.value})}} />
             </FloatingLabel>
             <label className='text-danger'>
               {
@@ -72,7 +89,7 @@ export function LoginView (props) {
               }
             </label>
             <FloatingLabel label='Password' controlId='floatingInput'>
-              <Form.Control name='pass' placeholder='Password' type='password' value={password.value || ''} onChange={e => setPassword({ value: e.target.value })} />
+              <Form.Control name='pass' placeholder='Password' type='password' value={password.value} onChange={e => setPassword({ value: e.target.value })} />
             </FloatingLabel>
             <label className='text-danger'>
               {
@@ -90,7 +107,7 @@ export function LoginView (props) {
     </Row>
   )
 }
-
+export default connect(mapStateToProps, { login })(LoginView)
 LoginView.propTypes = {
   onLoggedIn: PropTypes.func.isRequired
 }
