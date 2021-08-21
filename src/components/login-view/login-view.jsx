@@ -35,6 +35,7 @@ function LoginView (props) {
   const handleSubmit = (e) => {
     e.preventDefault()
     console.log(profile)
+    setUser({errMsg: ''})
     const pattern = new RegExp(/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/)
     // console.log(username.value)
     if (!password.value || password.value.length == 0) {
@@ -81,7 +82,7 @@ function LoginView (props) {
           </Form.Group>
           <Form.Group>
             <FloatingLabel label='Username' controlId='floatingInput'>
-              <Form.Control name='username' placeholder='Username' type='text' value={profile.username} onChange={e => {props.login(e.target.value); setUsername({value: e.target.value})}} />
+              <Form.Control name='username' placeholder='Username' type='text' onChange={e => {props.login(e.target.value); setUsername({value: e.target.value})}} />
             </FloatingLabel>
             <label className='text-danger'>
               {
@@ -89,7 +90,7 @@ function LoginView (props) {
               }
             </label>
             <FloatingLabel label='Password' controlId='floatingInput'>
-              <Form.Control name='pass' placeholder='Password' type='password' value={password.value} onChange={e => setPassword({ value: e.target.value })} />
+              <Form.Control name='pass' placeholder='Password' type='password' onChange={e => setPassword({ value: e.target.value })} />
             </FloatingLabel>
             <label className='text-danger'>
               {
