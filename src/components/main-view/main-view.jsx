@@ -142,8 +142,8 @@ class MainView extends React.Component {
           exact
           path='/user/:name'
           render={({ match, history }) => {
-            if (!user) return <Redirect to='/' />
-            return <ProfileView handleUpdate={() => this.triggerUpdate()} user={user} onLoggedIn={user => this.onLoggedIn(user)} getMovies={user => this.getMovies(user)} />
+            if (!localStorage.getItem('token')) return <Redirect to='/' />
+            return <ProfileView handleUpdate={() => this.triggerUpdate()} user={profile} onLoggedIn={user => this.onLoggedIn(user)} getMovies={user => this.getMovies(user)} />
           }}
         />
         <Footer user={user} />
