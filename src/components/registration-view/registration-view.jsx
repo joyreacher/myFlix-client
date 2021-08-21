@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
@@ -20,6 +20,9 @@ const mapStateToProps = state => {
 }
 function RegistrationView (props) {
   const { profile } = props
+  const usernameInput = useRef(null)
+  const emailInput = useRef(null)
+  const birthdayInput = useRef(null)
   const [signin, setSignin] = useState({
     value: ''
   })
@@ -63,12 +66,12 @@ function RegistrationView (props) {
       console.log('unwanted chars')
       console.log(username)
       setUsername({ value: false, errMsg: 'Please only use letters and numbers in your username' })
-    } else if (username.value, password.value, email.value, birthday.value) {
+    } else if (username.value && password.value && email.value && birthday.value) {
       axios.post('https://cinema-barn.herokuapp.com/users', {
-        Username: username.value,
+        Username: profile.username,
         Password: password.value,
-        Email: email.value,
-        Birthday: birthday.value
+        Email: profile.email,
+        Birthday: profile.birthday
       }).then(res => {
         console.log(res)
         const data = res.data
@@ -99,7 +102,7 @@ function RegistrationView (props) {
           <Form.Group>
             {/* <label className='text-danger' htmlFor='Username'>{username.errMsg ? username.errMsg : ''}</label> */}
             <FloatingLabel className={username.errMsg ? 'text-danger' : ''} label={username.errMsg ? username.errMsg : 'Username'} controlId='floatingInput'>
-              <Form.Control placeholder='Username' type='text' onChange={e => { props.register(e.target.value); setUsername({ value: e.target.value }) }} />
+              <Form.Control ref={usernameInput} placeholder='Username' type='text' onChange={e => { props.register(e.target.value); setUsername({ value: e.target.value }) }} />
             </FloatingLabel>
             {/* <label className='text-danger' htmlFor='Password'>{password.errMsg ? password.errMsg : ''}</label> */}
             <FloatingLabel className={password.errMsg ? 'text-danger' : ''} label={password.errMsg ? password.errMsg : 'Password'} controlId='floatingInput'>
@@ -107,11 +110,11 @@ function RegistrationView (props) {
             </FloatingLabel>
             {/* <label className='text-danger' htmlFor='Email'>{email.errMsg ? email.errMsg : ''}</label> */}
             <FloatingLabel className={email.errMsg ? 'text-danger' : ''} label={email.errMsg ? email.errMsg : 'Email'} controlId='floatingInput'>
-              <Form.Control placeholder='Email' type='email' onChange={e => { setEmail({ value: e.target.value }) }} />
+              <Form.Control ref={emailInput} placeholder='Email' type='email' onChange={e => { props.register(usernameInput.current.value, e.target.value); setEmail({ value: e.target.value }) }} />
             </FloatingLabel>
             {/* <label className='text-danger' htmlFor='Birthday'>{birthday.errMsg ? birthday.errMsg : ''}</label> */}
             <FloatingLabel className={birthday.errMsg ? 'text-danger' : ''} label={birthday.errMsg ? birthday.errMsg : 'Birthday'} controlId='floatingInput'>
-              <Form.Control placeholder='Birthday' type='date' onChange={e => { setBirthday({ value: e.target.value }) }} />
+              <Form.Control ref={birthdayInput} placeholder='Birthday' type='date' onChange={e => { props.register(usernameInput.current.value, emailInput.current.value, e.target.value); setBirthday({ value: e.target.value }) }} />
             </FloatingLabel>
             {signin.value ? signin.value : ''}
             <Button className='mt-3' variant='success' type='submit' onClick={handleSubmit}>Register</Button>
