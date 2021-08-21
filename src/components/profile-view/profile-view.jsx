@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import Loading from '../loading-view/loading-view'
@@ -6,11 +7,16 @@ import { Row, Col, Container, Button, Form, CardGroup, Card } from 'react-bootst
 import './profile-view.scss'
 import { ProfileUpdate } from './profile-view-update'
 
-export default function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate }) {
+const mapStateToProps = state => {
+  const { profile } = state
+  return { profile }
+}
+
+function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, profile }) {
   const [match, setMatch] = useState(null)
   const [list, setList] = useState([])
   const [update, setUpdate] = useState(false)
-  const [profile, setProfile] = useState([])
+  const [randomImg, setRandomImg] = useState([])
   const [modal, setModal] = useState(false)
   const [movies, setMovies] = useState([])
   const [favorites, setFavorites] = useState([])
@@ -114,14 +120,14 @@ export default function ProfileView ({ user, onLoggedIn, getMovies, username, ha
   // GET USER DATA ON LOAD INCLUDING PICTURE
   useEffect(() => {
     const accessToken = localStorage.getItem('token')
-    axios.get(`https://cinema-barn.herokuapp.com/user/${!username ? user : username}`, {
+    axios.get(`https://cinema-barn.herokuapp.com/user/${profile.username}`, {
       headers: { Authorization: `Bearer ${accessToken}` }
     }).then(res => {
       setList(res.data)
       return axios.get('https://randomuser.me/api/?results=1')
     }).then(res => {
       const data = res.data
-      setProfile(
+      setRandomImg(
         {
           picture: res.data.results[0].picture.large
         }
@@ -186,7 +192,7 @@ export default function ProfileView ({ user, onLoggedIn, getMovies, username, ha
         <div className='d-flex justify-content-center p-2 my-5'>
           <Row>
             <Col lg={4}>
-              <img src={profile.picture} alt='Image goes here' />
+              <img src={randomImg.picture} alt='Image goes here' />
               <p>{list.username}</p>
             </Col>
             <Col lg={4}>
@@ -221,3 +227,4 @@ export default function ProfileView ({ user, onLoggedIn, getMovies, username, ha
     </>
   )
 }
+export default connect(mapStateToProps)(ProfileView)
