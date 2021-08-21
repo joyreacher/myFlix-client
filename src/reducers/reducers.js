@@ -33,26 +33,18 @@ function movies (state = [], action) {
   }
 }
 
-function user (state = [], action) {
+function profile (state = [], action) {
   switch (action.type) {
     case LOGIN:
-      return [
-        ...state,
-        {
-          username: action.username,
-          password: action.password
-        }
-      ]
+      return {
+        username: action.username
+      }
     case REGISTER:
-      return [
-        ...state,
-        {
-          username: action.username,
-          password: action.password,
-          email: action.email,
-          birthday: action.birthday
-        }
-      ]
+      return {
+        username: action.username,
+        email: action.email,
+        birthday: action.birthday
+      }
     default:
       return state
   }
@@ -61,7 +53,7 @@ function user (state = [], action) {
 const moviesApp = combineReducers({
   visibilityFilter,
   movies,
-  user
+  profile
 })
 
 export default moviesApp

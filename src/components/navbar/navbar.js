@@ -1,14 +1,20 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { LoginView } from '../login-view/login-view'
 // Bootstrap
 import { Navbar, Container, Row, Button } from 'react-bootstrap'
 
+const mapStateToProps = state => {
+  const { profile } = state
+  return { profile }
+}
 // Custom styles
 import './navbar.scss'
 
-function Nav ({ onLogOutClick, user }) {
-  if (!user) {
+function Nav ({ onLogOutClick, user, profile }) {
+  console.log(profile)
+  if (!localStorage.getItem('token')) {
     return (
       <Navbar className='mt-2 mb-5'>
         <Container>
@@ -37,7 +43,7 @@ function Nav ({ onLogOutClick, user }) {
         </Navbar.Brand>
         <Navbar.Collapse className='justify-content-end'>
           <Navbar.Text>
-            Signed in as: <Link to={`/user/${user}`}>{user}</Link>
+            Signed in as: <Link to={`/user/${profile.username}`}>{profile.username}</Link>
           </Navbar.Text>
         </Navbar.Collapse>
         <Navbar.Collapse className='justify-content-end'>
@@ -50,4 +56,4 @@ function Nav ({ onLogOutClick, user }) {
   )
 }
 
-export default Nav
+export default connect(mapStateToProps)(Nav)
