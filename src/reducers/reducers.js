@@ -40,15 +40,11 @@ function profile (state = [], action) {
         username: action.username
       }
     case REGISTER:
-      return [
-        ...state,
-        {
-          username: action.username,
-          password: action.password,
-          email: action.email,
-          birthday: action.birthday
-        }
-      ]
+      return {
+        username: action.username,
+        email: action.email,
+        birthday: action.birthday
+      }
     default:
       return state
   }
