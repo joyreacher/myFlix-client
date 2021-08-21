@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { register } from '../../actions/actions'
 import './registration-view.scss'
 
 // Bootstrap
@@ -11,7 +13,13 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel'
 import Button from 'react-bootstrap/Button'
 import axios from 'axios'
 import { LoginView } from '../login-view/login-view'
-export function RegistrationView (props) {
+
+const mapStateToProps = state => {
+  const { profile } = state
+  return { profile }
+}
+function RegistrationView (props) {
+  const { profile } = props
   const [signin, setSignin] = useState({
     value: ''
   })
@@ -91,7 +99,7 @@ export function RegistrationView (props) {
           <Form.Group>
             {/* <label className='text-danger' htmlFor='Username'>{username.errMsg ? username.errMsg : ''}</label> */}
             <FloatingLabel className={username.errMsg ? 'text-danger' : ''} label={username.errMsg ? username.errMsg : 'Username'} controlId='floatingInput'>
-              <Form.Control placeholder='Username' type='text' onChange={e => { setUsername({ value: e.target.value }) }} />
+              <Form.Control placeholder='Username' type='text' onChange={e => { props.register(e.target.value); setUsername({ value: e.target.value }) }} />
             </FloatingLabel>
             {/* <label className='text-danger' htmlFor='Password'>{password.errMsg ? password.errMsg : ''}</label> */}
             <FloatingLabel className={password.errMsg ? 'text-danger' : ''} label={password.errMsg ? password.errMsg : 'Password'} controlId='floatingInput'>
@@ -117,7 +125,7 @@ export function RegistrationView (props) {
     </Row>
   )
 }
-
+export default connect(mapStateToProps, { register })(RegistrationView)
 RegistrationView.propTypes = {
   onLoggedIn: PropTypes.func.isRequired
 }
