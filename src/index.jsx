@@ -1,7 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-// Bootstrap
-import Container from 'react-bootstrap/Container'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import moviesApp from './reducers/reducers'
@@ -20,9 +18,7 @@ class MyFlixApplication extends React.Component {
     return (
       <Provider store={store}>
         <ErrorBoundary>
-          <Container>
-            <MainView />
-          </Container>
+          <MainView />
         </ErrorBoundary>
       </Provider>
     )
