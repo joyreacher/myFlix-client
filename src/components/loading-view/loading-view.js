@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-
+import gsap from 'gsap'
 // bootstrap
 import { Container, Spinner, Row } from 'react-bootstrap'
 // custom styles
