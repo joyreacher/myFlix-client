@@ -6,13 +6,15 @@ import Loading from '../loading-view/loading-view'
 import { Row, Col, Container, Button, Form, CardGroup, Card } from 'react-bootstrap'
 import './profile-view.scss'
 import { ProfileUpdate } from './profile-view-update'
+import { updateProfile } from '../../actions/actions'
 
 const mapStateToProps = state => {
   const { profile } = state
   return { profile }
 }
 
-function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, profile }) {
+function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, profile, updateProfile }) {
+  // console.log(profile)
   const [match, setMatch] = useState(null)
   const [list, setList] = useState([])
   const [update, setUpdate] = useState(false)
@@ -93,7 +95,7 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
     setUpdate(false)
   }
   const updateInformation = (e) => {
-    setUpdate(true)
+    updateProfile(true)
   }
 
   // GETS ALL MOVIES
@@ -139,9 +141,12 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
   }, [update])
 
   if (list.length === 0) return <Loading />
-  if (update) {
+  if (profile.update) {
     return (
-      <ProfileUpdate user={user} cancelChanges={() => cancelChanges} randomProfile={profile} updateRef={update} handleUpdate={handleUpdate} />
+      <>
+        update
+      </>
+      // <ProfileUpdate user={user} cancelChanges={() => cancelChanges} randomProfile={profile} updateRef={update} handleUpdate={handleUpdate} />
     )
   }
   return (
@@ -227,4 +232,4 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
     </>
   )
 }
-export default connect(mapStateToProps)(ProfileView)
+export default connect(mapStateToProps, { updateProfile })(ProfileView)
