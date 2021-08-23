@@ -1,9 +1,9 @@
 import React from 'react'
-import { Col, Container, Row, Image, CardGroup } from 'react-bootstrap'
+import { Col, Container, Row, CardGroup } from 'react-bootstrap'
 import { connect } from 'react-redux'
 
 import VisibilityFilterInput from '../visibility-filter-input/visibility-filter-input'
-import CardList from '../card-list/card-list'
+import SearchList from '../card-list/search-list'
 import NotFeatured from '../not-featured/not-featured'
 import Featured from '../featured/featured'
 
@@ -30,17 +30,19 @@ function MoviesList (props) {
           <VisibilityFilterInput visibilityFilter={visibilityFilter} />
         </Col>
       </Row>
-      {visibilityFilter ? filteredMovies.map(m => { return <Col key={m._id}><CardList movie={m} /></Col> }) : ''}
+      {visibilityFilter ? filteredMovies.map(m => { return <Col key={m._id}><SearchList movie={m} /></Col> }) : ''}
       <Row>
         <Col>
           <h2>Featured</h2>
           <CardGroup>
-            <Featured movies={movies}/>
+            <Featured movies={movies} />
           </CardGroup>
         </Col>
+      </Row>
+      <Row>
         <Col>
-          <h2>Browse</h2>
-          <NotFeatured movies={movies}/>
+          <h2 className=''>Browse</h2>
+          <NotFeatured movies={movies} />
         </Col>
       </Row>
     </Container>
