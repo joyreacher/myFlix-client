@@ -17,6 +17,7 @@ import Loading from '../loading-view/loading-view'
 import Navbar from '../navbar/navbar'
 import Footer from '../footer/footer'
 
+import './main-view.scss'
 class MainView extends React.Component {
   constructor () {
     super()
