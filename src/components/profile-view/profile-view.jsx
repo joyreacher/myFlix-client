@@ -6,14 +6,14 @@ import Loading from '../loading-view/loading-view'
 import { Row, Col, Container, Button, Form, CardGroup, Card } from 'react-bootstrap'
 import './profile-view.scss'
 import { ProfileUpdate } from './profile-view-update'
-import { updateProfile, loadUser, add } from '../../actions/actions'
+import { updateProfile, loadUser, add, remove } from '../../actions/actions'
 
 const mapStateToProps = state => {
   const { profile, user, favoriteMovies } = state
   return { profile, user, favoriteMovies }
 }
 
-function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, profile, updateProfile, loadUser, add, favoriteMovies }) {
+function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, profile, updateProfile, loadUser, add, favoriteMovies, remove }) {
   const profileContainer = profile
   const [match, setMatch] = useState(null)
   const [list, setList] = useState([])
@@ -106,6 +106,9 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
       }
       console.log(result)
       console.log(`unchecked ${result.title}`)
+      console.log(result)
+      console.log(result._id)
+      remove(result._id)
     }
   }
 
@@ -256,4 +259,4 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
     </>
   )
 }
-export default connect(mapStateToProps, { updateProfile, loadUser, add })(ProfileView)
+export default connect(mapStateToProps, { updateProfile, loadUser, add, remove })(ProfileView)
