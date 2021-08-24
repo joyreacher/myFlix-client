@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { SET_FILTER, SET_MOVIES, LOGIN, REGISTER, UPDATE, LOAD_USER, ADD } from '../actions/actions'
+import { SET_FILTER, SET_MOVIES, LOGIN, REGISTER, UPDATE, LOAD_USER, ADD, REMOVE } from '../actions/actions'
 
 /**
  *
@@ -56,6 +56,9 @@ function profile (state = [], action) {
 
 function favoriteMovies (state = [], action) {
   switch (action.type) {
+    case REMOVE:
+      let index = state.indexOf({_id: action.id})
+      return state.splice(index, 1)
     case ADD:
       return [
         ...state,
