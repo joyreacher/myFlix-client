@@ -6,14 +6,15 @@ import Loading from '../loading-view/loading-view'
 import { Row, Col, Container, Button, Form, CardGroup, Card } from 'react-bootstrap'
 import './profile-view.scss'
 import { ProfileUpdate } from './profile-view-update'
-import { updateProfile, loadUser, add, remove } from '../../actions/actions'
+import { updateProfile, loadUser, add, remove, load } from '../../actions/actions'
 
 const mapStateToProps = state => {
   const { profile, user, favoriteMovies } = state
   return { profile, user, favoriteMovies }
 }
 
-function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, profile, updateProfile, loadUser, add, favoriteMovies, remove }) {
+function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, profile, updateProfile, loadUser, add, favoriteMovies, remove, load }) {
+  console.log(favoriteMovies)
   const profileContainer = profile
   const [match, setMatch] = useState(null)
   const [list, setList] = useState([])
@@ -94,8 +95,8 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
         setMatch('This movie already exists in your favorites')
       } else {
         add(result)
-        setSub(result)
-        setFavorites(result)
+        // setSub(result)
+        // setFavorites(result)
       }
     }
     if (!e.target.checked) {
@@ -152,6 +153,7 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
       // console.log(res.data)
       // console.log(loadUser())
       mongoData = res.data
+      
       return axios.get('https://randomuser.me/api/?results=1')
     }).then(response => {
       const data = response.data
@@ -160,9 +162,8 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
           picture: response.data.results[0].picture.large
         }
       )
+      load(mongoData.favorite_movies)
       loadUser(mongoData.username, response.data.results[0].picture.large, mongoData.email, mongoData.birthday, mongoData.favorite_movies)
-      console.log(user)
-      console.log('141')
       // res.data.results[0].picture.large = loadUser().image
       return data
     }).catch(function (error) {
@@ -237,8 +238,8 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
                     : favoriteMovies.map(movie => {
                       return (
                         <Card key={movie._id} className='m-3'>
-                          <Card.Img src={movie.ImgPath} alt='no image available' />
-                          <Card.Title>{movie.title}</Card.Title>
+                          <Card.Img src={movie.ImagePath} alt='no image available' />
+                          <Card.Title>{movie.Title}</Card.Title>
                           <Link to={`/movies/${movie._id}`}>
                             <Card.Text>Details</Card.Text>
                           </Link>
@@ -259,4 +260,4 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
     </>
   )
 }
-export default connect(mapStateToProps, { updateProfile, loadUser, add, remove })(ProfileView)
+export default connect(mapStateToProps, { updateProfile, loadUser, add, remove, load })(ProfileView)
