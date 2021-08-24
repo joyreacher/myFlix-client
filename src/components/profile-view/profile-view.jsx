@@ -6,14 +6,14 @@ import Loading from '../loading-view/loading-view'
 import { Row, Col, Container, Button, Form, CardGroup, Card } from 'react-bootstrap'
 import './profile-view.scss'
 import { ProfileUpdate } from './profile-view-update'
-import { updateProfile, loadUser, add, remove, load } from '../../actions/actions'
+import { updateProfile, loadUser, add, remove, load, cancelUpdate } from '../../actions/actions'
 
 const mapStateToProps = state => {
   const { profile, user, favoriteMovies } = state
   return { profile, user, favoriteMovies }
 }
 
-function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, profile, updateProfile, loadUser, add, favoriteMovies, remove, load }) {
+function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, profile, updateProfile, loadUser, add, favoriteMovies, remove, load, cancelUpdate }) {
   console.log(favoriteMovies)
   const profileContainer = profile
   const [match, setMatch] = useState(null)
@@ -173,7 +173,11 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
   if (profile === '') return <Loading />
   if (profile.update) {
     return (
-      <ProfileUpdate value={profile.username} user={user} cancelChanges={() => cancelChanges} randomProfile={profile} updateRef={update} handleUpdate={handleUpdate} />
+      <>
+        update
+        <button onClick={()=> cancelUpdate(false)}>cancel update</button>
+      </>
+      // <ProfileUpdate value={profile.username} user={user} cancelChanges={() => cancelChanges} randomProfile={profile} updateRef={update} handleUpdate={handleUpdate} />
     )
   }
   return (
@@ -259,4 +263,4 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
     </>
   )
 }
-export default connect(mapStateToProps, { updateProfile, loadUser, add, remove, load })(ProfileView)
+export default connect(mapStateToProps, { updateProfile, loadUser, add, remove, load, cancelUpdate })(ProfileView)
