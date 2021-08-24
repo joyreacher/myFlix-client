@@ -51,8 +51,8 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
     const accessToken = localStorage.getItem('token')
     // console.log(favorites.title)
     return axios.post('https://cinema-barn.herokuapp.com/users/mymovies/add', {
-      Username: list.username,
-      Title: favorites.title
+      Username: user.username,
+      Title: favoriteMovies[0].title
     }, {
       headers: { Authorization: `Bearer ${accessToken}` }
     }).then(res => {
@@ -229,23 +229,23 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
             </Col>
             <Col lg={4}>
               <CardGroup>
-                {/* {
-                  list.favorite_movies.length === 0
+                {
+                  favoriteMovies.length === 0
                     ? <Container>
                       <p>Bummer, you have no moves saved.</p>
                       </Container>
-                    : list.favorite_movies.map(movie => {
+                    : favoriteMovies.map(movie => {
                       return (
                         <Card key={movie._id} className='m-3'>
-                          <Card.Img src={movie.ImagePath} alt='no image available' />
-                          <Card.Title>{movie.Title}</Card.Title>
+                          <Card.Img src={movie.ImgPath} alt='no image available' />
+                          <Card.Title>{movie.title}</Card.Title>
                           <Link to={`/movies/${movie._id}`}>
                             <Card.Text>Details</Card.Text>
                           </Link>
                         </Card>
                       )
                     })
-                } */}
+                }
               </CardGroup>
               <Button className='btn bg-dark' onClick={() => getAllMovies()} data-bs-toggle='modal' data-bs-target='#exampleModal'>Add a movie!</Button>
             </Col>
