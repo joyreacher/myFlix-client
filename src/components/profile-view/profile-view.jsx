@@ -9,8 +9,8 @@ import { ProfileUpdate } from './profile-view-update'
 import { updateProfile, loadUser } from '../../actions/actions'
 
 const mapStateToProps = state => {
-  const { profile } = state
-  return { profile }
+  const { profile, user } = state
+  return { profile, user }
 }
 
 function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, profile, updateProfile, loadUser }) {
@@ -73,12 +73,13 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
   }, [match])
 
   const addMovies = (e) => {
+    console.log(user)
     if (e.target.checked) {
       const result = movies.find(({ _id }) => _id === e.target.value)
       if (!result) {
         return console.log('Could not find that movie')
       }
-      const matchFavs = list.favorite_movies.find(({ _id }) => _id === e.target.value)
+      const matchFavs = user.favorite_movies.find(({ _id }) => _id === e.target.value)
       if (matchFavs) {
         e.target.setAttribute('match', true)
         e.target.setAttribute('disabled', 'disabled')
@@ -139,7 +140,7 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
           picture: response.data.results[0].picture.large
         }
       )
-      loadUser(mongoData.username, response.data.results[0].picture.large, mongoData.email, mongoData.birthday)
+      loadUser(mongoData.username, response.data.results[0].picture.large, mongoData.email, mongoData.birthday, mongoData.favorite_movies)
       console.log(user)
       console.log('141')
       // res.data.results[0].picture.large = loadUser().image
