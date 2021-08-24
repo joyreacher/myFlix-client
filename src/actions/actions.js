@@ -5,6 +5,7 @@ export const REGISTER = 'REGISTER'
 export const UPDATE = 'UPDATE'
 export const LOAD_USER = 'LOAD_USER'
 export const ADD = 'ADD'
+export const REMOVE = 'REMOVE'
 
 
 export const setMovies = (value) => ({
@@ -45,5 +46,10 @@ export const loadUser = (username, image, email, birthday, favoriteMovies) => ({
 
 export const add = (id) => ({
   type: ADD,
+  id
+})
+
+export const remove = (id) => ({
+  type: REMOVE,
   id
 })
