@@ -2,6 +2,8 @@ export const SET_MOVIES = 'SET_MOVIES'
 export const SET_FILTER = 'SET_FILTER'
 export const LOGIN = 'LOGIN'
 export const REGISTER = 'REGISTER'
+export const UPDATE = 'UPDATE'
+export const LOAD_USER = 'LOAD_USER'
 
 
 export const setMovies = (value) => ({
@@ -24,4 +26,18 @@ export const register = (username, email, birthday) => ({
   username,
   email,
   birthday
+})
+
+export const updateProfile = (value) => ({
+  type: UPDATE,
+  payload: value
+})
+
+export const loadUser = (username, image, email, birthday, favoriteMovies) => ({
+  type: LOAD_USER,
+  username,
+  image,
+  email,
+  birthday,
+  favoriteMovies
 })
