@@ -153,7 +153,6 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
       // console.log(res.data)
       // console.log(loadUser())
       mongoData = res.data
-      
       return axios.get('https://randomuser.me/api/?results=1')
     }).then(response => {
       const data = response.data
