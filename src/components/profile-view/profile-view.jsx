@@ -9,13 +9,13 @@ import { ProfileUpdate } from './profile-view-update'
 import { updateProfile, loadUser, add, remove, load, cancelUpdate } from '../../actions/actions'
 
 const mapStateToProps = state => {
-  const { profile, user, favoriteMovies } = state
-  return { profile, user, favoriteMovies }
+  const { profile, user, selectedMovies } = state
+  return { profile, user, selectedMovies }
 }
 
-function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, profile, updateProfile, loadUser, add, favoriteMovies, remove, load, cancelUpdate }) {
+function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, profile, updateProfile, loadUser, add, selectedMovies, remove, load, cancelUpdate }) {
   console.log(user)
-  console.log(favoriteMovies)
+  console.log(selectedMovies)
   const profileContainer = profile
   const [match, setMatch] = useState(null)
   const [list, setList] = useState([])
@@ -50,7 +50,7 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(favoriteMovies)
+    console.log(selectedMovies)
     // favoriteMovies.forEach(selected =>{
     //   return console.log(selected)
     // })
@@ -92,7 +92,7 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
       }
 
       // search user list
-      const matchFavs = favoriteMovies.find(({ _id }) => _id === e.target.value)
+      const matchFavs = selectedMovies.find(({ _id }) => _id === e.target.value)
       if (matchFavs) {
         e.target.setAttribute('match', true)
         e.target.setAttribute('disabled', 'disabled')
