@@ -6,15 +6,14 @@ import Loading from '../loading-view/loading-view'
 import { Row, Col, Container, Button, Form, CardGroup, Card } from 'react-bootstrap'
 import './profile-view.scss'
 import { ProfileUpdate } from './profile-view-update'
-import { updateProfile } from '../../actions/actions'
+import { updateProfile, loadUser } from '../../actions/actions'
 
 const mapStateToProps = state => {
-  const { profile } = state
-  return { profile }
+  const { profile, user } = state
+  return { profile, user }
 }
 
-function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, profile, updateProfile }) {
-  // console.log(profile)
+function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, profile, updateProfile, loadUser }) {
   const [match, setMatch] = useState(null)
   const [list, setList] = useState([])
   const [update, setUpdate] = useState(false)
@@ -121,32 +120,38 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
 
   // GET USER DATA ON LOAD INCLUDING PICTURE
   useEffect(() => {
+    console.log(profile.username)
     const accessToken = localStorage.getItem('token')
+    let mongoData = ''
     axios.get(`https://cinema-barn.herokuapp.com/user/${profile.username}`, {
       headers: { Authorization: `Bearer ${accessToken}` }
     }).then(res => {
-      setList(res.data)
+      // setList(res.data)
+      // console.log(res.data)
+      // console.log(loadUser())
+      mongoData = res.data
       return axios.get('https://randomuser.me/api/?results=1')
-    }).then(res => {
-      const data = res.data
+    }).then(response => {
+      const data = response.data
       setRandomImg(
         {
-          picture: res.data.results[0].picture.large
+          picture: response.data.results[0].picture.large
         }
       )
+      loadUser(mongoData.username, response.data.results[0].picture.large, mongoData.email, mongoData.birthday)
+      console.log(user)
+      console.log('141')
+      // res.data.results[0].picture.large = loadUser().image
       return data
     }).catch(function (error) {
       console.log(error)
     })
   }, [update])
 
-  if (list.length === 0) return <Loading />
+  if (profile === '') return <Loading />
   if (profile.update) {
     return (
-      <>
-        update
-      </>
-      // <ProfileUpdate user={user} cancelChanges={() => cancelChanges} randomProfile={profile} updateRef={update} handleUpdate={handleUpdate} />
+      <ProfileUpdate value={profile.username} user={user} cancelChanges={() => cancelChanges} randomProfile={profile} updateRef={update} handleUpdate={handleUpdate} />
     )
   }
   return (
@@ -187,7 +192,7 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
         </div>
       </div>
       <Container>
-        <h1 className='my-5 bg-dark text-light d-inline-block'>{list.username}'s Profile</h1>
+        <h1 className='my-5 bg-dark text-light d-inline-block'>{profile.username}'s Profile</h1>
         <Row className='my-5'>
           <Col lg={8} className='d-flex justify-content-lg-between w-100'>
             <Form.Control className='mx-5 w-25' type='submit' value='update profile' onClick={() => updateInformation()} />
@@ -202,7 +207,7 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
             </Col>
             <Col lg={4}>
               <CardGroup>
-                {
+                {/* {
                   list.favorite_movies.length === 0
                     ? <Container>
                       <p>Bummer, you have no moves saved.</p>
@@ -218,7 +223,7 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
                         </Card>
                       )
                     })
-                }
+                } */}
               </CardGroup>
               <Button className='btn bg-dark' onClick={() => getAllMovies()} data-bs-toggle='modal' data-bs-target='#exampleModal'>Add a movie!</Button>
             </Col>
@@ -232,4 +237,4 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
     </>
   )
 }
-export default connect(mapStateToProps, { updateProfile })(ProfileView)
+export default connect(mapStateToProps, { updateProfile, loadUser })(ProfileView)
