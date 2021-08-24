@@ -6,14 +6,14 @@ import Loading from '../loading-view/loading-view'
 import { Row, Col, Container, Button, Form, CardGroup, Card } from 'react-bootstrap'
 import './profile-view.scss'
 import { ProfileUpdate } from './profile-view-update'
-import { updateProfile, loadUser } from '../../actions/actions'
+import { updateProfile, loadUser, add } from '../../actions/actions'
 
 const mapStateToProps = state => {
-  const { profile, user } = state
-  return { profile, user }
+  const { profile, user, favoriteMovies } = state
+  return { profile, user, favoriteMovies }
 }
 
-function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, profile, updateProfile, loadUser }) {
+function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, profile, updateProfile, loadUser, add, favoriteMovies }) {
   const profileContainer = profile
   const [match, setMatch] = useState(null)
   const [list, setList] = useState([])
@@ -73,22 +73,39 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
   }, [match])
 
   const addMovies = (e) => {
-    console.log(user)
+    console.log(e.target)
+    
+    
+    // if movie is checked
     if (e.target.checked) {
+      // check list of all movies to find if it exists -- id is destructured
       const result = movies.find(({ _id }) => _id === e.target.value)
+      // if there is no movie
       if (!result) {
         return console.log('Could not find that movie')
       }
-      const matchFavs = user.favorite_movies.find(({ _id }) => _id === e.target.value)
+
+      // search user list
+      const matchFavs = favoriteMovies.find(({ _id }) => _id === e.target.value)
       if (matchFavs) {
         e.target.setAttribute('match', true)
         e.target.setAttribute('disabled', 'disabled')
         console.log('there is a match')
         setMatch('This movie already exists in your favorites')
       } else {
+        add(result)
         setSub(result)
         setFavorites(result)
       }
+    }
+    if (!e.target.checked) {
+      const result = movies.find(({ _id }) => _id === e.target.value)
+      // if there is no movie
+      if (!result) {
+        return console.log('Could not find that movie')
+      }
+      console.log(result)
+      console.log(`unchecked ${result.title}`)
     }
   }
 
@@ -239,4 +256,4 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
     </>
   )
 }
-export default connect(mapStateToProps, { updateProfile, loadUser })(ProfileView)
+export default connect(mapStateToProps, { updateProfile, loadUser, add })(ProfileView)
