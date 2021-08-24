@@ -60,7 +60,7 @@ function profile (state = [], action) {
   }
 }
 
-function favoriteMovies (state = [], action) {
+function selectedMovies (state = [], action) {
   switch (action.type) {
     case REMOVE:
       let index = state.indexOf({_id: action.id})
@@ -103,7 +103,7 @@ const moviesApp = combineReducers({
   movies,
   profile,
   user,
-  favoriteMovies
+  selectedMovies
 })
 
 export default moviesApp
