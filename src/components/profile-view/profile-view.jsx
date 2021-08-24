@@ -14,6 +14,7 @@ const mapStateToProps = state => {
 }
 
 function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, profile, updateProfile, loadUser, add, favoriteMovies, remove, load, cancelUpdate }) {
+  console.log(user)
   console.log(favoriteMovies)
   const profileContainer = profile
   const [match, setMatch] = useState(null)
@@ -49,21 +50,25 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    const accessToken = localStorage.getItem('token')
-    // console.log(favorites.title)
-    return axios.post('https://cinema-barn.herokuapp.com/users/mymovies/add', {
-      Username: user.username,
-      Title: favoriteMovies[0].title
-    }, {
-      headers: { Authorization: `Bearer ${accessToken}` }
-    }).then(res => {
-      setSub(null)
-      const data = res.data
-      console.log(data)
-    })
-      .catch(e => {
-        console.log(e)
-      })
+    console.log(favoriteMovies)
+    // favoriteMovies.forEach(selected =>{
+    //   return console.log(selected)
+    // })
+    // const accessToken = localStorage.getItem('token')
+    // // console.log(favorites.title)
+    // return axios.post('https://cinema-barn.herokuapp.com/users/mymovies/add', {
+    //   Username: user.username,
+    //   Title: favoriteMovies[0].title
+    // }, {
+    //   headers: { Authorization: `Bearer ${accessToken}` }
+    // }).then(res => {
+    //   setSub(null)
+    //   const data = res.data
+    //   console.log(data)
+    // })
+    //   .catch(e => {
+    //     console.log(e)
+    //   })
   }
 
   useEffect((e) => {
@@ -153,6 +158,7 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
       // console.log(res.data)
       // console.log(loadUser())
       mongoData = res.data
+      console.log(mongoData.favorite_movies)
       return axios.get('https://randomuser.me/api/?results=1')
     }).then(response => {
       const data = response.data
@@ -161,14 +167,14 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
           picture: response.data.results[0].picture.large
         }
       )
-      load(mongoData.favorite_movies)
+      // load(mongoData.favorite_movies)
       loadUser(mongoData.username, response.data.results[0].picture.large, mongoData.email, mongoData.birthday, mongoData.favorite_movies)
       // res.data.results[0].picture.large = loadUser().image
       return data
     }).catch(function (error) {
       console.log(error)
     })
-  }, [update])
+  }, [])
 
   if (profile === '') return <Loading />
   if (profile.update) {
@@ -196,7 +202,7 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
                     ? '..loading'
                     : movies.map(movie => {
                       return (
-                        <Col key={movie._id} lg={6} className='p-3'>
+                        <Col key={movie._id} lg={3} className=''>
                           <Card>
                             <Form.Label htmlFor={movie._id} className='btn btn-secondary'>
                               <Card.Img src={movie.ImgPath} className='movie__img' />
@@ -234,11 +240,11 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
             <Col lg={4}>
               <CardGroup>
                 {
-                  favoriteMovies.length === 0
+                  user.favorite_movies.length === 0
                     ? <Container>
                       <p>Bummer, you have no moves saved.</p>
                       </Container>
-                    : favoriteMovies.map(movie => {
+                    : user.favorite_movies.map(movie => {
                       return (
                         <Card key={movie._id} className='m-3'>
                           <Card.Img src={movie.ImagePath} alt='no image available' />
