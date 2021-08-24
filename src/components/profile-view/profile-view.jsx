@@ -9,11 +9,12 @@ import { ProfileUpdate } from './profile-view-update'
 import { updateProfile, loadUser } from '../../actions/actions'
 
 const mapStateToProps = state => {
-  const { profile, user } = state
-  return { profile, user }
+  const { profile } = state
+  return { profile }
 }
 
 function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, profile, updateProfile, loadUser }) {
+  const profileContainer = profile
   const [match, setMatch] = useState(null)
   const [list, setList] = useState([])
   const [update, setUpdate] = useState(false)
@@ -120,10 +121,10 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
 
   // GET USER DATA ON LOAD INCLUDING PICTURE
   useEffect(() => {
-    console.log(profile.username)
+    const username = localStorage.getItem('user')
     const accessToken = localStorage.getItem('token')
     let mongoData = ''
-    axios.get(`https://cinema-barn.herokuapp.com/user/${profile.username}`, {
+    axios.get(`https://cinema-barn.herokuapp.com/user/${username}`, {
       headers: { Authorization: `Bearer ${accessToken}` }
     }).then(res => {
       // setList(res.data)
