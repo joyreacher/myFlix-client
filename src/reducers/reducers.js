@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { SET_FILTER, SET_MOVIES, LOGIN, REGISTER, UPDATE, LOAD_USER, ADD, REMOVE } from '../actions/actions'
+import { SET_FILTER, SET_MOVIES, LOGIN, REGISTER, UPDATE, LOAD_USER, ADD, REMOVE, LOAD, CANCEL_UPDATE } from '../actions/actions'
 
 /**
  *
@@ -35,13 +35,19 @@ function movies (state = [], action) {
 
 function profile (state = [], action) {
   switch (action.type) {
-    case UPDATE:
-      return {
-        update: action.payload
-      }
     case LOGIN:
       return {
         username: action.username
+      }
+    case UPDATE:
+      return {
+        ...state,
+        update: action.payload
+      }
+    case CANCEL_UPDATE:
+      return {
+        ...state,
+        update: action.payload
       }
     case REGISTER:
       return {
@@ -64,12 +70,20 @@ function favoriteMovies (state = [], action) {
         ...state,
         action.id
       ]
+    case LOAD:
+      return action.id
     default:
       return state
   }
 }
 
-function user (state = {}, action) {
+function user (state = {
+  username: '',
+  image: '',
+  email: '',
+  birthday: '',
+  favorite_movies: []
+}, action) {
   switch (action.type) {
     case LOAD_USER:
       return {
@@ -77,7 +91,7 @@ function user (state = {}, action) {
         image: action.image,
         email: action.email,
         birthday: action.birthday,
-        favorite_movies: []
+        favorite_movies: action.favoriteMovies
       }
     default:
       return state
