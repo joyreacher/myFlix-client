@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { SET_FILTER, SET_MOVIES, LOGIN, REGISTER, UPDATE, LOAD_USER } from '../actions/actions'
+import { SET_FILTER, SET_MOVIES, LOGIN, REGISTER, UPDATE, LOAD_USER, ADD_MOVIE } from '../actions/actions'
 
 /**
  *
@@ -63,6 +63,16 @@ function user (state = {}, action) {
         email: action.email,
         birthday: action.birthday,
         favorite_movies: []
+      }
+    case ADD_MOVIE:
+      return {
+        username: action.username,
+        image: action.image,
+        email: action.email,
+        birthday: action.birthday,
+        favorite_movies: [
+          action.id
+        ]
       }
     default:
       return state
