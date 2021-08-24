@@ -4,6 +4,7 @@ export const LOGIN = 'LOGIN'
 export const REGISTER = 'REGISTER'
 export const UPDATE = 'UPDATE'
 export const LOAD_USER = 'LOAD_USER'
+export const ADD_MOVIE = 'ADD_MOVIE'
 
 
 export const setMovies = (value) => ({
@@ -40,4 +41,9 @@ export const loadUser = (username, image, email, birthday, favoriteMovies) => ({
   email,
   birthday,
   favoriteMovies
+})
+
+export const addMovie = (id) => ({
+  type: ADD_MOVIE,
+  id
 })
