@@ -60,8 +60,7 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
         }, {
           headers: { Authorization: `Bearer ${accessToken}` }
         }).then(res => {
-          const data = res.data
-          console.log(data)
+          window.location.reload()
         }).catch(e => {
           console.log(e)
         })
@@ -76,6 +75,7 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
         // setSub(null)
         const data = res.data
         console.log(data)
+        window.location.reload()
       })
         .catch(e => {
           console.log(e)
@@ -204,7 +204,7 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
                 </CardGroup>
                 <Form.Group className='modal-footer'>
                   <Form.Control type='button' className='btn btn-secondary' data-bs-dismiss='modal' value='cancel' />
-                  <Form.Control type='submit' className='btn btn-primary' value='Add' />
+                  <Form.Control type='submit' className='btn btn-primary' value='Add' data-bs-toggle='modal' data-bs-target='#exampleModal' />
                 </Form.Group>
               </Form>
             </div>
