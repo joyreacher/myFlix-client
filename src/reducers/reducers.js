@@ -66,12 +66,15 @@ function selectedMovies (state = favoriteMovies, action) {
   switch (action.type) {
     case REMOVE:
       return {
-        // ...state,
+        ...state,
         movies: state.movies.filter((item, index) => item._id !== action.id)
       }
     case ADD:
       return {
-        movies: [...state.movies, action.id]
+        movies: [
+          ...state.movies,
+          action.id
+        ]
       }
     case LOAD:
       return {
