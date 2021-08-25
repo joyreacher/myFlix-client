@@ -14,7 +14,7 @@ const mapStateToProps = state => {
 }
 
 function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, profile, updateProfile, loadUser, add, selectedMovies, remove, load, cancelUpdate }) {
-  console.log(user)
+  // console.log(user)
   console.log(selectedMovies)
   const profileContainer = profile
   const [match, setMatch] = useState(null)
@@ -50,71 +50,59 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(selectedMovies)
-    // favoriteMovies.forEach(selected =>{
-    //   return console.log(selected)
-    // })
-    // const accessToken = localStorage.getItem('token')
-    // // console.log(favorites.title)
-    // return axios.post('https://cinema-barn.herokuapp.com/users/mymovies/add', {
-    //   Username: user.username,
-    //   Title: favoriteMovies[0].title
-    // }, {
-    //   headers: { Authorization: `Bearer ${accessToken}` }
-    // }).then(res => {
-    //   setSub(null)
-    //   const data = res.data
-    //   console.log(data)
-    // })
-    //   .catch(e => {
-    //     console.log(e)
-    //   })
-  }
-
-  useEffect((e) => {
-    if (match !== null) {
-      const input = document.querySelector('input[match="true"')
-      input.insertAdjacentHTML('afterend', "<span style='color:red'>This movie is in your favorites 86</span>")
+    const accessToken = localStorage.getItem('token')
+    if (selectedMovies.movies.length > 1) {
+      selectedMovies.movies.forEach(selected => {
+        console.log(selected)
+        return axios.post('https://cinema-barn.herokuapp.com/users/mymovies/add', {
+          Username: user.username,
+          Title: selected.title
+        }, {
+          headers: { Authorization: `Bearer ${accessToken}` }
+        }).then(res => {
+          const data = res.data
+          console.log(data)
+        }).catch(e => {
+          console.log(e)
+        })
+      })
+    } else {
+      return axios.post('https://cinema-barn.herokuapp.com/users/mymovies/add', {
+        Username: user.username,
+        Title: selectedMovies.movies[0].title
+      }, {
+        headers: { Authorization: `Bearer ${accessToken}` }
+      }).then(res => {
+        // setSub(null)
+        const data = res.data
+        console.log(data)
+      })
+        .catch(e => {
+          console.log(e)
+        })
     }
-  }, [match])
+  }
 
   const addMovies = (e) => {
     console.log(e.target)
-    
-    
-    // if movie is checked
     if (e.target.checked) {
-      // check list of all movies to find if it exists -- id is destructured
+      // check db for movie
       const result = movies.find(({ _id }) => _id === e.target.value)
-      // if there is no movie
-      if (!result) {
-        return console.log('Could not find that movie')
-      }
-
-      // search user list
-      const matchFavs = selectedMovies.find(({ _id }) => _id === e.target.value)
+      // check favorite movies in user state
+      const matchFavs = user.favorite_movies.find(({ _id }) => _id === e.target.value)
       if (matchFavs) {
         e.target.setAttribute('match', true)
         e.target.setAttribute('disabled', 'disabled')
-        console.log('there is a match')
-        setMatch('This movie already exists in your favorites')
+        e.target.insertAdjacentHTML('afterend', "<span style='color:red'>This movie is in your favorites</span>")
+        return false
       } else {
-        add(result)
-        // setSub(result)
-        // setFavorites(result)
+        console.log('add')
+        return add(result)
       }
     }
     if (!e.target.checked) {
-      const result = movies.find(({ _id }) => _id === e.target.value)
-      // if there is no movie
-      if (!result) {
-        return console.log('Could not find that movie')
-      }
-      console.log(result)
-      console.log(`unchecked ${result.title}`)
-      console.log(result)
-      console.log(result._id)
-      remove(result._id)
+      console.log('remove')
+      return remove(e.target.value)
     }
   }
 
@@ -235,7 +223,7 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
           <Row>
             <Col lg={4}>
               <img src={randomImg.picture} alt='Image goes here' />
-              <p>{list.username}</p>
+              <p>{user.username}</p>
             </Col>
             <Col lg={4}>
               <CardGroup>
