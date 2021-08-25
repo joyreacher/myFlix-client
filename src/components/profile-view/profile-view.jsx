@@ -164,7 +164,7 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
     })
   }, [])
 
-  if (profile === '') return <Loading />
+  if (!randomImg.picture) return <Loading />
   if (profile.update) {
     return (
       <>
@@ -248,8 +248,8 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
               <Button className='btn bg-dark' onClick={() => getAllMovies()} data-bs-toggle='modal' data-bs-target='#exampleModal'>Add a movie!</Button>
             </Col>
             <Col lg={4}>
-              <p className='fs-6'>{list.email}</p>
-              <p className='fs-6'>{list.birthday}</p>
+              <p className='fs-6'>{user.email}</p>
+              <p className='fs-6'>{user.birthday}</p>
             </Col>
           </Row>
         </div>
