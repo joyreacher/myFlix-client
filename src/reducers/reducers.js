@@ -59,19 +59,24 @@ function profile (state = [], action) {
       return state
   }
 }
-
-function selectedMovies (state = [], action) {
+const favoriteMovies = {
+  movies: []
+}
+function selectedMovies (state = favoriteMovies, action) {
   switch (action.type) {
     case REMOVE:
-      let index = state.indexOf({_id: action.id})
-      return state.splice(index, 1)
+      return {
+        // ...state,
+        movies: state.movies.filter((item, index) => item._id !== action.id)
+      }
     case ADD:
-      return [
-        ...state,
-        action.id
-      ]
+      return {
+        movies: [...state.movies, action.id]
+      }
     case LOAD:
-      return action.id
+      return {
+        movies: action.id
+      }
     default:
       return state
   }
