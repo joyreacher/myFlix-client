@@ -8,7 +8,7 @@ export const ADD = 'ADD'
 export const REMOVE = 'REMOVE'
 export const LOAD = 'LOAD'
 export const CANCEL_UPDATE = 'CANCEL_UPDATE'
-
+export const ERROR = 'ERROR'
 
 export const setMovies = (value) => ({
   type: SET_MOVIES,
@@ -63,4 +63,9 @@ export const remove = (id) => ({
 export const load = (id) => ({
   type: LOAD,
   id
+})
+
+export const error = (text) => ({
+  type: ERROR,
+  text
 })
