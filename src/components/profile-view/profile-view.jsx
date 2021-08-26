@@ -3,9 +3,9 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import Loading from '../loading-view/loading-view'
-import { Row, Col, Container, Button, Form, CardGroup, Card } from 'react-bootstrap'
+import { Row, Col, Container, Button, Form, CardGroup, Card, FloatingLabel } from 'react-bootstrap'
 import './profile-view.scss'
-import { ProfileUpdate } from './profile-view-update'
+import { ProfileUpdate } from './update-profile-view'
 import { updateProfile, loadUser, add, remove, load, cancelUpdate } from '../../actions/actions'
 
 const mapStateToProps = state => {
@@ -14,7 +14,7 @@ const mapStateToProps = state => {
 }
 
 function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, profile, updateProfile, loadUser, add, selectedMovies, remove, load, cancelUpdate }) {
-  // console.log(user)
+  console.log('this is the user var: ', user)
   console.log(selectedMovies)
   const profileContainer = profile
   const [match, setMatch] = useState(null)
@@ -107,7 +107,7 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
   }
 
   const cancelChanges = () => {
-    setUpdate(false)
+    updateProfile(false)
   }
   const updateInformation = (e) => {
     updateProfile(true)
@@ -168,10 +168,61 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
   if (profile.update) {
     return (
       <>
-        update
-        <button onClick={()=> cancelUpdate(false)}>cancel update</button>
+        <h1>{user.username}'s Profile</h1>
+        <Form.Control className='mx-5 w-25' type='submit' value='submit' onClick={handleSubmit} readOnly/>
+        <Form.Control className='mx-5 w-25' onClick={()=> cancelChanges(false)} value='cancel' readOnly/>
+        <div>
+          <Form>
+            <Row>
+              <Col>
+                <img src={randomImg.picture} />
+                <Form.Group>
+                  <FloatingLabel label={user.username} controlId='Username'>
+                    <Form.Control placeholder='Username' type='text' onChange={e => console.log(e.target.value)} />
+                  </FloatingLabel>
+                  <FloatingLabel label='Password' controlId='Password'>
+                    <Form.Control placeholder='Password' type='password' onChange={e => console.log(e.target.value)} />
+                  </FloatingLabel>
+                </Form.Group>
+              </Col>
+              <Col lg={4}>
+                <CardGroup>
+                  {
+                    user.favorite_movies.length === 0
+                      ? <Container>
+                        <p>No movies to show 🤦 </p>
+                        </Container>
+                      : user.favorite_movies.map(movie => {
+                        return (
+                          <Card key={movie._id} className='m-3 p-2'>
+                            <Form.Label className='btn btn-secondary' htmlFor={movie._id}>
+                              <Card.Img src={movie.ImagePath} />
+                            </Form.Label>
+                            <Card.Title>{movie.Title}</Card.Title>
+                            <Form.Check id={movie._id} label='Delete' value={movie._id} onChange={(e) => { deleteMovies(e) }} />
+                          </Card>
+                        )
+                      })
+                  }
+                </CardGroup>
+              </Col>
+              <Col>
+                <Form.Group>
+                  <FloatingLabel lable={user.email} controlId='Email'>
+                    <Form.Control type='text' value={user.email} onChange={e => console.log(e.target.value)} />
+                  </FloatingLabel>
+                </Form.Group>
+
+                <Form.Group>
+                  <FloatingLabel label={user.birthday} controlId='Birthday'>
+                    <Form.Control type='date' value={user.birthday} onChange={e => console.log(e.target.value)} />
+                  </FloatingLabel>
+                </Form.Group>
+              </Col>
+            </Row>
+          </Form>
+        </div>
       </>
-      // <ProfileUpdate value={profile.username} user={user} cancelChanges={() => cancelChanges} randomProfile={profile} updateRef={update} handleUpdate={handleUpdate} />
     )
   }
   return (
