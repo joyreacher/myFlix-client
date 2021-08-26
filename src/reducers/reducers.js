@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { SET_FILTER, SET_MOVIES, LOGIN, REGISTER, UPDATE, LOAD_USER, ADD, REMOVE, LOAD, CANCEL_UPDATE } from '../actions/actions'
+import { SET_FILTER, SET_MOVIES, LOGIN, REGISTER, UPDATE, LOAD_USER, ADD, REMOVE, LOAD, CANCEL_UPDATE, ERROR } from '../actions/actions'
 
 /**
  *
@@ -105,13 +105,22 @@ function user (state = {
       return state
   }
 }
+
+function error (state = '', action) {
+  switch (action.type) {
+    default:
+      return state
+  }
+}
+
 // ? COMBINE REDUCERS ABOVE
 const moviesApp = combineReducers({
   visibilityFilter,
   movies,
   profile,
   user,
-  selectedMovies
+  selectedMovies,
+  error
 })
 
 export default moviesApp
