@@ -6,6 +6,8 @@ export const UPDATE = 'UPDATE'
 export const LOAD_USER = 'LOAD_USER'
 export const ADD = 'ADD'
 export const REMOVE = 'REMOVE'
+export const LOAD = 'LOAD'
+export const CANCEL_UPDATE = 'CANCEL_UPDATE'
 
 
 export const setMovies = (value) => ({
@@ -34,6 +36,10 @@ export const updateProfile = (value) => ({
   type: UPDATE,
   payload: value
 })
+export const cancelUpdate = (value) => ({
+  type: CANCEL_UPDATE,
+  payload: value
+})
 
 export const loadUser = (username, image, email, birthday, favoriteMovies) => ({
   type: LOAD_USER,
@@ -51,5 +57,10 @@ export const add = (id) => ({
 
 export const remove = (id) => ({
   type: REMOVE,
+  id
+})
+
+export const load = (id) => ({
+  type: LOAD,
   id
 })
