@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { SET_FILTER, SET_MOVIES, LOGIN, REGISTER, UPDATE, LOAD_USER, ADD, REMOVE, LOAD, CANCEL_UPDATE, ERROR } from '../actions/actions'
+import { SET_FILTER, SET_MOVIES, LOGIN, REGISTER, UPDATE, LOAD_USER, ADD, REMOVE, LOAD, CANCEL_UPDATE, ERROR, UPDATE_USER } from '../actions/actions'
 
 /**
  *
@@ -106,8 +106,28 @@ function user (state = {
   }
 }
 
+function updatedUser (state = {}, action) {
+  switch (action.type) {
+    case UPDATE_USER:
+      return {
+        username: action.username,
+        password: action.password,
+        email: action.email,
+        birthday: action.birthday,
+        favorite_movies: action.favoriteMovies
+      }
+    default:
+      return state
+  }
+}
+
 function error (state = '', action) {
   switch (action.type) {
+    case ERROR:
+      return [
+        ...state,
+        action.text
+      ]
     default:
       return state
   }
@@ -120,7 +140,8 @@ const moviesApp = combineReducers({
   profile,
   user,
   selectedMovies,
-  error
+  error,
+  updatedUser
 })
 
 export default moviesApp
