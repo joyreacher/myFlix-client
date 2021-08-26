@@ -6,15 +6,16 @@ import Loading from '../loading-view/loading-view'
 import { Row, Col, Container, Button, Form, CardGroup, Card, FloatingLabel } from 'react-bootstrap'
 import './profile-view.scss'
 import { ProfileUpdate } from './update-profile-view'
-import { updateProfile, loadUser, add, remove, load, cancelUpdate } from '../../actions/actions'
+// ACTIONS
+import { updatedProfile, updateProfile, loadUser, add, remove, load, cancelUpdate, error } from '../../actions/actions'
 
 const mapStateToProps = state => {
-  const { profile, user, selectedMovies } = state
-  return { profile, user, selectedMovies }
+  const { profile, user, selectedMovies, updatedUser } = state
+  return { profile, user, selectedMovies, updatedUser }
 }
 
-function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, profile, updateProfile, loadUser, add, selectedMovies, remove, load, cancelUpdate }) {
-  console.log('this is the user var: ', user)
+function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, getMovies, username, handleUpdate, profile, updateProfile, loadUser, add, selectedMovies, remove, load, cancelUpdate }) {
+  console.log('this is the user var: ', updatedUser)
   console.log(selectedMovies)
   const profileContainer = profile
   const [match, setMatch] = useState(null)
@@ -25,9 +26,104 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
   const [movies, setMovies] = useState([])
   const [favorites, setFavorites] = useState([])
   const [sub, setSub] = useState('')
-  const [error, setError] = useState({
-    add: ' '
-  })
+  // const [error, setError] = useState({
+  //   add: ' '
+  // })
+  const [password, setPassword] = useState('')
+  const removeMovie = []
+
+  // if a movie is marked for delation
+  const deleteMovies = (e) => {
+    // console.log(e.target.checked)
+    if (removeMovie < 1) {
+      // IS MOFRE THAN ONE MOVIE
+      user.favorite_movies.forEach(movie => {
+        if (e.target.value == movie._id) {
+          // console.log(movie.Title + ' has got to go.')
+          removeMovie.push(movie)
+        }
+      })
+    } else {
+      // IF THERE IS ONLY ONE MOVIE
+      removeMovie.push(user.favorite_movies[0])
+    }
+    console.log(removeMovie)
+  }
+
+  const handleSubmitUpdate = (e) => {
+    e.preventDefault()
+    const accessToken = localStorage.getItem('token')
+
+    console.log(removeMovie)
+    // deletes movies stored in removeMoves array
+    if (removeMovie.length != 0) {
+      console.log(removeMovie)
+      removeMovie.map(movie => {
+        axios.post('https://cinema-barn.herokuapp.com/users/mymovies/delete', {
+          Username: user.username,
+          Title: movie.Title
+        }, { headers: { Authorization: `Bearer ${accessToken}` } })
+          .then(res => {
+            const data = res.data
+            console.log(data) // so and so was deleted
+            handleUpdate()
+          }).catch(e => {
+            error('This is the check on 70')
+            console.log(e)
+            return 'Something went wrong'
+          })
+      })
+    }
+
+    // Error check
+    if (error != '') {
+      error('This is the check on 78')
+    }
+    // if (!username || username.length == 0 && password || password.length == 0 && email || email.length == 0 && birthday || birthday.length == 0) {
+    //   return setError({
+    //     username: true,
+    //     password: true,
+    //     email: true,
+    //     birthday: true
+    //   }
+    //   )
+    // }
+
+    axios.put(`https://cinema-barn.herokuapp.com/users/${user.username}`, {
+      Username: !updatedUser.username ? user.username : updatedUser.username,
+      Password: password !== updatedUser.password ? '' : updatedUser.password,
+      Email: !updatedUser.email ? user.email : updatedUser.email,
+      Birthday: !updatedUser.birthday ? user.birthday : updatedUser.birthday,
+      favoriteMovies: user.favorite_movies
+    }, { headers: { Authorization: `Bearer ${accessToken}` } })
+      .then(res => {
+        const data = res.data
+        updateProfile(
+          {
+            username: data.username,
+            password: data.password,
+            email: data.email,
+            birthday: data.birthday,
+            favorite_movies: data.favorite_movies
+          }
+        )
+        // setList(
+        //   {
+        //     username: data.username,
+        //     password: data.password,
+        //     email: data.email,
+        //     birthday: data.birthday,
+        //     favorite_movies: data.favorite_movies
+        //   }
+        // )
+        // setUpdate(false)
+        updateProfile(false)
+        // handleUpdate()
+      }).catch(e => {
+        error('This is the check on 112')
+        console.log(e)
+      })
+  }
 
   const deleteUser = (e) => {
     e.preventDefault()
@@ -169,19 +265,22 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
     return (
       <>
         <h1>{user.username}'s Profile</h1>
-        <Form.Control className='mx-5 w-25' type='submit' value='submit' onClick={handleSubmit} readOnly/>
+        <Form.Control className='mx-5 w-25' type='submit' value='submit' onClick={handleSubmitUpdate} readOnly/>
         <Form.Control className='mx-5 w-25' onClick={()=> cancelChanges(false)} value='cancel' readOnly/>
         <div>
-          <Form>
+          <Form onSubmit={handleSubmitUpdate}>
             <Row>
               <Col>
                 <img src={randomImg.picture} />
                 <Form.Group>
                   <FloatingLabel label={user.username} controlId='Username'>
-                    <Form.Control placeholder='Username' type='text' onChange={e => console.log(e.target.value)} />
+                    <Form.Control placeholder='Username' type='text' onChange={e => updatedProfile(e.target.value, updatedUser.password, updatedUser.email, updatedUser.birthday, updatedUser.favorite_movies)} />
                   </FloatingLabel>
                   <FloatingLabel label='Password' controlId='Password'>
-                    <Form.Control placeholder='Password' type='password' onChange={e => console.log(e.target.value)} />
+                    <Form.Control placeholder='Password' type='password' onChange={e => updatedProfile(updatedUser.username, e.target.value, updatedUser.email, updatedUser.birthday, updatedUser.favorite_movies)} />
+                  </FloatingLabel>
+                  <FloatingLabel label='Re-enter Password' controlId='Password'>
+                    <Form.Control placeholder='Re-enter Password' type='password' onChange={e => setPassword(e.target.value)} />
                   </FloatingLabel>
                 </Form.Group>
               </Col>
@@ -208,14 +307,14 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
               </Col>
               <Col>
                 <Form.Group>
-                  <FloatingLabel lable={user.email} controlId='Email'>
-                    <Form.Control type='text' value={user.email} onChange={e => console.log(e.target.value)} />
+                  <FloatingLabel label={user.email} controlId='Email'>
+                    <Form.Control placeholder='Email' type='text' onChange={e => updatedProfile(updatedUser.username, updatedUser.password, e.target.value, updatedUser.birthday, updatedUser.favorite_movies)} />
                   </FloatingLabel>
                 </Form.Group>
 
                 <Form.Group>
                   <FloatingLabel label={user.birthday} controlId='Birthday'>
-                    <Form.Control type='date' value={user.birthday} onChange={e => console.log(e.target.value)} />
+                    <Form.Control type='date' value={user.birthday} onChange={e => updatedProfile(updatedUser.username, updatedUser.password, updatedUser.email, e.target.value, updatedUser.favorite_movies)} />
                   </FloatingLabel>
                 </Form.Group>
               </Col>
@@ -308,4 +407,4 @@ function ProfileView ({ user, onLoggedIn, getMovies, username, handleUpdate, pro
     </>
   )
 }
-export default connect(mapStateToProps, { updateProfile, loadUser, add, remove, load, cancelUpdate })(ProfileView)
+export default connect(mapStateToProps, { updateProfile, loadUser, add, remove, load, cancelUpdate, error, updatedProfile })(ProfileView)
