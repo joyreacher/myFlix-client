@@ -5,7 +5,6 @@ import axios from 'axios'
 import Loading from '../loading-view/loading-view'
 import { Row, Col, Container, Button, Form, CardGroup, Card, FloatingLabel } from 'react-bootstrap'
 import './profile-view.scss'
-import { ProfileUpdate } from './update-profile-view'
 // ACTIONS
 import { updatedProfile, updateProfile, loadUser, add, remove, load, cancelUpdate, error } from '../../actions/actions'
 
@@ -15,8 +14,8 @@ const mapStateToProps = state => {
 }
 
 function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, getMovies, username, handleUpdate, profile, updateProfile, loadUser, add, selectedMovies, remove, load, cancelUpdate }) {
-  console.log('this is the user var: ', updatedUser)
-  console.log(selectedMovies)
+  // console.log('this is the user var: ', updatedUser)
+  // console.log(selectedMovies)
   const profileContainer = profile
   const [match, setMatch] = useState(null)
   const [list, setList] = useState([])
@@ -76,25 +75,17 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
     }
 
     // Error check
+    // TODO: error trips when changing user data
     if (error != '') {
       error('This is the check on 78')
     }
-    // if (!username || username.length == 0 && password || password.length == 0 && email || email.length == 0 && birthday || birthday.length == 0) {
-    //   return setError({
-    //     username: true,
-    //     password: true,
-    //     email: true,
-    //     birthday: true
-    //   }
-    //   )
-    // }
 
     axios.put(`https://cinema-barn.herokuapp.com/users/${user.username}`, {
       Username: !updatedUser.username ? user.username : updatedUser.username,
-      Password: password !== updatedUser.password ? '' : updatedUser.password,
+      Password: password !== updatedUser.password ? password : updatedUser.password,
       Email: !updatedUser.email ? user.email : updatedUser.email,
-      Birthday: !updatedUser.birthday ? user.birthday : updatedUser.birthday,
-      favoriteMovies: user.favorite_movies
+      Birthday: !updatedUser.birthday ? user.birthday : updatedUser.birthday
+      // favoriteMovies: user.favorite_movies
     }, { headers: { Authorization: `Bearer ${accessToken}` } })
       .then(res => {
         const data = res.data
@@ -103,23 +94,15 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
             username: data.username,
             password: data.password,
             email: data.email,
-            birthday: data.birthday,
-            favorite_movies: data.favorite_movies
+            birthday: data.birthday
+            // favorite_movies: data.favorite_movies
           }
         )
-        // setList(
-        //   {
-        //     username: data.username,
-        //     password: data.password,
-        //     email: data.email,
-        //     birthday: data.birthday,
-        //     favorite_movies: data.favorite_movies
-        //   }
-        // )
-        // setUpdate(false)
         updateProfile(false)
         // handleUpdate()
       }).catch(e => {
+        // TODO: error triped when updating user info and username
+        // TODO: all information is updating will need to update user state to finish request and update navbar
         error('This is the check on 112')
         console.log(e)
       })
@@ -258,7 +241,7 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
     }).catch(function (error) {
       console.log(error)
     })
-  }, [])
+  }, [profile])
 
   if (!randomImg.picture) return <Loading />
   if (profile.update) {
