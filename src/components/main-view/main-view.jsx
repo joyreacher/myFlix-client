@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import axios from 'axios'
 import { connect } from 'react-redux'
 
-import { login, setMovies, setLoggedIn } from '../../actions/actions'
+import { login, setMovies } from '../../actions/actions'
 import MoviesList from '../movies-list/movies-list'
 
 import RegistrationView from '../registration-view/registration-view'
@@ -90,7 +90,6 @@ class MainView extends React.Component {
 
   render () {
     const { movies, genre, user, profile, isLoggedIn } = this.props
-    console.log(user)
     return (
       <Router>
         <Navbar onLogOutClick={() => this.onLoggedOut()} user={profile} />
