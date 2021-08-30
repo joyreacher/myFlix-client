@@ -49,22 +49,18 @@ function RegistrationView (props) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    // Only username is tested using pattern
     const pattern = new RegExp(/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/)
+    // Use local state for form validation
     if (!password.value || password.value.length == 0) {
       setPassword({ value: false, errMsg: 'Enter your password' })
-      // console.log(password)
     } if (!username.value || username.value.length == 0) {
       setUsername({ value: false, errMsg: 'Enter a username' })
-      // console.log(username)
     } if (!email.value || email.value.length == 0) {
       setEmail({ value: false, errMsg: 'Enter a email' })
-      // console.log(email)
     } if (!birthday.value || birthday.value.length == 0) {
       setBirthday({ value: false, errMsg: 'Enter a birthday' })
-      // console.log(birthday)
     } if (pattern.test(username.value)) {
-      console.log('unwanted chars')
-      console.log(username)
       setUsername({ value: false, errMsg: 'Please only use letters and numbers in your username' })
     } else if (username.value && password.value && email.value && birthday.value) {
       axios.post('https://cinema-barn.herokuapp.com/users', {
@@ -73,9 +69,9 @@ function RegistrationView (props) {
         Email: profile.email,
         Birthday: profile.birthday
       }).then(res => {
-        console.log(res)
         const data = res.data
-        setSignin({ value: <Link className='text-info' to='/'>Success 🙂  click here to Sign in</Link> })
+        console.log(data)
+        setSignin({ value: <Link className='text-info' to='/'>Awesome 🙂  {data.username} click here to Sign in</Link> })
       }).catch(e => {
         if (e.response.status == 422) {
           console.log(e.response.data.errors[0].msg)
@@ -102,7 +98,7 @@ function RegistrationView (props) {
           <Form.Group>
             {/* <label className='text-danger' htmlFor='Username'>{username.errMsg ? username.errMsg : ''}</label> */}
             <FloatingLabel className={username.errMsg ? 'text-danger' : ''} label={username.errMsg ? username.errMsg : 'Username'} controlId='floatingInput'>
-              <Form.Control ref={usernameInput} placeholder='Username' type='text' onChange={e => { props.register(e.target.value); setUsername({ value: e.target.value }) }} />
+              <Form.Control ref={usernameInput} placeholder='Username' type='text' onChange={e => { props.register(e.target.value, emailInput.current.value, birthdayInput.current.value); setUsername({ value: e.target.value }) }} />
             </FloatingLabel>
             {/* <label className='text-danger' htmlFor='Password'>{password.errMsg ? password.errMsg : ''}</label> */}
             <FloatingLabel className={password.errMsg ? 'text-danger' : ''} label={password.errMsg ? password.errMsg : 'Password'} controlId='floatingInput'>
@@ -110,7 +106,7 @@ function RegistrationView (props) {
             </FloatingLabel>
             {/* <label className='text-danger' htmlFor='Email'>{email.errMsg ? email.errMsg : ''}</label> */}
             <FloatingLabel className={email.errMsg ? 'text-danger' : ''} label={email.errMsg ? email.errMsg : 'Email'} controlId='floatingInput'>
-              <Form.Control ref={emailInput} placeholder='Email' type='email' onChange={e => { props.register(usernameInput.current.value, e.target.value); setEmail({ value: e.target.value }) }} />
+              <Form.Control ref={emailInput} placeholder='Email' type='email' onChange={e => { props.register(usernameInput.current.value, e.target.value, birthdayInput.current.value); setEmail({ value: e.target.value }) }} />
             </FloatingLabel>
             {/* <label className='text-danger' htmlFor='Birthday'>{birthday.errMsg ? birthday.errMsg : ''}</label> */}
             <FloatingLabel className={birthday.errMsg ? 'text-danger' : ''} label={birthday.errMsg ? birthday.errMsg : 'Birthday'} controlId='floatingInput'>
