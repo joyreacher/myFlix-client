@@ -77,7 +77,7 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
       return setPassword('Please enter a password')
     }
     if (updatedUser.password !== password) {
-      return setPassword('Passwords must match')
+      return error('Passwords must match')
     }
 
     axios.put(`https://cinema-barn.herokuapp.com/users/${user.username}`, {
@@ -188,6 +188,8 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
 
   const cancelChanges = () => {
     updateProfile(false)
+    error('')
+    updatedProfile('', '', '') // reset updatedUser state
   }
   const updateInformation = (e) => {
     updateProfile(true)
@@ -255,7 +257,7 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
                   <FloatingLabel label={user.username} controlId='Username'>
                     <Form.Control placeholder='Username' type='text' onChange={e => updatedProfile(e.target.value, updatedUser.password, updatedUser.email, updatedUser.birthday, updatedUser.favorite_movies)} />
                   </FloatingLabel>
-                  {!error.text ? '' : error('test')}
+                  {error.text}
                   <FloatingLabel label='Password' controlId='Password'>
                     <Form.Control placeholder='Password' type='password' onChange={e => updatedProfile(updatedUser.username, e.target.value, updatedUser.email, updatedUser.birthday, updatedUser.favorite_movies)} />
                   </FloatingLabel>
