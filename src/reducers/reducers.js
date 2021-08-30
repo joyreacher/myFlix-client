@@ -124,10 +124,7 @@ function updatedUser (state = {}, action) {
 function error (state = '', action) {
   switch (action.type) {
     case ERROR:
-      return [
-        ...state,
-        action.text
-      ]
+      return action.text
     default:
       return state
   }
