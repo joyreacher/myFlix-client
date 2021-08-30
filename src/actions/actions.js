@@ -52,10 +52,9 @@ export const cancelUpdate = (value) => ({
   payload: value
 })
 
-export const loadUser = (username, image, email, birthday, favoriteMovies) => ({
+export const loadUser = (username, email, birthday, favoriteMovies) => ({
   type: LOAD_USER,
   username,
-  image,
   email,
   birthday,
   favoriteMovies

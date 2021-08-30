@@ -14,6 +14,7 @@ const mapStateToProps = state => {
 }
 
 function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, getMovies, username, handleUpdate, profile, updateProfile, loadUser, add, selectedMovies, remove, load, cancelUpdate }) {
+  console.log(error)
   const [list, setList] = useState([])
   const [randomImg, setRandomImg] = useState([])
   const [modal, setModal] = useState(false)
@@ -22,22 +23,22 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
   const removeMovie = []
 
   // if a movie is marked for delation
-  const deleteMovies = (e) => {
-    // console.log(e.target.checked)
-    if (removeMovie < 1) {
-      // IS MOFRE THAN ONE MOVIE
-      user.favorite_movies.forEach(movie => {
-        if (e.target.value == movie._id) {
-          // console.log(movie.Title + ' has got to go.')
-          removeMovie.push(movie)
-        }
-      })
-    } else {
-      // IF THERE IS ONLY ONE MOVIE
-      removeMovie.push(user.favorite_movies[0])
-    }
-    console.log(removeMovie)
-  }
+  // const deleteMovies = (e) => {
+  //   // console.log(e.target.checked)
+  //   if (removeMovie < 1) {
+  //     // IS MOFRE THAN ONE MOVIE
+  //     user.favorite_movies.forEach(movie => {
+  //       if (e.target.value == movie._id) {
+  //         // console.log(movie.Title + ' has got to go.')
+  //         removeMovie.push(movie)
+  //       }
+  //     })
+  //   } else {
+  //     // IF THERE IS ONLY ONE MOVIE
+  //     removeMovie.push(user.favorite_movies[0])
+  //   }
+  //   console.log(removeMovie)
+  // }
 
   const handleSubmitUpdate = (e) => {
     e.preventDefault()
@@ -74,10 +75,13 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
       error('This is the check on 78')
     }
     if (!updatedUser.password) {
-      return setPassword('Please enter a password')
+      return error('Please enter a password')
     }
     if (updatedUser.password !== password) {
-      return error('Passwords must match')
+      // h.insertAdjacentHTML("afterbegin", "<span style='color:red'>My span</span>"); 
+      const errorHook = document.querySelector('#Password')
+      console.log(errorHook)
+      return errorHook.insertAdjacentHTML('beforebegin', `<div id='Password' style='color:red'>${error('Passwords must match').text}</div>`)
     }
 
     axios.put(`https://cinema-barn.herokuapp.com/users/${user.username}`, {
@@ -128,40 +132,41 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
       })
   }
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault()
-  //   const accessToken = localStorage.getItem('token')
-  //   if (selectedMovies.movies.length > 1) {
-  //     selectedMovies.movies.forEach(selected => {
-  //       console.log(selected)
-  //       return axios.post('https://cinema-barn.herokuapp.com/users/mymovies/add', {
-  //         Username: user.username,
-  //         Title: selected.title
-  //       }, {
-  //         headers: { Authorization: `Bearer ${accessToken}` }
-  //       }).then(res => {
-  //         window.location.reload()
-  //       }).catch(e => {
-  //         console.log(e)
-  //       })
-  //     })
-  //   } else {
-  //     return axios.post('https://cinema-barn.herokuapp.com/users/mymovies/add', {
-  //       Username: user.username,
-  //       Title: selectedMovies.movies[0].title
-  //     }, {
-  //       headers: { Authorization: `Bearer ${accessToken}` }
-  //     }).then(res => {
-  //       // setSub(null)
-  //       const data = res.data
-  //       console.log(data)
-  //       window.location.reload()
-  //     })
-  //       .catch(e => {
-  //         console.log(e)
-  //       })
-  //   }
-  // }
+  // To add movies
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const accessToken = localStorage.getItem('token')
+    if (selectedMovies.movies.length > 1) {
+      selectedMovies.movies.forEach(selected => {
+        console.log(selected)
+        return axios.post('https://cinema-barn.herokuapp.com/users/mymovies/add', {
+          Username: user.username,
+          Title: selected.title
+        }, {
+          headers: { Authorization: `Bearer ${accessToken}` }
+        }).then(res => {
+          window.location.reload()
+        }).catch(e => {
+          console.log(e)
+        })
+      })
+    } else {
+      return axios.post('https://cinema-barn.herokuapp.com/users/mymovies/add', {
+        Username: user.username,
+        Title: selectedMovies.movies[0].title
+      }, {
+        headers: { Authorization: `Bearer ${accessToken}` }
+      }).then(res => {
+        // setSub(null)
+        const data = res.data
+        console.log(data)
+        window.location.reload()
+      })
+        .catch(e => {
+          console.log(e)
+        })
+    }
+  }
 
   const addMovies = (e) => {
     console.log(e.target)
@@ -234,7 +239,7 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
           picture: response.data.results[0].picture.large
         }
       )
-      loadUser(mongoData.username, response.data.results[0].picture.large, mongoData.email, mongoData.birthday, mongoData.favorite_movies)
+      loadUser(mongoData.username, mongoData.email, mongoData.birthday, mongoData.favorite_movies)
       return data
     }).catch(function (error) {
       console.log(error)
@@ -252,12 +257,11 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
           <Form onSubmit={handleSubmitUpdate}>
             <Row>
               <Col>
-                <img src={randomImg.picture} />
+                <img src={localStorage.getItem('image')} />
                 <Form.Group>
                   <FloatingLabel label={user.username} controlId='Username'>
                     <Form.Control placeholder='Username' type='text' onChange={e => updatedProfile(e.target.value, updatedUser.password, updatedUser.email, updatedUser.birthday, updatedUser.favorite_movies)} />
                   </FloatingLabel>
-                  {error.text}
                   <FloatingLabel label='Password' controlId='Password'>
                     <Form.Control placeholder='Password' type='password' onChange={e => updatedProfile(updatedUser.username, e.target.value, updatedUser.email, updatedUser.birthday, updatedUser.favorite_movies)} />
                   </FloatingLabel>
@@ -354,7 +358,7 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
         <div className='d-flex justify-content-center p-2 my-5'>
           <Row>
             <Col lg={4}>
-              <img src={randomImg.picture} alt='Image goes here' />
+              <img src={localStorage.getItem('image')} alt='Image goes here' />
               <p>{user.username}</p>
             </Col>
             <Col lg={4}>

@@ -87,7 +87,6 @@ function selectedMovies (state = favoriteMovies, action) {
 
 function user (state = {
   username: '',
-  image: '',
   email: '',
   birthday: '',
   favorite_movies: []
@@ -96,7 +95,6 @@ function user (state = {
     case LOAD_USER:
       return {
         username: action.username,
-        image: action.image,
         email: action.email,
         birthday: action.birthday,
         favorite_movies: action.favoriteMovies
@@ -121,7 +119,7 @@ function updatedUser (state = {}, action) {
   }
 }
 
-function error (state = '', action) {
+function error (state = {}, action) {
   switch (action.type) {
     case ERROR:
       return action.text
