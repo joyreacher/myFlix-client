@@ -9,25 +9,15 @@ import './profile-view.scss'
 import { updatedProfile, updateProfile, loadUser, add, remove, load, cancelUpdate, error } from '../../actions/actions'
 
 const mapStateToProps = state => {
-  const { profile, user, selectedMovies, updatedUser } = state
-  return { profile, user, selectedMovies, updatedUser }
+  const { profile, user, selectedMovies, updatedUser, error } = state
+  return { profile, user, selectedMovies, updatedUser, error }
 }
 
 function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, getMovies, username, handleUpdate, profile, updateProfile, loadUser, add, selectedMovies, remove, load, cancelUpdate }) {
-  // console.log('this is the user var: ', updatedUser)
-  // console.log(selectedMovies)
-  const profileContainer = profile
-  const [match, setMatch] = useState(null)
   const [list, setList] = useState([])
-  const [update, setUpdate] = useState(false)
   const [randomImg, setRandomImg] = useState([])
   const [modal, setModal] = useState(false)
   const [movies, setMovies] = useState([])
-  const [favorites, setFavorites] = useState([])
-  const [sub, setSub] = useState('')
-  // const [error, setError] = useState({
-  //   add: ' '
-  // })
   const [password, setPassword] = useState('')
   const removeMovie = []
 
@@ -53,52 +43,63 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
     e.preventDefault()
     const accessToken = localStorage.getItem('token')
 
-    console.log(removeMovie)
+    // console.log(removeMovie)
     // deletes movies stored in removeMoves array
-    if (removeMovie.length != 0) {
-      console.log(removeMovie)
-      removeMovie.map(movie => {
-        axios.post('https://cinema-barn.herokuapp.com/users/mymovies/delete', {
-          Username: user.username,
-          Title: movie.Title
-        }, { headers: { Authorization: `Bearer ${accessToken}` } })
-          .then(res => {
-            const data = res.data
-            console.log(data) // so and so was deleted
-            handleUpdate()
-          }).catch(e => {
-            error('This is the check on 70')
-            console.log(e)
-            return 'Something went wrong'
-          })
-      })
-    }
+    // if (removeMovie.length != 0) {
+    //   console.log(removeMovie)
+    //   removeMovie.map(movie => {
+    //     axios.post('https://cinema-barn.herokuapp.com/users/mymovies/delete', {
+    //       Username: user.username,
+    //       Title: movie.Title
+    //     }, { headers: { Authorization: `Bearer ${accessToken}` } })
+    //       .then(res => {
+    //         const data = res.data
+    //         console.log(data) // so and so was deleted
+    //         handleUpdate()
+    //       }).catch(e => {
+    //         error('This is the check on 70')
+    //         console.log(e)
+    //         return 'Something went wrong'
+    //       })
+    //   })
+    // }
 
     // Error check
     // TODO: error trips when changing user data
-    if (error != '') {
+    error('this is a test')
+    console.log(error('test'))
+    console.log(error)
+    console.log(error == true)
+    if (error) {
       error('This is the check on 78')
+    }
+    if (!updatedUser.password) {
+      return setPassword('Please enter a password')
+    }
+    if (updatedUser.password !== password) {
+      return setPassword('Passwords must match')
     }
 
     axios.put(`https://cinema-barn.herokuapp.com/users/${user.username}`, {
       Username: !updatedUser.username ? user.username : updatedUser.username,
-      Password: password !== updatedUser.password ? password : updatedUser.password,
+      Password: updatedUser.password,
       Email: !updatedUser.email ? user.email : updatedUser.email,
       Birthday: !updatedUser.birthday ? user.birthday : updatedUser.birthday
-      // favoriteMovies: user.favorite_movies
     }, { headers: { Authorization: `Bearer ${accessToken}` } })
       .then(res => {
         const data = res.data
-        updateProfile(
+        localStorage.setItem('user', !updatedUser.username ? profile.username : updatedUser.username)
+        updatedProfile(
           {
-            username: data.username,
+            username: !updatedUser.username ? profile.username : updatedUser.username,
             password: data.password,
             email: data.email,
             birthday: data.birthday
-            // favorite_movies: data.favorite_movies
           }
         )
-        updateProfile(false)
+        updateProfile('', '', '', '', '')
+        console.log(profile)
+        window.location.reload()
         // handleUpdate()
       }).catch(e => {
         // TODO: error triped when updating user info and username
@@ -127,40 +128,40 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
       })
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    const accessToken = localStorage.getItem('token')
-    if (selectedMovies.movies.length > 1) {
-      selectedMovies.movies.forEach(selected => {
-        console.log(selected)
-        return axios.post('https://cinema-barn.herokuapp.com/users/mymovies/add', {
-          Username: user.username,
-          Title: selected.title
-        }, {
-          headers: { Authorization: `Bearer ${accessToken}` }
-        }).then(res => {
-          window.location.reload()
-        }).catch(e => {
-          console.log(e)
-        })
-      })
-    } else {
-      return axios.post('https://cinema-barn.herokuapp.com/users/mymovies/add', {
-        Username: user.username,
-        Title: selectedMovies.movies[0].title
-      }, {
-        headers: { Authorization: `Bearer ${accessToken}` }
-      }).then(res => {
-        // setSub(null)
-        const data = res.data
-        console.log(data)
-        window.location.reload()
-      })
-        .catch(e => {
-          console.log(e)
-        })
-    }
-  }
+  // const handleSubmit = (e) => {
+  //   e.preventDefault()
+  //   const accessToken = localStorage.getItem('token')
+  //   if (selectedMovies.movies.length > 1) {
+  //     selectedMovies.movies.forEach(selected => {
+  //       console.log(selected)
+  //       return axios.post('https://cinema-barn.herokuapp.com/users/mymovies/add', {
+  //         Username: user.username,
+  //         Title: selected.title
+  //       }, {
+  //         headers: { Authorization: `Bearer ${accessToken}` }
+  //       }).then(res => {
+  //         window.location.reload()
+  //       }).catch(e => {
+  //         console.log(e)
+  //       })
+  //     })
+  //   } else {
+  //     return axios.post('https://cinema-barn.herokuapp.com/users/mymovies/add', {
+  //       Username: user.username,
+  //       Title: selectedMovies.movies[0].title
+  //     }, {
+  //       headers: { Authorization: `Bearer ${accessToken}` }
+  //     }).then(res => {
+  //       // setSub(null)
+  //       const data = res.data
+  //       console.log(data)
+  //       window.location.reload()
+  //     })
+  //       .catch(e => {
+  //         console.log(e)
+  //       })
+  //   }
+  // }
 
   const addMovies = (e) => {
     console.log(e.target)
@@ -221,9 +222,6 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
     axios.get(`https://cinema-barn.herokuapp.com/user/${username}`, {
       headers: { Authorization: `Bearer ${accessToken}` }
     }).then(res => {
-      // setList(res.data)
-      // console.log(res.data)
-      // console.log(loadUser())
       mongoData = res.data
       console.log(mongoData.favorite_movies)
       return axios.get('https://randomuser.me/api/?results=1')
@@ -234,14 +232,12 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
           picture: response.data.results[0].picture.large
         }
       )
-      // load(mongoData.favorite_movies)
       loadUser(mongoData.username, response.data.results[0].picture.large, mongoData.email, mongoData.birthday, mongoData.favorite_movies)
-      // res.data.results[0].picture.large = loadUser().image
       return data
     }).catch(function (error) {
       console.log(error)
     })
-  }, [profile])
+  }, [])
 
   if (!randomImg.picture) return <Loading />
   if (profile.update) {
@@ -259,6 +255,7 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
                   <FloatingLabel label={user.username} controlId='Username'>
                     <Form.Control placeholder='Username' type='text' onChange={e => updatedProfile(e.target.value, updatedUser.password, updatedUser.email, updatedUser.birthday, updatedUser.favorite_movies)} />
                   </FloatingLabel>
+                  {!error.text ? '' : error('test')}
                   <FloatingLabel label='Password' controlId='Password'>
                     <Form.Control placeholder='Password' type='password' onChange={e => updatedProfile(updatedUser.username, e.target.value, updatedUser.email, updatedUser.birthday, updatedUser.favorite_movies)} />
                   </FloatingLabel>
