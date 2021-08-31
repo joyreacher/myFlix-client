@@ -33,7 +33,7 @@ function MoviesList (props) {
       {visibilityFilter ? filteredMovies.map(m => { return <Col key={m._id}><SearchList movie={m} /></Col> }) : ''}
       <Row>
         <Col>
-          <h2>Featured</h2>
+          <h2 className='fs-1 mt-5'>Featured</h2>
           <CardGroup>
             <Featured movies={movies} />
           </CardGroup>
