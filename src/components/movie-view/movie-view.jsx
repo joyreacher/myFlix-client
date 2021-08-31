@@ -33,8 +33,8 @@ class MovieView extends React.Component {
     return (
       <ErrorBoundary>
         <Row md={6} lg={6} xl={6} className='my-5 d-flex justify-content-center min-vh-100 align-items-center'>
-          <Col lg={6}>
-            <Image src={movie.ImagePath} />
+          <Col lg={4}>
+            <Image className='shadow-1' src={movie.ImagePath} />
           </Col>
           <Col lg={6}>
             <h2 className='display-1 fs-1 movie__title'>{movie.Title}</h2>
@@ -42,13 +42,15 @@ class MovieView extends React.Component {
             <p className='fs-5'>{movie.Genre.Name}</p>
             {/* <p className='fs-5'>{movie.Director}</p> */}
             <p className='fs-6'>{movie.Description}</p>
-            <Link to={`/directors/${movie.Director.Name}`}>
-              <Button>Director</Button>
-            </Link>
-            <Link to={`/genres/${movie.Genre.Name}`}>
-              <Button>Genre</Button>
-            </Link>
-            <Button className='btn btn-dark fs-1' onClick={() => onBackClick(null)}>Back</Button>
+            <div className='d-flex justify-content-around'>
+              <Link to={`/directors/${movie.Director.Name}`}>
+                <Button className='shadow-1'>Director</Button>
+              </Link>
+              <Link to={`/genres/${movie.Genre.Name}`}>
+                <Button className='shadow-1'>Genre</Button>
+              </Link>
+              <Button className='shadow-1 btn btn-dark fs-1' onClick={() => onBackClick(null)}>Back</Button>
+            </div>
           </Col>
         </Row>
       </ErrorBoundary>
