@@ -1,3 +1,4 @@
+@import '../../scss/abstracts';
 @import '../../scss/typography';
 .movie{
   &__title{
@@ -15,4 +16,8 @@
 }
 .color-accent-2{
   color: var(--color-accent-2);
+}
+
+.shadow-1{
+  box-shadow: $shadow-1;
 }
