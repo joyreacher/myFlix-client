@@ -57,6 +57,9 @@ class MainView extends React.Component {
       headers: { Authorization: `Bearer ${token}` }
     }).then(res => {
       this.props.setMovies(res.data)
+      return axios.get('https://randomuser.me/api/?results=1')
+    }).then(res => {
+      localStorage.setItem('image', res.data.results[0].picture.large)
     }).catch(function (error) {
       console.log(error)
     })
