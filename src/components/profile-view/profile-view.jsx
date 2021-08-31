@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
@@ -13,104 +13,98 @@ const mapStateToProps = state => {
   return { profile, user, selectedMovies, updatedUser, error }
 }
 
-function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, getMovies, username, handleUpdate, profile, updateProfile, loadUser, add, selectedMovies, remove, load, cancelUpdate }) {
-  console.log(error)
+function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, getMovies, username, handleUpdate, profile, updateProfile, loadUser }) {
   const [list, setList] = useState([])
   const [randomImg, setRandomImg] = useState([])
   const [modal, setModal] = useState(false)
-  const [movies, setMovies] = useState([])
+  let [movies, setMovies] = useState([])
   const [password, setPassword] = useState('')
   const removeMovie = []
-
+  const usernameRef = useRef(null)
+  const passwordRef = useRef(null)
+  const confirmPasswordRef = useRef(null)
+  const emailRef = useRef(null)
+  const birthdayRef = useRef(null)
+  const [profileError, setProfileError] = useState({
+    username: '',
+    password: '',
+    passwordConfirm: '',
+    email: '',
+    birthday: ''
+  })
   // if a movie is marked for delation
-  // const deleteMovies = (e) => {
-  //   // console.log(e.target.checked)
-  //   if (removeMovie < 1) {
-  //     // IS MOFRE THAN ONE MOVIE
-  //     user.favorite_movies.forEach(movie => {
-  //       if (e.target.value == movie._id) {
-  //         // console.log(movie.Title + ' has got to go.')
-  //         removeMovie.push(movie)
-  //       }
-  //     })
-  //   } else {
-  //     // IF THERE IS ONLY ONE MOVIE
-  //     removeMovie.push(user.favorite_movies[0])
-  //   }
-  //   console.log(removeMovie)
-  // }
+  const deleteMovies = (e) => {
+    // console.log(e.target.checked)
+    if (removeMovie < 1) {
+      // IS MOFRE THAN ONE MOVIE
+      user.favorite_movies.forEach(movie => {
+        if (e.target.value == movie._id) {
+          // console.log(movie.Title + ' has got to go.')
+          removeMovie.push(movie)
+        }
+      })
+    } else {
+      // IF THERE IS ONLY ONE MOVIE
+      removeMovie.push(user.favorite_movies[0])
+    }
+    console.log(removeMovie)
+  }
 
   const handleSubmitUpdate = (e) => {
     e.preventDefault()
-    const accessToken = localStorage.getItem('token')
-
-    // console.log(removeMovie)
-    // deletes movies stored in removeMoves array
-    // if (removeMovie.length != 0) {
-    //   console.log(removeMovie)
-    //   removeMovie.map(movie => {
-    //     axios.post('https://cinema-barn.herokuapp.com/users/mymovies/delete', {
-    //       Username: user.username,
-    //       Title: movie.Title
-    //     }, { headers: { Authorization: `Bearer ${accessToken}` } })
-    //       .then(res => {
-    //         const data = res.data
-    //         console.log(data) // so and so was deleted
-    //         handleUpdate()
-    //       }).catch(e => {
-    //         error('This is the check on 70')
-    //         console.log(e)
-    //         return 'Something went wrong'
-    //       })
-    //   })
-    // }
-
+    if (!usernameRef.current.value || !passwordRef.current.value || !confirmPasswordRef || !emailRef || !birthdayRef) {
+      // if (!usernameRef.current.value) {
+      setProfileError(
+        {
+          username: !usernameRef.current.value ? <p className='text-danger'>Enter a username</p> : '',
+          password: !passwordRef.current.value ? <p className='text-danger'>Enter a password</p> : '',
+          passwordConfirm: !confirmPasswordRef.current.value ? <p className='text-danger'>Passwords done match</p> : '',
+          email: !emailRef.current.value ? <p className='text-danger'>Passwords do not match</p> : '',
+          birthday: !birthdayRef.current.value ? <p className='text-danger'>Enter your birthday</p> : ''
+        }
+      )
+      // }
+      // if (!passwordRef.current.value) {
+        // setProfileError({password: <p className="text-danger">Enter a password</p>})
+      // }
+    } else {
+      console.log('submit no errros!')
+    }
+    console.log(profileError)
+    // const accessToken = localStorage.getItem('token')
+    // console.log(usernameRef)
     // Error check
-    // TODO: error trips when changing user data
-    error('this is a test')
-    console.log(error('test'))
-    console.log(error)
-    console.log(error == true)
-    if (error) {
-      error('This is the check on 78')
-    }
-    if (!updatedUser.password) {
-      return error('Please enter a password')
-    }
-    if (updatedUser.password !== password) {
-      // h.insertAdjacentHTML("afterbegin", "<span style='color:red'>My span</span>"); 
-      const errorHook = document.querySelector('#Password')
-      console.log(errorHook)
-      return errorHook.insertAdjacentHTML('beforebegin', `<div id='Password' style='color:red'>${error('Passwords must match').text}</div>`)
-    }
-
-    axios.put(`https://cinema-barn.herokuapp.com/users/${user.username}`, {
-      Username: !updatedUser.username ? user.username : updatedUser.username,
-      Password: updatedUser.password,
-      Email: !updatedUser.email ? user.email : updatedUser.email,
-      Birthday: !updatedUser.birthday ? user.birthday : updatedUser.birthday
-    }, { headers: { Authorization: `Bearer ${accessToken}` } })
-      .then(res => {
-        const data = res.data
-        localStorage.setItem('user', !updatedUser.username ? profile.username : updatedUser.username)
-        updatedProfile(
-          {
-            username: !updatedUser.username ? profile.username : updatedUser.username,
-            password: data.password,
-            email: data.email,
-            birthday: data.birthday
-          }
-        )
-        updateProfile('', '', '', '', '')
-        console.log(profile)
-        window.location.reload()
-        // handleUpdate()
-      }).catch(e => {
-        // TODO: error triped when updating user info and username
-        // TODO: all information is updating will need to update user state to finish request and update navbar
-        error('This is the check on 112')
-        console.log(e)
-      })
+    // console.log(updatedUser.username)
+    // console.log(updatedProfile)
+    // console.log(usernameRef.current.value)
+    // console.log(passwordRef.current.value)
+    // axios.put(`https://cinema-barn.herokuapp.com/users/${user.username}`, {
+    //   Username: !updatedUser.username ? user.username : updatedUser.username,
+    //   Password: updatedUser.password,
+    //   Email: !updatedUser.email ? user.email : updatedUser.email,
+    //   Birthday: !updatedUser.birthday ? user.birthday : updatedUser.birthday
+    // }, { headers: { Authorization: `Bearer ${accessToken}` } })
+    //   .then(res => {
+    //     const data = res.data
+    //     localStorage.setItem('user', !updatedUser.username ? profile.username : updatedUser.username)
+    //     updatedProfile(
+    //       {
+    //         username: !updatedUser.username ? profile.username : updatedUser.username,
+    //         password: data.password,
+    //         email: data.email,
+    //         birthday: data.birthday
+    //       }
+    //     )
+    //     updateProfile('', '', '', '', '')
+    //     console.log(profile)
+    //     window.location.reload()
+    //     // handleUpdate()
+    //   }).catch(e => {
+    //     // TODO: error triped when updating user info and username
+    //     // TODO: all information is updating will need to update user state to finish request and update navbar
+    //     error('This is the check on 112')
+    //     console.log(e)
+    //   })
   }
 
   const deleteUser = (e) => {
@@ -132,28 +126,26 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
       })
   }
 
-  // To add movies
   const handleSubmit = (e) => {
     e.preventDefault()
     const accessToken = localStorage.getItem('token')
-    if (selectedMovies.movies.length > 1) {
-      selectedMovies.movies.forEach(selected => {
-        console.log(selected)
-        return axios.post('https://cinema-barn.herokuapp.com/users/mymovies/add', {
-          Username: user.username,
-          Title: selected.title
-        }, {
-          headers: { Authorization: `Bearer ${accessToken}` }
-        }).then(res => {
-          window.location.reload()
-        }).catch(e => {
-          console.log(e)
-        })
-      })
+    error('')
+    console.log(e.target)
+  // check db for movie
+    const result = movies.find(({ _id }) => _id === e.target.value)
+    console.log('resulttttt')
+    console.log(result)
+    // check favorite movies in user state
+    const matchFavs = user.favorite_movies.find(({ _id }) => _id === e.target.value)
+    if (matchFavs) {
+      e.target.setAttribute('match', true)
+      e.target.setAttribute('disabled', 'disabled')
+      e.target.insertAdjacentHTML('afterend', "<span style='color:red'>This movie is in your favorites</span>")
+      return false
     } else {
       return axios.post('https://cinema-barn.herokuapp.com/users/mymovies/add', {
         Username: user.username,
-        Title: selectedMovies.movies[0].title
+        Title: result.title
       }, {
         headers: { Authorization: `Bearer ${accessToken}` }
       }).then(res => {
@@ -165,29 +157,6 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
         .catch(e => {
           console.log(e)
         })
-    }
-  }
-
-  const addMovies = (e) => {
-    console.log(e.target)
-    if (e.target.checked) {
-      // check db for movie
-      const result = movies.find(({ _id }) => _id === e.target.value)
-      // check favorite movies in user state
-      const matchFavs = user.favorite_movies.find(({ _id }) => _id === e.target.value)
-      if (matchFavs) {
-        e.target.setAttribute('match', true)
-        e.target.setAttribute('disabled', 'disabled')
-        e.target.insertAdjacentHTML('afterend', "<span style='color:red'>This movie is in your favorites</span>")
-        return false
-      } else {
-        console.log('add')
-        return add(result)
-      }
-    }
-    if (!e.target.checked) {
-      console.log('remove')
-      return remove(e.target.value)
     }
   }
 
@@ -214,6 +183,14 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
           ImgPath: item.ImagePath
         })
       })
+      // const remove = movies.map(({ _id }) => _id === user.favorite_movies._id)
+      console.log(movies)
+      console.log(user.favorite_movies)
+      user.favorite_movies.map((movie, i) => {
+        if (movies[i]._id != movie._id) {
+          console.log(movies[i].title)
+        }
+      })
       setModal(true)
       return movieData
     }).catch(function (error) {
@@ -231,14 +208,9 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
     }).then(res => {
       mongoData = res.data
       console.log(mongoData.favorite_movies)
-      return axios.get('https://randomuser.me/api/?results=1')
+      return mongoData
     }).then(response => {
       const data = response.data
-      setRandomImg(
-        {
-          picture: response.data.results[0].picture.large
-        }
-      )
       loadUser(mongoData.username, mongoData.email, mongoData.birthday, mongoData.favorite_movies)
       return data
     }).catch(function (error) {
@@ -246,32 +218,75 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
     })
   }, [])
 
-  if (!randomImg.picture) return <Loading />
+  if (!localStorage.getItem('image')) return <Loading />
   if (profile.update) {
     return (
-      <>
-        <h1>{user.username}'s Profile</h1>
-        <Form.Control className='mx-5 w-25' type='submit' value='submit' onClick={handleSubmitUpdate} readOnly/>
-        <Form.Control className='mx-5 w-25' onClick={()=> cancelChanges(false)} value='cancel' readOnly/>
-        <div>
-          <Form onSubmit={handleSubmitUpdate}>
+      <Container>
+        <h1 className='my-5 bg-dark text-light d-inline-block'>{user.username}'s Profile</h1>
+        <Row>
+          <Form onSubmit={e => handleSubmitUpdate(e)}>
             <Row>
-              <Col>
+              <Col lg={12} className='d-flex'>
                 <img src={localStorage.getItem('image')} />
-                <Form.Group>
+                <Form.Group className='m-3 d-flex justify-content-between'>
                   <FloatingLabel label={user.username} controlId='Username'>
-                    <Form.Control placeholder='Username' type='text' onChange={e => updatedProfile(e.target.value, updatedUser.password, updatedUser.email, updatedUser.birthday, updatedUser.favorite_movies)} />
+                    {!profileError.username ? '' : profileError.username}
+                    <Form.Control
+                      ref={usernameRef}
+                      placeholder='Username'
+                      type='text'
+                      onChange={e => {
+                        // setProfileError({username: '', password: passwordRef.current.value, passwordConfirm: confirmPasswordRef.current.value, email: emailRef.current.value, birthday: birthdayRef.current.value})
+                        profileError.username = ''
+                        updatedProfile(e.target.value, updatedUser.password, updatedUser.email, updatedUser.birthday, updatedUser.favorite_movies)
+                      }} />
                   </FloatingLabel>
                   <FloatingLabel label='Password' controlId='Password'>
-                    <Form.Control placeholder='Password' type='password' onChange={e => updatedProfile(updatedUser.username, e.target.value, updatedUser.email, updatedUser.birthday, updatedUser.favorite_movies)} />
+                    {!profileError.password ? '' : profileError.password}
+                    <Form.Control 
+                      ref={passwordRef} 
+                      placeholder='Password' 
+                      type='password' 
+                      onChange={e => {
+                        // setProfileError({password: ''})
+                        profileError.password = ''
+                        updatedProfile(updatedUser.username, e.target.value, updatedUser.email, updatedUser.birthday, updatedUser.favorite_movies)
+                      }} />
                   </FloatingLabel>
                   <FloatingLabel label='Re-enter Password' controlId='Password'>
-                    <Form.Control placeholder='Re-enter Password' type='password' onChange={e => setPassword(e.target.value)} />
+                    {!profileError.passwordConfirm ? '' : profileError.passwordConfirm}
+                    <Form.Control ref={confirmPasswordRef} placeholder='Re-enter Password' type='password' onChange={e => setPassword(e.target.value)} />
                   </FloatingLabel>
                 </Form.Group>
               </Col>
-              <Col lg={4}>
-                <CardGroup>
+              <Col lg={12}>
+                <Form.Group className='m-3 d-flex justify-content-around'>
+                  <FloatingLabel label={user.email} controlId='Email'>
+                    {!profileError.email ? '' : profileError.email}
+                    <Form.Control
+                      ref={emailRef}
+                      placeholder='Email'
+                      type='text'
+                      onChange={e => {
+                        profileError.email = ''
+                        updatedProfile(updatedUser.username, updatedUser.password, e.target.value, updatedUser.birthday, updatedUser.favorite_movies)
+                      }} />
+                  </FloatingLabel>
+                  <FloatingLabel label={user.birthday} controlId='Birthday'>
+                    {!profileError.birthday ? '' : profileError.birthday}
+                    <Form.Control 
+                      ref={birthdayRef}
+                      type='date'
+                      value={birthdayRef.birthday}
+                      onChange={e => {
+                        profileError.birthday = ''
+                        updatedProfile(updatedUser.username, updatedUser.password, updatedUser.email, e.target.value, updatedUser.favorite_movies)
+                      }} />
+                  </FloatingLabel>
+                </Form.Group>
+              </Col>
+              <Col lg={12}>
+                <CardGroup className=''>
                   {
                     user.favorite_movies.length === 0
                       ? <Container>
@@ -291,23 +306,14 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
                   }
                 </CardGroup>
               </Col>
-              <Col>
-                <Form.Group>
-                  <FloatingLabel label={user.email} controlId='Email'>
-                    <Form.Control placeholder='Email' type='text' onChange={e => updatedProfile(updatedUser.username, updatedUser.password, e.target.value, updatedUser.birthday, updatedUser.favorite_movies)} />
-                  </FloatingLabel>
-                </Form.Group>
-
-                <Form.Group>
-                  <FloatingLabel label={user.birthday} controlId='Birthday'>
-                    <Form.Control type='date' value={user.birthday} onChange={e => updatedProfile(updatedUser.username, updatedUser.password, updatedUser.email, e.target.value, updatedUser.favorite_movies)} />
-                  </FloatingLabel>
-                </Form.Group>
+              <Col lg={12} className='d-flex my-5 justify-content-around'>
+                <Form.Control className='w-25' type='submit' value='submit' onClick={handleSubmitUpdate} readOnly/>
+                <Form.Control className='w-25' onClick={()=> cancelChanges(false)} value='cancel' readOnly/>
               </Col>
             </Row>
           </Form>
-        </div>
-      </>
+        </Row>
+      </Container>
     )
   }
   return (
@@ -320,27 +326,28 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
               <button onClick={() => setModal(false)} type='button' className='btn-close' data-bs-dismiss='modal' aria-label='Close' />
             </div>
             <div className='modal-body'>
-              <Form onSubmit={(e) => handleSubmit(e)}>
+              <Form onSubmit={handleSubmit}>
                 <CardGroup>
                   {movies.length == 0
                     ? '..loading'
                     : movies.map(movie => {
                       return (
-                        <Col key={movie._id} lg={3} className=''>
+                        <Col key={movie._id} lg={6} className=''>
                           <Card>
+                            <Card.Title className='movie__title fs-6'>{movie.title}</Card.Title>
                             <Form.Label htmlFor={movie._id} className='btn btn-secondary'>
                               <Card.Img src={movie.ImgPath} className='movie__img' />
                             </Form.Label>
-                            <Form.Check id={movie._id} value={movie._id} onChange={(e) => { addMovies(e) }} />
-                            <Card.Title className='movie__title'>{movie.title}</Card.Title>
+                            <input readOnly className='d-none' id={movie._id} value={movie._id} />
+                            <Button onClick={handleSubmit} value={movie._id} type='submit' className='fs-6'>Add to favorites</Button>
                           </Card>
                         </Col>
                       )
                     })}
                 </CardGroup>
                 <Form.Group className='modal-footer'>
-                  <Form.Control type='button' className='btn btn-secondary' data-bs-dismiss='modal' value='cancel' />
-                  <Form.Control type='submit' className='btn btn-primary' value='Add' data-bs-toggle='modal' data-bs-target='#exampleModal' />
+                  {/* <Form.Control type='button' className='btn btn-secondary' data-bs-dismiss='modal' value='cancel' />
+                  <Form.Control type='submit' className='btn btn-primary' value='Add' data-bs-toggle='modal' data-bs-target='#exampleModal' /> */}
                 </Form.Group>
               </Form>
             </div>
@@ -381,7 +388,7 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
                     })
                 }
               </CardGroup>
-              <Button className='btn bg-dark' onClick={() => getAllMovies()} data-bs-toggle='modal' data-bs-target='#exampleModal'>Add a movie!</Button>
+              <Button className='btn bg-dark' onClick={getAllMovies} data-bs-toggle='modal' data-bs-target='#exampleModal'>Add a movie!</Button>
             </Col>
             <Col lg={4}>
               <p className='fs-6'>{user.email}</p>
