@@ -19,7 +19,8 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
   const [modal, setModal] = useState(false)
   let [movies, setMovies] = useState([])
   const [password, setPassword] = useState('')
-  const removeMovie = []
+  //const removeMovie = []
+  const removeMovieRef = useRef('')
   const usernameRef = useRef(null)
   const passwordRef = useRef(null)
   const confirmPasswordRef = useRef(null)
@@ -34,20 +35,39 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
   })
   // if a movie is marked for delation
   const deleteMovies = (e) => {
-    // console.log(e.target.checked)
-    if (removeMovie < 1) {
-      // IS MOFRE THAN ONE MOVIE
-      user.favorite_movies.forEach(movie => {
-        if (e.target.value == movie._id) {
-          // console.log(movie.Title + ' has got to go.')
-          removeMovie.push(movie)
-        }
+    const accessToken = localStorage.getItem('token')
+    e.preventDefault()
+    console.log(removeMovieRef.current.id)
+
+    return axios.post('https://cinema-barn.herokuapp.com/users/mymovies/delete', {
+      Username: user.username,
+      Title: removeMovieRef.current.name
+    }, {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    }).then(res => {
+      // setSub(null)
+      const data = res.data
+      console.log(data)
+      window.location.reload()
+    })
+      .catch(e => {
+        console.log(e)
       })
-    } else {
-      // IF THERE IS ONLY ONE MOVIE
-      removeMovie.push(user.favorite_movies[0])
-    }
-    console.log(removeMovie)
+  
+    // // console.log(e.target.checked)
+    // if (removeMovie < 1) {
+    //   // IS MOFRE THAN ONE MOVIE
+    //   user.favorite_movies.forEach(movie => {
+    //     if (e.target.value == movie._id) {
+    //       // console.log(movie.Title + ' has got to go.')
+    //       removeMovie.push(movie)
+    //     }
+    //   })
+    // } else {
+    //   // IF THERE IS ONLY ONE MOVIE
+    //   removeMovie.push(user.favorite_movies[0])
+    // }
+    // console.log(removeMovie)
   }
 
   const handleSubmitUpdate = (e) => {
@@ -224,7 +244,7 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
       <Container>
         <h1 className='my-5 bg-dark text-light d-inline-block'>{user.username}'s Profile</h1>
         <Row>
-          <Form onSubmit={e => handleSubmitUpdate(e)}>
+          <Form>
             <Row>
               <Col lg={12} className='d-flex'>
                 <img src={localStorage.getItem('image')} />
@@ -286,6 +306,7 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
                 </Form.Group>
               </Col>
               <Col lg={12}>
+                <Form id='delete'>
                 <CardGroup className=''>
                   {
                     user.favorite_movies.length === 0
@@ -299,12 +320,13 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
                               <Card.Img src={movie.ImagePath} />
                             </Form.Label>
                             <Card.Title>{movie.Title}</Card.Title>
-                            <Form.Check id={movie._id} label='Delete' value={movie._id} onChange={(e) => { deleteMovies(e) }} />
+                            <Form.Control type='button' ref={removeMovieRef} id={movie._id} name={movie.Title} value='Delete' onClick={(e) => { deleteMovies(e) }} />
                           </Card>
                         )
                       })
                   }
                 </CardGroup>
+                </Form>
               </Col>
               <Col lg={12} className='d-flex my-5 justify-content-around'>
                 <Form.Control className='w-25' type='submit' value='submit' onClick={handleSubmitUpdate} readOnly/>
