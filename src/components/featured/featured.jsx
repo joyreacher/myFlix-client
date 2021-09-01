@@ -9,7 +9,7 @@ function Featured ({ movies }) {
       movies.map(movie => {
         if (movie.Featured === true) {
           return (
-            <div className='container px-4 px-lg-5 my-5'>
+            <div className='container px-4 px-lg-5 my-5' key={`featured-${movie._id}`}>
               <div className='row gx-4 gx-lg-5 align-items-center'>
                 <Col lg={4}>
                   <img className="card-img-top mb-5 mb-md-0" src={movie.ImagePath} alt='movie poster' />
