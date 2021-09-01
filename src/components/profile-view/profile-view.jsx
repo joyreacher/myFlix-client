@@ -9,8 +9,8 @@ import './profile-view.scss'
 import { image, updatedProfile, updateProfile, loadUser, add, remove, load, cancelUpdate } from '../../actions/actions'
 
 const mapStateToProps = state => {
-  const { profile, user, selectedMovies, updatedUser, loadImage } = state
-  return { profile, user, selectedMovies, updatedUser, loadImage }
+  const { profile, user, updatedUser, loadImage } = state
+  return { profile, user, updatedUser, loadImage }
 }
 
 function ProfileView ({ user, updatedProfile, updatedUser, handleUpdate, profile, updateProfile, loadUser, loadImage }) {
@@ -80,13 +80,16 @@ function ProfileView ({ user, updatedProfile, updatedUser, handleUpdate, profile
     alert('are you sure you want to delete your profile?')
     const accessToken = localStorage.getItem('token')
     axios.post('https://cinema-barn.herokuapp.com/users/unregister', {
-      Username: list.username,
-      Email: list.email
+      Username: user.username,
+      Email: user.email
     }, {
       headers: { Authorization: `Bearer ${accessToken}` }
     }).then(res => {
       const data = res.data
       console.log(data)
+      localStorage.removeItem('token')
+      localStorage.removeItem('user')
+      localStorage.removeItem('image')
       handleUpdate()
     })
       .catch(e => {
@@ -97,7 +100,6 @@ function ProfileView ({ user, updatedProfile, updatedUser, handleUpdate, profile
   const handleSubmit = (e) => {
     e.preventDefault()
     const accessToken = localStorage.getItem('token')
-    error('')
     console.log(e.target)
     // check db for movie
     const result = movies.find(({ _id }) => _id === e.target.value)
@@ -120,7 +122,23 @@ function ProfileView ({ user, updatedProfile, updatedUser, handleUpdate, profile
         // setSub(null)
         const data = res.data
         console.log(data)
-        window.location.reload()
+        // window.location.reload()
+        const username = localStorage.getItem('user')
+        const accessToken = localStorage.getItem('token')
+        let mongoData = ''
+        axios.get(`https://cinema-barn.herokuapp.com/user/${username}`, {
+          headers: { Authorization: `Bearer ${accessToken}` }
+        }).then(res => {
+          mongoData = res.data
+          console.log(mongoData.favorite_movies)
+          return mongoData
+        }).then(response => {
+          const data = response.data
+          loadUser(mongoData.username, mongoData.email, mongoData.birthday, mongoData.favorite_movies)
+          return data
+        }).catch(function (error) {
+          console.log(error)
+        })
       })
         .catch(e => {
           console.log(e)
@@ -347,7 +365,7 @@ function ProfileView ({ user, updatedProfile, updatedUser, handleUpdate, profile
               <p className='fs-4'>{user.birthday}</p>
             </Col>
             <Col lg={12}>
-              <CardGroup>
+              <CardGroup className='w-50'>
                 {
                   user.favorite_movies.length === 0
                     ? <Container>
@@ -355,7 +373,7 @@ function ProfileView ({ user, updatedProfile, updatedUser, handleUpdate, profile
                       </Container>
                     : user.favorite_movies.map(movie => {
                       return (
-                        <Card key={movie._id} className='m-3 '>
+                        <Card key={movie._id} className='m-3'>
                           <Link to={`/movies/${movie._id}`}>
                             <Card.Img src={movie.ImagePath} alt='no image available' />
                           </Link>
