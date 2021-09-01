@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { SET_FILTER, SET_MOVIES, LOGIN, REGISTER, UPDATE, LOAD_USER, ADD, REMOVE, LOAD, CANCEL_UPDATE, ERROR, UPDATE_USER } from '../actions/actions'
+import { SET_FILTER, SET_MOVIES, LOGIN, REGISTER, UPDATE, LOAD_USER, ADD, REMOVE, LOAD, CANCEL_UPDATE, UPDATE_USER, LOAD_IMAGE } from '../actions/actions'
 
 /**
  *
@@ -62,28 +62,28 @@ function profile (state = [], action) {
 const favoriteMovies = {
   movies: []
 }
-function selectedMovies (state = favoriteMovies, action) {
-  switch (action.type) {
-    case REMOVE:
-      return {
-        ...state,
-        movies: state.movies.filter((item, index) => item._id !== action.id)
-      }
-    case ADD:
-      return {
-        movies: [
-          ...state.movies,
-          action.id
-        ]
-      }
-    case LOAD:
-      return {
-        movies: action.id
-      }
-    default:
-      return state
-  }
-}
+// function selectedMovies (state = favoriteMovies, action) {
+//   switch (action.type) {
+//     case REMOVE:
+//       return {
+//         ...state,
+//         movies: state.movies.filter((item, index) => item._id !== action.id)
+//       }
+//     case ADD:
+//       return {
+//         movies: [
+//           ...state.movies,
+//           action.id
+//         ]
+//       }
+//     case LOAD:
+//       return {
+//         movies: action.id
+//       }
+//     default:
+//       return state
+//   }
+// }
 
 function user (state = {
   username: '',
@@ -119,10 +119,12 @@ function updatedUser (state = {}, action) {
   }
 }
 
-function error (state = {}, action) {
+function loadImage (state = [], action) {
   switch (action.type) {
-    case ERROR:
-      return action.text
+    case LOAD_IMAGE:
+      return {
+        image: action.image
+      }
     default:
       return state
   }
@@ -134,9 +136,9 @@ const moviesApp = combineReducers({
   movies,
   profile,
   user,
-  selectedMovies,
-  error,
-  updatedUser
+  // selectedMovies,
+  updatedUser,
+  loadImage
 })
 
 export default moviesApp
