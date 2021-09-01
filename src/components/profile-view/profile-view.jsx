@@ -198,67 +198,73 @@ function ProfileView ({ user, updatedProfile, updatedUser, handleUpdate, profile
       <Container>
         <h1 className='my-5 bg-dark text-light d-inline-block'>{user.username}'s Profile</h1>
         <Row>
-          <Form>
-            <Row>
-              <Col lg={12} className='d-flex'>
-                <img src={loadImage.image} />
-                <Form.Group className='m-3 d-flex justify-content-between'>
-                  <FloatingLabel label={user.username} controlId='Username'>
-                    {!profileError.username ? '' : profileError.username}
-                    <Form.Control
-                      ref={usernameRef}
-                      placeholder='Username'
-                      type='text'
-                      onChange={e => {
-                        profileError.username = ''
-                        updatedProfile(e.target.value, updatedUser.password, updatedUser.email, updatedUser.birthday, updatedUser.favorite_movies)
-                      }} />
-                  </FloatingLabel>
-                  <FloatingLabel label='Password' controlId='Password'>
-                    {!profileError.password ? '' : profileError.password}
-                    <Form.Control 
-                      ref={passwordRef} 
-                      placeholder='Password' 
-                      type='password' 
-                      onChange={e => {
-                        // setProfileError({password: ''})
-                        profileError.password = ''
-                        updatedProfile(updatedUser.username, e.target.value, updatedUser.email, updatedUser.birthday, updatedUser.favorite_movies)
-                      }} />
-                  </FloatingLabel>
-                  <FloatingLabel label='Re-enter Password' controlId='Password'>
-                    {!profileError.passwordConfirm ? '' : profileError.passwordConfirm}
-                    <Form.Control ref={confirmPasswordRef} placeholder='Re-enter Password' type='password' onChange={e => setPassword(e.target.value)} />
-                  </FloatingLabel>
-                </Form.Group>
+          {/* <Form> */}
+            {/* <Row> */}
+              <Col lg={6}>
+                <img className='badge bg-dark text-white ms-1 rounded-pill d-flex w-50' src={loadImage.image} />
+              </Col>
+              <Col lg={6} className='mb-5'>
+                <Form>
+                  <Row>
+                    <Form.Group className='m-3 '>
+                      <FloatingLabel label={user.username} controlId='Username'>
+                        {!profileError.username ? '' : profileError.username}
+                        <Form.Control
+                          ref={usernameRef}
+                          placeholder='Username'
+                          type='text'
+                          onChange={e => {
+                            profileError.username = ''
+                            updatedProfile(e.target.value, updatedUser.password, updatedUser.email, updatedUser.birthday, updatedUser.favorite_movies)
+                          }} />
+                      </FloatingLabel>
+                      <FloatingLabel label='Password' controlId='Password'>
+                        {!profileError.password ? '' : profileError.password}
+                        <Form.Control 
+                          ref={passwordRef} 
+                          placeholder='Password' 
+                          type='password' 
+                          onChange={e => {
+                            // setProfileError({password: ''})
+                            profileError.password = ''
+                            updatedProfile(updatedUser.username, e.target.value, updatedUser.email, updatedUser.birthday, updatedUser.favorite_movies)
+                          }} />
+                      </FloatingLabel>
+                      <FloatingLabel label='Re-enter Password' controlId='Password'>
+                        {!profileError.passwordConfirm ? '' : profileError.passwordConfirm}
+                        <Form.Control ref={confirmPasswordRef} placeholder='Re-enter Password' type='password' onChange={e => setPassword(e.target.value)} />
+                      </FloatingLabel>
+                    </Form.Group>
+                  </Row>
+                  <Row>
+                    <Form.Group className='m-3'>
+                      <FloatingLabel label={user.email} controlId='Email'>
+                        {!profileError.email ? '' : profileError.email}
+                        <Form.Control
+                          ref={emailRef}
+                          placeholder='Email'
+                          type='text'
+                          onChange={e => {
+                            profileError.email = ''
+                            updatedProfile(updatedUser.username, updatedUser.password, e.target.value, updatedUser.birthday, updatedUser.favorite_movies)
+                          }} />
+                      </FloatingLabel>
+                      <FloatingLabel label={user.birthday} controlId='Birthday'>
+                        {!profileError.birthday ? '' : profileError.birthday}
+                        <Form.Control 
+                          ref={birthdayRef}
+                          type='date'
+                          value={birthdayRef.birthday}
+                          onChange={e => {
+                            profileError.birthday = ''
+                            updatedProfile(updatedUser.username, updatedUser.password, updatedUser.email, e.target.value, updatedUser.favorite_movies)
+                          }} />
+                      </FloatingLabel>
+                    </Form.Group>
+                  </Row>
+                </Form>
               </Col>
               <Col lg={12}>
-                <Form.Group className='m-3 d-flex justify-content-around'>
-                  <FloatingLabel label={user.email} controlId='Email'>
-                    {!profileError.email ? '' : profileError.email}
-                    <Form.Control
-                      ref={emailRef}
-                      placeholder='Email'
-                      type='text'
-                      onChange={e => {
-                        profileError.email = ''
-                        updatedProfile(updatedUser.username, updatedUser.password, e.target.value, updatedUser.birthday, updatedUser.favorite_movies)
-                      }} />
-                  </FloatingLabel>
-                  <FloatingLabel label={user.birthday} controlId='Birthday'>
-                    {!profileError.birthday ? '' : profileError.birthday}
-                    <Form.Control 
-                      ref={birthdayRef}
-                      type='date'
-                      value={birthdayRef.birthday}
-                      onChange={e => {
-                        profileError.birthday = ''
-                        updatedProfile(updatedUser.username, updatedUser.password, updatedUser.email, e.target.value, updatedUser.favorite_movies)
-                      }} />
-                  </FloatingLabel>
-                </Form.Group>
-              </Col>
-              <Col lg={6}>
                 <Form id='delete'>
                 <CardGroup className=''>
                   {
@@ -268,12 +274,10 @@ function ProfileView ({ user, updatedProfile, updatedUser, handleUpdate, profile
                         </Container>
                       : user.favorite_movies.map(movie => {
                         return (
-                          <Card key={movie._id} className='m-3 p-2'>
-                            <Form.Label className='btn btn-secondary' htmlFor={movie._id}>
-                              <Card.Img src={movie.ImagePath} />
-                            </Form.Label>
-                            <Card.Title>{movie.Title}</Card.Title>
-                            <Form.Control type='button' ref={removeMovieRef} id={movie._id} name={movie.Title} value={movie.Title} onClick={(e) => { deleteMovies(e) }} />
+                          <Card key={movie._id} className='m-3'>
+                            <Card.Img src={movie.ImagePath} />
+                            <Form.Label className='btn btn-secondary' htmlFor={movie._id}>Delete</Form.Label>
+                            <Form.Control className='d-none' type='button' ref={removeMovieRef} id={movie._id} name={movie.Title} value={movie.Title} onClick={(e) => { deleteMovies(e) }} />
                           </Card>
                         )
                       })
@@ -285,8 +289,8 @@ function ProfileView ({ user, updatedProfile, updatedUser, handleUpdate, profile
                 <Form.Control className='w-25' type='submit' value='submit' onClick={handleSubmitUpdate} readOnly/>
                 <Form.Control className='w-25' onClick={()=> cancelChanges(false)} value='cancel' readOnly/>
               </Col>
-            </Row>
-          </Form>
+            {/* </Row> */}
+          {/* </Form> */}
         </Row>
       </Container>
     )
@@ -327,17 +331,22 @@ function ProfileView ({ user, updatedProfile, updatedUser, handleUpdate, profile
           </div>
         </div>
       </div>
+      {/* section start */}
       <Container>
         <h1 className='my-5 bg-dark text-light d-inline-block'>{profile.username}'s Profile</h1>
         <div className='p-2 my-5'>
           <Row>
-            <Col lg={5}>
+            <Col lg={6}>
               <div className='d-flex flex-column-reverse align-items-center'>
-                <p>{user.username}</p>
-                <img className='badge bg-dark text-white ms-1 rounded-pill d-flex w-50' src={loadImage.image} alt='Image goes here' />
+                <img className='badge bg-dark text-white ms-1 rounded-pill d-flex w-50' src={loadImage.image} alt='Image goes here' />  
               </div>
             </Col>
-            <Col lg={5}>
+            <Col lg={6} className='my-5'>
+              <p className='fs-1'>{user.username}</p>
+              <p className='fs-4'>{user.email}</p>
+              <p className='fs-4'>{user.birthday}</p>
+            </Col>
+            <Col lg={12}>
               <CardGroup>
                 {
                   user.favorite_movies.length === 0
@@ -346,26 +355,20 @@ function ProfileView ({ user, updatedProfile, updatedUser, handleUpdate, profile
                       </Container>
                     : user.favorite_movies.map(movie => {
                       return (
-                        <Card key={movie._id} className='m-3'>
-                          <Card.Img src={movie.ImagePath} alt='no image available' />
-                          <Card.Title>{movie.Title}</Card.Title>
+                        <Card key={movie._id} className='m-3 '>
                           <Link to={`/movies/${movie._id}`}>
-                            <Card.Text>Details</Card.Text>
+                            <Card.Img src={movie.ImagePath} alt='no image available' />
                           </Link>
                         </Card>
                       )
                     })
                 }
               </CardGroup>
-              <Button className='btn bg-dark' onClick={getAllMovies} data-bs-toggle='modal' data-bs-target='#exampleModal'>Add a movie!</Button>
-            </Col>
-            <Col lg={2}>
-              <p className='fs-6'>{user.email}</p>
-              <p className='fs-6'>{user.birthday}</p>
             </Col>
           </Row>
           <Row className='mt-5'>
             <Col lg={8} className='d-flex justify-content-lg-between w-100'>
+              <button className='btn btn-outline-dark flex-shrink-0' onClick={getAllMovies} data-bs-toggle='modal' data-bs-target='#exampleModal'>Add a movie!</button>
               <Form.Control className='mx-5 w-25' type='submit' value='update profile' onClick={() => updateInformation()} />
               <Form.Control className='mx-5 w-25' type='submit' value='delete profile' onClick={(e) => deleteUser(e)} />
             </Col>
