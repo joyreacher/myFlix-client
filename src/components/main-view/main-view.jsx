@@ -120,7 +120,7 @@ class MainView extends React.Component {
           exact
           path='/movies/:movieId'
           render={({ match, history }) => {
-            if (!isLoggedIn) return <Redirect to='/' />
+            if (!profile.username) return <Redirect to='/' />
             return <MovieView movie={movies.find(m => m._id === match.params.movieId)} onBackClick={() => history.goBack()} />
           }}
         />
