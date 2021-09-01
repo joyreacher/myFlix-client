@@ -1,15 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { Col, Card, Button} from 'react-bootstrap'
 
+// Actions
+import { loadUser } from '../../actions/actions'
+
 const mapStateToProps = state => {
   const { user, profile } = state
   return { user, profile }
 }
-function Featured ({ movies, user, profile }) {
+function Featured ({ movies, user, profile, loadUser }) {
+  console.log(user)
   console.log(profile)
+
   const addMovie = (e) => {
     console.log(e.target.value)
     e.preventDefault()
@@ -43,7 +48,24 @@ function Featured ({ movies, user, profile }) {
         })
     }
   }
-  
+
+  useEffect(() => {
+    console.log('loadeded')
+    const username = localStorage.getItem('user')
+    const accessToken = localStorage.getItem('token')
+    let mongoData = ''
+    axios.get(`https://cinema-barn.herokuapp.com/user/${username}`, {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    }).then(res => {
+      mongoData = res.data
+      console.log(mongoData)
+      loadUser(mongoData.username, mongoData.email, mongoData.birthday, mongoData.favorite_movies)
+      return mongoData
+    }).catch(function (error) {
+      console.log(error)
+    })
+  }, [])
+
   return (
     <>
       {
@@ -84,4 +106,4 @@ function Featured ({ movies, user, profile }) {
   )
 }
 
-export default connect(mapStateToProps)(Featured)
+export default connect(mapStateToProps, { loadUser })(Featured)
