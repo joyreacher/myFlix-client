@@ -6,20 +6,20 @@ import Loading from '../loading-view/loading-view'
 import { Row, Col, Container, Button, Form, CardGroup, Card, FloatingLabel } from 'react-bootstrap'
 import './profile-view.scss'
 // ACTIONS
-import { updatedProfile, updateProfile, loadUser, add, remove, load, cancelUpdate, error } from '../../actions/actions'
+import { image, updatedProfile, updateProfile, loadUser, add, remove, load, cancelUpdate } from '../../actions/actions'
 
 const mapStateToProps = state => {
-  const { profile, user, selectedMovies, updatedUser, error } = state
-  return { profile, user, selectedMovies, updatedUser, error }
+  const { profile, user, selectedMovies, updatedUser, loadImage } = state
+  return { profile, user, selectedMovies, updatedUser, loadImage }
 }
 
-function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, getMovies, username, handleUpdate, profile, updateProfile, loadUser }) {
+function ProfileView ({ user, updatedProfile, updatedUser, handleUpdate, profile, updateProfile, loadUser, loadImage }) {
+  console.log('this is the image')
+  console.log(loadImage)
   const [list, setList] = useState([])
-  const [randomImg, setRandomImg] = useState([])
   const [modal, setModal] = useState(false)
   let [movies, setMovies] = useState([])
   const [password, setPassword] = useState('')
-  //const removeMovie = []
   const removeMovieRef = useRef('')
   const usernameRef = useRef(null)
   const passwordRef = useRef(null)
@@ -37,11 +37,12 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
   const deleteMovies = (e) => {
     const accessToken = localStorage.getItem('token')
     e.preventDefault()
-    console.log(removeMovieRef.current.id)
+    console.log(e.target.value)
+    // console.log(removeMovieRef.current.id)
 
     return axios.post('https://cinema-barn.herokuapp.com/users/mymovies/delete', {
       Username: user.username,
-      Title: removeMovieRef.current.name
+      Title: e.target.value
     }, {
       headers: { Authorization: `Bearer ${accessToken}` }
     }).then(res => {
@@ -53,21 +54,6 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
       .catch(e => {
         console.log(e)
       })
-  
-    // // console.log(e.target.checked)
-    // if (removeMovie < 1) {
-    //   // IS MOFRE THAN ONE MOVIE
-    //   user.favorite_movies.forEach(movie => {
-    //     if (e.target.value == movie._id) {
-    //       // console.log(movie.Title + ' has got to go.')
-    //       removeMovie.push(movie)
-    //     }
-    //   })
-    // } else {
-    //   // IF THERE IS ONLY ONE MOVIE
-    //   removeMovie.push(user.favorite_movies[0])
-    // }
-    // console.log(removeMovie)
   }
 
   const handleSubmitUpdate = (e) => {
@@ -83,48 +69,10 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
           birthday: !birthdayRef.current.value ? <p className='text-danger'>Enter your birthday</p> : ''
         }
       )
-      // }
-      // if (!passwordRef.current.value) {
-        // setProfileError({password: <p className="text-danger">Enter a password</p>})
-      // }
     } else {
       console.log('submit no errros!')
     }
     console.log(profileError)
-    // const accessToken = localStorage.getItem('token')
-    // console.log(usernameRef)
-    // Error check
-    // console.log(updatedUser.username)
-    // console.log(updatedProfile)
-    // console.log(usernameRef.current.value)
-    // console.log(passwordRef.current.value)
-    // axios.put(`https://cinema-barn.herokuapp.com/users/${user.username}`, {
-    //   Username: !updatedUser.username ? user.username : updatedUser.username,
-    //   Password: updatedUser.password,
-    //   Email: !updatedUser.email ? user.email : updatedUser.email,
-    //   Birthday: !updatedUser.birthday ? user.birthday : updatedUser.birthday
-    // }, { headers: { Authorization: `Bearer ${accessToken}` } })
-    //   .then(res => {
-    //     const data = res.data
-    //     localStorage.setItem('user', !updatedUser.username ? profile.username : updatedUser.username)
-    //     updatedProfile(
-    //       {
-    //         username: !updatedUser.username ? profile.username : updatedUser.username,
-    //         password: data.password,
-    //         email: data.email,
-    //         birthday: data.birthday
-    //       }
-    //     )
-    //     updateProfile('', '', '', '', '')
-    //     console.log(profile)
-    //     window.location.reload()
-    //     // handleUpdate()
-    //   }).catch(e => {
-    //     // TODO: error triped when updating user info and username
-    //     // TODO: all information is updating will need to update user state to finish request and update navbar
-    //     error('This is the check on 112')
-    //     console.log(e)
-    //   })
   }
 
   const deleteUser = (e) => {
@@ -151,7 +99,7 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
     const accessToken = localStorage.getItem('token')
     error('')
     console.log(e.target)
-  // check db for movie
+    // check db for movie
     const result = movies.find(({ _id }) => _id === e.target.value)
     console.log('resulttttt')
     console.log(result)
@@ -238,7 +186,7 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
     })
   }, [])
 
-  if (!localStorage.getItem('image')) return <Loading />
+  if (!loadImage.image) return <Loading />
   if (profile.update) {
     return (
       <Container>
@@ -247,7 +195,7 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
           <Form>
             <Row>
               <Col lg={12} className='d-flex'>
-                <img src={localStorage.getItem('image')} />
+                <img src={loadImage.image} />
                 <Form.Group className='m-3 d-flex justify-content-between'>
                   <FloatingLabel label={user.username} controlId='Username'>
                     {!profileError.username ? '' : profileError.username}
@@ -256,7 +204,6 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
                       placeholder='Username'
                       type='text'
                       onChange={e => {
-                        // setProfileError({username: '', password: passwordRef.current.value, passwordConfirm: confirmPasswordRef.current.value, email: emailRef.current.value, birthday: birthdayRef.current.value})
                         profileError.username = ''
                         updatedProfile(e.target.value, updatedUser.password, updatedUser.email, updatedUser.birthday, updatedUser.favorite_movies)
                       }} />
@@ -305,7 +252,7 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
                   </FloatingLabel>
                 </Form.Group>
               </Col>
-              <Col lg={12}>
+              <Col lg={6}>
                 <Form id='delete'>
                 <CardGroup className=''>
                   {
@@ -320,7 +267,7 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
                               <Card.Img src={movie.ImagePath} />
                             </Form.Label>
                             <Card.Title>{movie.Title}</Card.Title>
-                            <Form.Control type='button' ref={removeMovieRef} id={movie._id} name={movie.Title} value='Delete' onClick={(e) => { deleteMovies(e) }} />
+                            <Form.Control type='button' ref={removeMovieRef} id={movie._id} name={movie.Title} value={movie.Title} onClick={(e) => { deleteMovies(e) }} />
                           </Card>
                         )
                       })
@@ -368,8 +315,6 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
                     })}
                 </CardGroup>
                 <Form.Group className='modal-footer'>
-                  {/* <Form.Control type='button' className='btn btn-secondary' data-bs-dismiss='modal' value='cancel' />
-                  <Form.Control type='submit' className='btn btn-primary' value='Add' data-bs-toggle='modal' data-bs-target='#exampleModal' /> */}
                 </Form.Group>
               </Form>
             </div>
@@ -378,19 +323,15 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
       </div>
       <Container>
         <h1 className='my-5 bg-dark text-light d-inline-block'>{profile.username}'s Profile</h1>
-        <Row className='my-5'>
-          <Col lg={8} className='d-flex justify-content-lg-between w-100'>
-            <Form.Control className='mx-5 w-25' type='submit' value='update profile' onClick={() => updateInformation()} />
-            <Form.Control className='mx-5 w-25' type='submit' value='delete profile' onClick={(e) => deleteUser(e)} />
-          </Col>
-        </Row>
-        <div className='d-flex justify-content-center p-2 my-5'>
+        <div className='p-2 my-5'>
           <Row>
-            <Col lg={4}>
-              <img src={localStorage.getItem('image')} alt='Image goes here' />
-              <p>{user.username}</p>
+            <Col lg={5}>
+              <div className='d-flex flex-column-reverse align-items-center'>
+                <p>{user.username}</p>
+                <img className='badge bg-dark text-white ms-1 rounded-pill d-flex w-50' src={loadImage.image} alt='Image goes here' />
+              </div>
             </Col>
-            <Col lg={4}>
+            <Col lg={5}>
               <CardGroup>
                 {
                   user.favorite_movies.length === 0
@@ -412,9 +353,15 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
               </CardGroup>
               <Button className='btn bg-dark' onClick={getAllMovies} data-bs-toggle='modal' data-bs-target='#exampleModal'>Add a movie!</Button>
             </Col>
-            <Col lg={4}>
+            <Col lg={2}>
               <p className='fs-6'>{user.email}</p>
               <p className='fs-6'>{user.birthday}</p>
+            </Col>
+          </Row>
+          <Row className='mt-5'>
+            <Col lg={8} className='d-flex justify-content-lg-between w-100'>
+              <Form.Control className='mx-5 w-25' type='submit' value='update profile' onClick={() => updateInformation()} />
+              <Form.Control className='mx-5 w-25' type='submit' value='delete profile' onClick={(e) => deleteUser(e)} />
             </Col>
           </Row>
         </div>
@@ -422,4 +369,4 @@ function ProfileView ({ user, error, updatedProfile, updatedUser, onLoggedIn, ge
     </>
   )
 }
-export default connect(mapStateToProps, { updateProfile, loadUser, add, remove, load, cancelUpdate, error, updatedProfile })(ProfileView)
+export default connect(mapStateToProps, { updateProfile, loadUser, add, remove, load, cancelUpdate, updatedProfile, image })(ProfileView)
