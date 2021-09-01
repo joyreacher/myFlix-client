@@ -53,19 +53,36 @@ class MainView extends React.Component {
   }
 
   getMovies (token) {
-    axios.get('https://cinema-barn.herokuapp.com/movies', {
-      headers: { Authorization: `Bearer ${token}` }
-    }).then(res => {
-      this.props.setMovies(res.data)
-      return axios.get('https://randomuser.me/api/?results=1')
-    }).then(res => {
-      this.props.image(res.data.results[0].picture.large)
-      // localStorage.setItem('image', res.data.results[0].picture.large)
-      // console.log(this.props.profile.username)
-      // console.log(this.props.image())
-    }).catch(function (error) {
-      console.log(error)
-    })
+    if (!token) {
+      token = localStorage.getItem('token')
+      axios.get('https://cinema-barn.herokuapp.com/movies', {
+        headers: { Authorization: `Bearer ${token}` }
+      }).then(res => {
+        this.props.setMovies(res.data)
+        return axios.get('https://randomuser.me/api/?results=1')
+      }).then(res => {
+        this.props.image(res.data.results[0].picture.large)
+        // localStorage.setItem('image', res.data.results[0].picture.large)
+        // console.log(this.props.profile.username)
+        // console.log(this.props.image())
+      }).catch(function (error) {
+        console.log(error)
+      })
+    } else {
+      axios.get('https://cinema-barn.herokuapp.com/movies', {
+        headers: { Authorization: `Bearer ${token}` }
+      }).then(res => {
+        this.props.setMovies(res.data)
+        return axios.get('https://randomuser.me/api/?results=1')
+      }).then(res => {
+        this.props.image(res.data.results[0].picture.large)
+        // localStorage.setItem('image', res.data.results[0].picture.large)
+        // console.log(this.props.profile.username)
+        // console.log(this.props.image())
+      }).catch(function (error) {
+        console.log(error)
+      })
+    }
   }
 
   getMoviesByGenre (movies) {
@@ -104,7 +121,7 @@ class MainView extends React.Component {
           path='/'
           render={() => {
             if (!localStorage.getItem('token')) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
-            if (!image) return <Loading />
+            if (!movies) return <Loading />
             return <MoviesList movies={movies} />
           }}
         />
