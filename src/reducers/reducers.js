@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { SET_FILTER, SET_MOVIES, LOGIN, REGISTER, UPDATE, LOAD_USER, ADD, REMOVE, LOAD, CANCEL_UPDATE, UPDATE_USER, LOAD_IMAGE } from '../actions/actions'
+import { SET_FILTER, SET_MOVIES, LOGIN, REGISTER, UPDATE, LOAD_USER, ADD, REMOVE, LOAD, CANCEL_UPDATE, UPDATE_USER, LOAD_IMAGE, DIRECTOR } from '../actions/actions'
 
 /**
  *
@@ -59,31 +59,6 @@ function profile (state = [], action) {
       return state
   }
 }
-const favoriteMovies = {
-  movies: []
-}
-// function selectedMovies (state = favoriteMovies, action) {
-//   switch (action.type) {
-//     case REMOVE:
-//       return {
-//         ...state,
-//         movies: state.movies.filter((item, index) => item._id !== action.id)
-//       }
-//     case ADD:
-//       return {
-//         movies: [
-//           ...state.movies,
-//           action.id
-//         ]
-//       }
-//     case LOAD:
-//       return {
-//         movies: action.id
-//       }
-//     default:
-//       return state
-//   }
-// }
 
 function user (state = {
   username: '',
@@ -130,15 +105,29 @@ function loadImage (state = [], action) {
   }
 }
 
+function loadDirector (state = {}, action) {
+  switch (action.type) {
+    case DIRECTOR:
+      return {
+        Name: action.name,
+        Bio: action.bio,
+        Birth: action.birth,
+        Death: action.death
+      }
+    default:
+      return state
+  }
+}
+
 // ? COMBINE REDUCERS ABOVE
 const moviesApp = combineReducers({
   visibilityFilter,
   movies,
   profile,
   user,
-  // selectedMovies,
   updatedUser,
-  loadImage
+  loadImage,
+  loadDirector
 })
 
 export default moviesApp
