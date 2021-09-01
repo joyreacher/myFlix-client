@@ -2,20 +2,19 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
-import { Col, Card, Button} from 'react-bootstrap'
+import { Col } from 'react-bootstrap'
 
 // Actions
 import { loadUser } from '../../actions/actions'
 
 const mapStateToProps = state => {
-  const { user, profile } = state
-  return { user, profile }
+  const { user } = state
+  return { user }
 }
-function Featured ({ movies, user, profile, loadUser }) {
+function Featured ({ movies, user, loadUser }) {
   const addMovie = (e) => {
     e.preventDefault()
     const accessToken = localStorage.getItem('token')
-    // error('')
     // check db for movie
     const result = movies.find(({ _id }) => _id === e.target.value)
     // check favorite movies in user state
@@ -32,9 +31,9 @@ function Featured ({ movies, user, profile, loadUser }) {
       }, {
         headers: { Authorization: `Bearer ${accessToken}` }
       }).then(res => {
-        // setSub(null)
-        const data = res.data
-        console.log(data)
+        e.target.setAttribute('match', true)
+        e.target.setAttribute('disabled', 'disabled')
+        e.target.insertAdjacentHTML('afterend', `<span style='color: green; padding: 1em'>${result.Title} was added to your favorites</span>`)
       })
         .catch(e => {
           console.log(e)
@@ -43,7 +42,6 @@ function Featured ({ movies, user, profile, loadUser }) {
   }
 
   useEffect(() => {
-    console.log('loadeded')
     const username = localStorage.getItem('user')
     const accessToken = localStorage.getItem('token')
     let mongoData = ''
@@ -51,7 +49,6 @@ function Featured ({ movies, user, profile, loadUser }) {
       headers: { Authorization: `Bearer ${accessToken}` }
     }).then(res => {
       mongoData = res.data
-      console.log(mongoData)
       loadUser(mongoData.username, mongoData.email, mongoData.birthday, mongoData.favorite_movies)
       return mongoData
     }).catch(function (error) {
@@ -71,14 +68,12 @@ function Featured ({ movies, user, profile, loadUser }) {
                   <img className="card-img-top mb-5 mb-md-0" src={movie.ImagePath} alt='movie poster' />
                 </Col>
                 <Col  md={6} lg={8}>
-                  {/* <div className='small mb-1'>{movie.Genre.Name}</div> */}
                   <h1 className="display-5 fw-bolder">{movie.Title}</h1>
                   <div className="fs-5 mb-3">
                       <span>{movie.Genre.Name}</span>
                   </div>
                   <p className="lead">{movie.Description}</p>
                   <div className="d-flex justify-content-lg-evenly">
-                      {/* <input className="form-control text-center me-3" id="inputQuantity" type="num" value="1" style="max-width: 3rem" readOnly/> */}
                       <button className="btn btn-outline-dark flex-shrink-0" type="button" value={movie._id} onClick={addMovie}>
                           <i className="bi-cart-fill me-1"></i>
                           Add to favorites
