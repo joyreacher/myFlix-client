@@ -8,8 +8,8 @@ export const ADD = 'ADD'
 export const REMOVE = 'REMOVE'
 export const LOAD = 'LOAD'
 export const CANCEL_UPDATE = 'CANCEL_UPDATE'
-export const ERROR = 'ERROR'
 export const UPDATE_USER = 'UPDATE_USER'
+export const LOAD_IMAGE = 'LOAD_IMAGE'
 
 export const setMovies = (value) => ({
   type: SET_MOVIES,
@@ -75,7 +75,7 @@ export const load = (id) => ({
   id
 })
 
-export const error = (text) => ({
-  type: ERROR,
-  text
+export const image = (image) => ({
+  type: LOAD_IMAGE,
+  image
 })
