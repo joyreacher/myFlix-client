@@ -27,10 +27,10 @@ function Featured ({ movies }) {
                           <i className="bi-cart-fill me-1"></i>
                           Add to favorites
                       </button>
-                      <button className="btn btn-outline-dark flex-shrink-0" type="button">
-                          <i className="bi-cart-fill me-1"></i>
+                      <Link className="btn btn-outline-dark flex-shrink-0" to={`/movies/${movie._id}`}>
+                        <i className="bi-cart-fill me-1"></i>
                           More
-                      </button>
+                      </Link>
                   </div>
                 </Col>
               </div>

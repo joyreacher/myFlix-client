@@ -12,10 +12,14 @@ function NotFeatured ({ movies }) {
                 <Card className='h-100 p-2'>
                   <Card.Img className='card-img-top' src={movie.ImagePath} />
                   <Card.Body className=''>
-                    <Card.Text className="text-center">
-                      <h5 className='fw-bolder text-truncate fs-6'>{movie.Description}</h5>
+                    <Card.Text className="text-center fw-bolder text-truncate fs-6">
+                      {movie.Description}
                     </Card.Text>
-                    <Button className='bg-dark'>More</Button>
+                    <Link className="bg-dark" to={`/movies/${movie._id}`}>
+                      <Button>
+                        More
+                      </Button>
+                    </Link>
                   </Card.Body>
                   <Card.Footer>
                     <ul className='list-unstyled'>
