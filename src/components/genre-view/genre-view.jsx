@@ -20,29 +20,30 @@ export default function Genre ({ genre, onBackClick }) {
   if (list.length === 0) return <Loading />
   console.log(list)
   return (
-    <div>
-      <Container>
+    <>
+      <Container className='my-5'>
         <h1>All {genre}s</h1>
         {
           list.map(movie => {
             return (
-              <Row key={movie._id}>
-                <Col>
+              <Row key={`genre-${genre}-${movie._id}`} className='mb-5'>
+                <Col lg={4}>
                   <Image src={movie.ImagePath} />
                 </Col>
-                <Col>
+                <Col lg={8}>
                   <h2>{movie.Title}</h2>
+                  <Link to={`/directors/${movie.Director.Name}`}>{movie.Director.Name}</Link>
                   <p className='text-truncate fs-4'>{movie.Description}</p>
                   <Link to={`/movies/${movie._id}`}>
-                    <Button className='btn btn-dark'>Open</Button>
+                    <button className='btn btn-outline-dark flex-shrink-0'>More</button>
                   </Link>
                 </Col>
               </Row>
             )
           })
         }
+        <button className='btn btn-outline-dark flex-shrink-0 ' onClick={() => onBackClick(null)}>Back</button>
       </Container>
-      <Button onClick={() => onBackClick(null)}>Back</Button>
-    </div>
+    </>
   )
 }
