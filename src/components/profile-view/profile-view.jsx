@@ -46,10 +46,26 @@ function ProfileView ({ user, updatedProfile, updatedUser, handleUpdate, profile
     }, {
       headers: { Authorization: `Bearer ${accessToken}` }
     }).then(res => {
-      // setSub(null)
+      // window.location.reload()
       const data = res.data
       console.log(data)
-      window.location.reload()
+      const username = localStorage.getItem('user')
+      const accessToken = localStorage.getItem('token')
+      let mongoData = ''
+      axios.get(`https://cinema-barn.herokuapp.com/user/${username}`, {
+        headers: { Authorization: `Bearer ${accessToken}` }
+      }).then(res => {
+        mongoData = res.data
+        console.log(mongoData.favorite_movies)
+        return mongoData
+      }).then(response => {
+        const data = response.data
+        loadUser(mongoData.username, mongoData.email, mongoData.birthday, mongoData.favorite_movies)
+        return data
+      }).catch(function (error) {
+        console.log(error)
+      })
+      
     })
       .catch(e => {
         console.log(e)
@@ -97,6 +113,7 @@ function ProfileView ({ user, updatedProfile, updatedUser, handleUpdate, profile
       })
   }
 
+  // USED TO ADD FAVORITE MOVIES
   const handleSubmit = (e) => {
     e.preventDefault()
     const accessToken = localStorage.getItem('token')
@@ -216,8 +233,6 @@ function ProfileView ({ user, updatedProfile, updatedUser, handleUpdate, profile
       <Container>
         <h1 className='my-5 bg-dark text-light d-inline-block'>{user.username}'s Profile</h1>
         <Row>
-          {/* <Form> */}
-            {/* <Row> */}
               <Col lg={6}>
                 <img className='badge bg-dark text-white ms-1 rounded-pill d-flex w-50' src={loadImage.image} />
               </Col>
@@ -284,7 +299,7 @@ function ProfileView ({ user, updatedProfile, updatedUser, handleUpdate, profile
               </Col>
               <Col lg={12}>
                 <Form id='delete'>
-                <CardGroup className=''>
+                <CardGroup className='w-50'>
                   {
                     user.favorite_movies.length === 0
                       ? <Container>
@@ -304,11 +319,9 @@ function ProfileView ({ user, updatedProfile, updatedUser, handleUpdate, profile
                 </Form>
               </Col>
               <Col lg={12} className='d-flex my-5 justify-content-around'>
-                <Form.Control className='w-25' type='submit' value='submit' onClick={handleSubmitUpdate} readOnly/>
-                <Form.Control className='w-25' onClick={()=> cancelChanges(false)} value='cancel' readOnly/>
+                <Form.Control className='mx-5 w-25 btn btn-outline-dark flex-shrink-0' type='submit' value='submit' onClick={handleSubmitUpdate} />
+                <Form.Control className='mx-5 w-25 btn btn-outline-dark flex-shrink-0' type='submit' onClick={()=> cancelChanges(false)} value='cancel' />
               </Col>
-            {/* </Row> */}
-          {/* </Form> */}
         </Row>
       </Container>
     )
@@ -387,8 +400,8 @@ function ProfileView ({ user, updatedProfile, updatedUser, handleUpdate, profile
           <Row className='mt-5'>
             <Col lg={8} className='d-flex justify-content-lg-between w-100'>
               <button className='btn btn-outline-dark flex-shrink-0' onClick={getAllMovies} data-bs-toggle='modal' data-bs-target='#exampleModal'>Add a movie!</button>
-              <Form.Control className='mx-5 w-25' type='submit' value='update profile' onClick={() => updateInformation()} />
-              <Form.Control className='mx-5 w-25' type='submit' value='delete profile' onClick={(e) => deleteUser(e)} />
+              <Form.Control className='mx-5 w-25 btn btn-outline-dark flex-shrink-0' type='submit' value='update profile' onClick={() => updateInformation()} />
+              <Form.Control className='mx-5 w-25 btn btn-outline-dark flex-shrink-0' type='submit' value='delete profile' onClick={(e) => deleteUser(e)} />
             </Col>
           </Row>
         </div>
