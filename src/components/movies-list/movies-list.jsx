@@ -23,12 +23,11 @@ function MoviesList (props) {
   return (
     <Container>
       <Row>
-        <Row lg={9}>
-          <div className='my-5 d-flex'>
-            <p>Search for a movie</p>
+        <Col lg={12}>
+          <div className='my-5'>
             <VisibilityFilterInput visibilityFilter={visibilityFilter} />
           </div>
-        </Row>
+        </Col>
       </Row>
       {visibilityFilter ? filteredMovies.map(m => { return <Row key={m._id}><SearchList movie={m} /></Row> }) : ''}
       {filteredMovies.length == 0 && visibilityFilter ? <h2 className='text-danger'>No results to display</h2> : ''}
