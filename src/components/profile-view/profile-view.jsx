@@ -130,7 +130,13 @@ function ProfileView ({ user, updatedProfile, updatedUser, handleUpdate, profile
 
   const cancelChanges = () => {
     updateProfile(false)
-    error('')
+    setProfileError({
+      username: '',
+      password: '',
+      passwordConfirm: '',
+      email: '',
+      birthday: ''
+    })
     updatedProfile('', '', '') // reset updatedUser state
   }
   const updateInformation = (e) => {
