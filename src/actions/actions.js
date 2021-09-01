@@ -10,6 +10,7 @@ export const LOAD = 'LOAD'
 export const CANCEL_UPDATE = 'CANCEL_UPDATE'
 export const UPDATE_USER = 'UPDATE_USER'
 export const LOAD_IMAGE = 'LOAD_IMAGE'
+export const DIRECTOR = 'DIRECTOR'
 
 export const setMovies = (value) => ({
   type: SET_MOVIES,
@@ -78,4 +79,12 @@ export const load = (id) => ({
 export const image = (image) => ({
   type: LOAD_IMAGE,
   image
+})
+
+export const director = (name, bio, birth, death) => ({
+  type: DIRECTOR,
+  name,
+  bio,
+  birth,
+  death
 })
