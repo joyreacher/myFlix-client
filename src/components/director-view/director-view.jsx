@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import axios from 'axios'
 import Loading from '../loading-view/loading-view'
 // bootstrap
-import { Container, Button, Card, CardGroup } from 'react-bootstrap'
+import { Row, Container, Button, Card, CardGroup, Col } from 'react-bootstrap'
 
 export default function Director ({ movies, name, onBackClick }) {
   console.log(movies)
@@ -22,31 +22,33 @@ export default function Director ({ movies, name, onBackClick }) {
   if (list.length === 0) return <Loading />
   console.log(list)
   return (
-    <div className=''>
-      <h1 className='fs-1'>{name}</h1>
-      <Container>
-        <CardGroup>
+    <>
+      <Container className='my-5'>
+        <h1 className='fs-1'>{name}</h1>
           {
             movies.map(movie => {
               if (movie.Director.Name === name) {
                 return (
-                  <Card className='m-2 bg-light mb-sm-1' key={movie._id}>
-                    <Card.Header>{movie.Title}</Card.Header>
-                    <Card.Img variant='top' src={movie.ImagePath} />
-                    <Card.Body className='p-2'>
-                      <Card.Text className='text-truncate'>{movie.Description}</Card.Text>
-                    </Card.Body>
-                    <Link to={`/movies/${movie._id}`}>
-                      <Button className='btn btn-dark'>Open</Button>
-                    </Link>
-                  </Card>
+                  <Row lg={12} key={`director-${name}-${movie._id}`} className='my-5'>
+                    <Col lg={4}>
+                      <img src={movie.ImagePath}/>
+                    </Col>
+                    <Col lg={7}>
+                      <h2>{movie.Title}</h2>
+                      <Link to={`/movies/${movie.Genre.Name}`}>{movie.Genre.Name}</Link>
+                      <p>{movie.Description}</p>
+                      <Link to={`/movies/${movie._id}`}>
+                        <button className='btn btn-outline-dark flex-shrink-0'>More</button>
+                      </Link>
+                    </Col>
+                  </Row>
                 )
               }
             })
           }
-        </CardGroup>
+        <button className='btn btn-outline-dark flex-shrink-0' onClick={() => onBackClick(null)}>Back</button>
       </Container>
-      <Button onClick={() => onBackClick(null)}>Back</Button>
-    </div>
+      
+    </>
   )
 }
