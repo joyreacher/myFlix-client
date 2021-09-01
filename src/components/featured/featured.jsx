@@ -12,19 +12,12 @@ const mapStateToProps = state => {
   return { user, profile }
 }
 function Featured ({ movies, user, profile, loadUser }) {
-  console.log(user)
-  console.log(profile)
-
   const addMovie = (e) => {
-    console.log(e.target.value)
     e.preventDefault()
     const accessToken = localStorage.getItem('token')
     // error('')
-    console.log(e.target)
     // check db for movie
     const result = movies.find(({ _id }) => _id === e.target.value)
-    console.log('resulttttt')
-    console.log(result)
     // check favorite movies in user state
     const matchFavs = user.favorite_movies.find(({ _id }) => _id === e.target.value)
     if (matchFavs) {
@@ -35,7 +28,7 @@ function Featured ({ movies, user, profile, loadUser }) {
     } else {
       return axios.post('https://cinema-barn.herokuapp.com/users/mymovies/add', {
         Username: user.username,
-        Title: result.title
+        Title: result.Title
       }, {
         headers: { Authorization: `Bearer ${accessToken}` }
       }).then(res => {
