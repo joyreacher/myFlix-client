@@ -18,6 +18,7 @@ import Navbar from '../navbar/navbar'
 import Footer from '../footer/footer'
 
 import './main-view.scss'
+import { Container } from 'react-bootstrap'
 class MainView extends React.Component {
   constructor () {
     super()
@@ -62,9 +63,6 @@ class MainView extends React.Component {
         return axios.get('https://randomuser.me/api/?results=1')
       }).then(res => {
         this.props.image(res.data.results[0].picture.large)
-        // localStorage.setItem('image', res.data.results[0].picture.large)
-        // console.log(this.props.profile.username)
-        // console.log(this.props.image())
       }).catch(function (error) {
         console.log(error)
       })
@@ -76,9 +74,6 @@ class MainView extends React.Component {
         return axios.get('https://randomuser.me/api/?results=1')
       }).then(res => {
         this.props.image(res.data.results[0].picture.large)
-        // localStorage.setItem('image', res.data.results[0].picture.large)
-        // console.log(this.props.profile.username)
-        // console.log(this.props.image())
       }).catch(function (error) {
         console.log(error)
       })
@@ -114,14 +109,16 @@ class MainView extends React.Component {
   render () {
     const { movies, genre, user, profile, isLoggedIn, loadImage } = this.props
     return (
+      
       <Router>
         <Navbar onLogOutClick={() => this.onLoggedOut()} user={profile} />
+        <Container>
         <Route
           exact
           path='/'
           render={() => {
             if (!localStorage.getItem('token')) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
-            if (!movies) return <Loading />
+            if (!loadImage.image) return <Loading />
             return <MoviesList movies={movies} />
           }}
         />
@@ -145,8 +142,8 @@ class MainView extends React.Component {
           exact
           path='/directors/:name'
           // match and history are objects we can use
+          // to pull data from path/request
           render={({ match, history }) => {
-            console.log(match, history)
             if (!movies) return <Loading />
             if (!profile.username) return <Redirect to='/' />
             return <DirectorView movies={movies} name={match.params.name} onBackClick={() => history.goBack()} />
@@ -165,12 +162,14 @@ class MainView extends React.Component {
           exact
           path='/user/:name'
           render={({ match, history }) => {
-            if (!loadImage.image) return <Redirect to='/' />
+            if (!profile.username) return <Redirect to='/' />
             return <ProfileView handleUpdate={() => this.triggerUpdate()} user={profile} onLoggedIn={user => this.onLoggedIn(user)} getMovies={user => this.getMovies(user)} />
           }}
         />
+        </Container>
         <Footer user={user} />
       </Router>
+      
     )
   }
 }
