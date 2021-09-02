@@ -1,30 +1,45 @@
 import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import Loading from '../loading-view/loading-view'
 // bootstrap
-import { Row, Container, Button, Card, CardGroup, Col } from 'react-bootstrap'
-
-export default function Director ({ movies, name, onBackClick }) {
-  console.log(movies)
+import { Row, Container, Col } from 'react-bootstrap'
+import { director } from '../../actions/actions'
+const mapStateToProps = state => {
+  const { loadDirector } = state
+  return { loadDirector }
+}
+function Director ({ movies, name, onBackClick, user, director, loadDirector }) {
   const [list, setList] = useState([])
   useEffect(() => {
     const accessToken = localStorage.getItem('token')
     axios.get(`https://cinema-barn.herokuapp.com/directors/${name}`, {
       headers: { Authorization: `Bearer ${accessToken}` }
     }).then(res => {
-      setList(res.data)
+      const data = res.data
+      // setList(res.data)
+      director(data.Name, data.Bio, data.Birth, data.Death)
       return list
     }).catch(function (error) {
       console.log(error)
     })
   }, [])
-  if (list.length === 0) return <Loading />
-  console.log(list)
+  if (!loadDirector) return <Loading />
   return (
     <>
       <Container className='my-5'>
-        <h1 className='fs-1'>{name}</h1>
+        <Row>
+          <Col>
+            <h1 className='fs-1'>{name}</h1>
+            <p>{loadDirector.Bio}</p>
+            <div>
+                <p>Birth: <span>{loadDirector.Birth}</span></p>
+            </div>
+            
+          </Col>
+        </Row>
+        
           {
             movies.map(movie => {
               if (movie.Director.Name === name) {
@@ -52,3 +67,4 @@ export default function Director ({ movies, name, onBackClick }) {
     </>
   )
 }
+export default connect(mapStateToProps, { director })(Director)
