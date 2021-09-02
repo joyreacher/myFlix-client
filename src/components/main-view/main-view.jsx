@@ -109,7 +109,6 @@ class MainView extends React.Component {
   render () {
     const { movies, genre, user, profile, isLoggedIn, loadImage } = this.props
     return (
-      
       <Router>
         <Navbar onLogOutClick={() => this.onLoggedOut()} user={profile} />
         <Container>
@@ -169,7 +168,6 @@ class MainView extends React.Component {
         </Container>
         <Footer user={user} />
       </Router>
-      
     )
   }
 }
