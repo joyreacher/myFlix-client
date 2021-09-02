@@ -4,6 +4,11 @@
   z-index: 100;
   min-height: 257px;
   background-color: var(--color-dark);
+  &-link{
+    margin: .2em 0;
+    text-decoration: none;
+    color: var(--color-accent-1);
+  }
   &__col{
     min-width: 20vw;
     p{
