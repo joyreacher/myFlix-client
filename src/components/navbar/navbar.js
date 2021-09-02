@@ -3,57 +3,53 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { LoginView } from '../login-view/login-view'
 // Bootstrap
-import { Navbar, Container, Row, Button } from 'react-bootstrap'
-
+import { image } from '../../actions/actions'
 const mapStateToProps = state => {
-  const { profile } = state
-  return { profile }
+  const { profile, loadImage, movies } = state
+  return { profile, loadImage, movies }
 }
 // Custom styles
 import './navbar.scss'
+import ElementLoader from '../element-loader/element-loader'
 
-function Nav ({ onLogOutClick, user, profile }) {
-  console.log(profile)
+function Nav ({ onLogOutClick, user, profile, loadImage, movies }) {
   if (!localStorage.getItem('token')) {
-    return (
-      <Navbar className='mt-2 mb-5'>
-        <Container>
-          <Navbar.Brand>
-            <Row className='d-flex justify-content-start align-items-center'>
-              <Link className='home-link' to='/'>
-                <span className='cinema'>Cinema</span>
-                <span className='barn'>Barn</span>
-              </Link>
-            </Row>
-          </Navbar.Brand>
-        </Container>
-      </Navbar>
+    return (    
+      <nav className="navbar navbar-expand-lg navbar-light">
+        <div className="container px-4 px-lg-5">
+          <Link className='home-link' to='/'>
+            <span className='cinema'>Cinema</span>
+            <span className='barn'>Barn</span>
+          </Link>
+        </div>
+      </nav>
     )
   }
   return (
-    <Navbar className='mt-2 mb-5'>
-      <Container>
-        <Navbar.Brand>
-          <Row className='d-flex justify-content-start align-items-center'>
-            <Link className='home-link' to='/'>
-              <span className='cinema'>Cinema</span>
-              <span className='barn'>Barn</span>
-            </Link>
-          </Row>
-        </Navbar.Brand>
-        <Navbar.Collapse className='justify-content-end'>
-          <Navbar.Text>
-            Signed in as: <Link to={`/user/${profile.username}`}>{profile.username}</Link>
-          </Navbar.Text>
-        </Navbar.Collapse>
-        <Navbar.Collapse className='justify-content-end'>
-          <Navbar.Text onClick={() => onLogOutClick()}>
-            <Button className='btn bg-dark'>Logout</Button>
-          </Navbar.Text>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+    <nav className="navbar navbar-expand-lg navbar-light">
+        <div className="container px-4 px-lg-5">
+          <Link className='home-link' to='/'>
+            <span className='cinema'>Cinema</span>
+            <span className='barn'>Barn</span>
+          </Link>
+            <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span className="navbar-toggler-icon"></span></button>
+            <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul className="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                    <li className="nav-item mt-4 mt-md-0"><Link className="nav-link" to={`/user/${profile.username}`}>Signed in as: {profile.username}</Link></li>
+                </ul>
+                <Link to={`/user/${profile.username}`}>
+                  {!loadImage.image ? <ElementLoader /> : <img className="shadow-1 badge bg-dark text-white ms-1 rounded-pill d-inline-block w-50" src={loadImage.image} /> }
+                </Link>
+                <form className="d-flex">
+                    <button className="shadow-1 btn btn-outline-dark d-flex" type="button" onClick={() => onLogOutClick()}>
+                        <i className="bi-cart-fill me-1"></i>
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
   )
 }
 
-export default connect(mapStateToProps)(Nav)
+export default connect(mapStateToProps, { image })(Nav)

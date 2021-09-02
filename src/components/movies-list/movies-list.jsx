@@ -23,25 +23,23 @@ function MoviesList (props) {
   return (
     <Container>
       <Row>
-        <Col>
-          <p>Search for a movie</p>
-        </Col>
-        <Col lg={9}>
-          <VisibilityFilterInput visibilityFilter={visibilityFilter} />
+        <Col lg={12}>
+          <div className='my-5'>
+            <VisibilityFilterInput visibilityFilter={visibilityFilter} />
+          </div>
         </Col>
       </Row>
-      {visibilityFilter ? filteredMovies.map(m => { return <Col key={m._id}><SearchList movie={m} /></Col> }) : ''}
+      {visibilityFilter ? filteredMovies.map(m => { return <Row key={m._id}><SearchList movie={m} /></Row> }) : ''}
+      {filteredMovies.length == 0 && visibilityFilter ? <h2 className='text-danger'>No results to display</h2> : ''}
       <Row>
         <Col>
-          <h2>Featured</h2>
-          <CardGroup>
-            <Featured movies={movies} />
-          </CardGroup>
+          <h1 className='fs-1 mt-5'>Featured</h1>
+          <Featured movies={movies} />
         </Col>
       </Row>
       <Row>
         <Col>
-          <h2 className=''>Browse</h2>
+          <h1 className='fs-1 mt-5'>Browse</h1>
           <NotFeatured movies={movies} />
         </Col>
       </Row>

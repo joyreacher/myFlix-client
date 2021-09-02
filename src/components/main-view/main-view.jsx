@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import axios from 'axios'
 import { connect } from 'react-redux'
 
-import { login, setMovies, setLoggedIn } from '../../actions/actions'
+import { login, setMovies, image } from '../../actions/actions'
 import MoviesList from '../movies-list/movies-list'
 
 import RegistrationView from '../registration-view/registration-view'
@@ -18,6 +18,7 @@ import Navbar from '../navbar/navbar'
 import Footer from '../footer/footer'
 
 import './main-view.scss'
+import { Container } from 'react-bootstrap'
 class MainView extends React.Component {
   constructor () {
     super()
@@ -39,7 +40,6 @@ class MainView extends React.Component {
   }
 
   onLoggedIn (authData) {
-    console.log(authData)
     this.props.login(authData.user.username)
     localStorage.setItem('token', authData.token)
     localStorage.setItem('user', authData.user.username)
@@ -49,17 +49,35 @@ class MainView extends React.Component {
   onLoggedOut () {
     localStorage.removeItem('token')
     localStorage.removeItem('user')
+    localStorage.removeItem('image')
     this.props.login('')
   }
 
   getMovies (token) {
-    axios.get('https://cinema-barn.herokuapp.com/movies', {
-      headers: { Authorization: `Bearer ${token}` }
-    }).then(res => {
-      this.props.setMovies(res.data)
-    }).catch(function (error) {
-      console.log(error)
-    })
+    if (!token) {
+      token = localStorage.getItem('token')
+      axios.get('https://cinema-barn.herokuapp.com/movies', {
+        headers: { Authorization: `Bearer ${token}` }
+      }).then(res => {
+        this.props.setMovies(res.data)
+        return axios.get('https://randomuser.me/api/?results=1')
+      }).then(res => {
+        this.props.image(res.data.results[0].picture.large)
+      }).catch(function (error) {
+        console.log(error)
+      })
+    } else {
+      axios.get('https://cinema-barn.herokuapp.com/movies', {
+        headers: { Authorization: `Bearer ${token}` }
+      }).then(res => {
+        this.props.setMovies(res.data)
+        return axios.get('https://randomuser.me/api/?results=1')
+      }).then(res => {
+        this.props.image(res.data.results[0].picture.large)
+      }).catch(function (error) {
+        console.log(error)
+      })
+    }
   }
 
   getMoviesByGenre (movies) {
@@ -89,17 +107,17 @@ class MainView extends React.Component {
   }
 
   render () {
-    const { movies, genre, user, profile, isLoggedIn } = this.props
-    console.log(user)
+    const { movies, genre, user, profile, isLoggedIn, loadImage } = this.props
     return (
       <Router>
         <Navbar onLogOutClick={() => this.onLoggedOut()} user={profile} />
+        <Container>
         <Route
           exact
           path='/'
           render={() => {
             if (!localStorage.getItem('token')) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
-            if (movies.length === 0) return <Loading />
+            if (!loadImage.image) return <Loading />
             return <MoviesList movies={movies} />
           }}
         />
@@ -115,7 +133,7 @@ class MainView extends React.Component {
           exact
           path='/movies/:movieId'
           render={({ match, history }) => {
-            if (!isLoggedIn) return <Redirect to='/' />
+            if (!profile.username) return <Redirect to='/' />
             return <MovieView movie={movies.find(m => m._id === match.params.movieId)} onBackClick={() => history.goBack()} />
           }}
         />
@@ -123,10 +141,10 @@ class MainView extends React.Component {
           exact
           path='/directors/:name'
           // match and history are objects we can use
+          // to pull data from path/request
           render={({ match, history }) => {
-            console.log(match, history)
-            if (!genre) return <Loading />
-            if (!user) return <Redirect to='/' />
+            if (!movies) return <Loading />
+            if (!profile.username) return <Redirect to='/' />
             return <DirectorView movies={movies} name={match.params.name} onBackClick={() => history.goBack()} />
           }}
         />
@@ -134,8 +152,8 @@ class MainView extends React.Component {
           exact
           path='/genres/:genre'
           render={({ match, history }) => {
-            if (!genre) return <Loading />
-            if (!user) return <Redirect to='/' />
+            if (!movies) return <Loading />
+            if (!profile.username) return <Redirect to='/' />
             return <GenreView movies={movies} genre={match.params.genre} onBackClick={() => history.goBack()} />
           }}
         />
@@ -143,19 +161,20 @@ class MainView extends React.Component {
           exact
           path='/user/:name'
           render={({ match, history }) => {
-            if (!localStorage.getItem('token')) return <Redirect to='/' />
+            if (!profile.username) return <Redirect to='/' />
             return <ProfileView handleUpdate={() => this.triggerUpdate()} user={profile} onLoggedIn={user => this.onLoggedIn(user)} getMovies={user => this.getMovies(user)} />
           }}
         />
+        </Container>
         <Footer user={user} />
       </Router>
     )
   }
 }
 const mapStateToProps = state => {
-  return { movies: state.movies, profile: state.profile, isLoggedIn: state.profile }
+  return { movies: state.movies, profile: state.profile, isLoggedIn: state.profile, loadImage: state.loadImage }
 }
-export default connect(mapStateToProps, { setMovies, login })(MainView)
+export default connect(mapStateToProps, { setMovies, login, image })(MainView)
 MainView.propTypes = {
   movies: PropTypes.arrayOf(PropTypes.shape({
     Title: PropTypes.string.isRequired,
@@ -169,9 +188,8 @@ MainView.propTypes = {
     Director: PropTypes.shape({
       Name: PropTypes.string.isRequired,
       Bio: PropTypes.string.isRequired,
-      //TODO: update database with DOB values
-      DOB: PropTypes.string.isRequired,
-      YOD: PropTypes.string.isRequired
+      Birth: PropTypes.string.isRequired,
+      Death: PropTypes.string
     }).isRequired
   })),
   selectedMovie: PropTypes.string,

@@ -1,0 +1,10 @@
+@import '../../scss/typography';
+@import '../../scss/abstracts';
+
+.shadow-1{
+  box-shadow: $shadow-1;
+}
+
+.genre {
+  @include font(poppins, italic, 200);
+}

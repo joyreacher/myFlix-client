@@ -1,5 +1,16 @@
 import { combineReducers } from 'redux'
-import { SET_FILTER, SET_MOVIES, LOGIN, REGISTER } from '../actions/actions'
+import {
+  SET_FILTER,
+  SET_MOVIES,
+  LOGIN,
+  REGISTER,
+  UPDATE,
+  LOAD_USER,
+  CANCEL_UPDATE,
+  UPDATE_USER,
+  LOAD_IMAGE,
+  DIRECTOR,
+  GENRE } from '../actions/actions'
 
 /**
  *
@@ -39,6 +50,16 @@ function profile (state = [], action) {
       return {
         username: action.username
       }
+    case UPDATE:
+      return {
+        ...state,
+        update: action.payload
+      }
+    case CANCEL_UPDATE:
+      return {
+        ...state,
+        update: action.payload
+      }
     case REGISTER:
       return {
         username: action.username,
@@ -49,11 +70,88 @@ function profile (state = [], action) {
       return state
   }
 }
+
+function user (state = {
+  username: '',
+  email: '',
+  birthday: '',
+  favorite_movies: []
+}, action) {
+  switch (action.type) {
+    case LOAD_USER:
+      return {
+        username: action.username,
+        email: action.email,
+        birthday: action.birthday,
+        favorite_movies: action.favoriteMovies
+      }
+    default:
+      return state
+  }
+}
+
+function updatedUser (state = {}, action) {
+  switch (action.type) {
+    case UPDATE_USER:
+      return {
+        username: action.username,
+        password: action.password,
+        email: action.email,
+        birthday: action.birthday,
+        favorite_movies: action.favoriteMovies
+      }
+    default:
+      return state
+  }
+}
+
+function loadImage (state = [], action) {
+  switch (action.type) {
+    case LOAD_IMAGE:
+      return {
+        image: action.image
+      }
+    default:
+      return state
+  }
+}
+
+function loadDirector (state = {}, action) {
+  switch (action.type) {
+    case DIRECTOR:
+      return {
+        Name: action.name,
+        Bio: action.bio,
+        Birth: action.birth,
+        Death: action.death
+      }
+    default:
+      return state
+  }
+}
+
+function Genre (state = {}, action) {
+  switch (action.type) {
+    case GENRE:
+      return {
+        Name: action.name,
+        Description: action.description
+      }
+    default:
+      return state
+  }
+}
+
 // ? COMBINE REDUCERS ABOVE
 const moviesApp = combineReducers({
   visibilityFilter,
   movies,
-  profile
+  profile,
+  user,
+  updatedUser,
+  loadImage,
+  loadDirector,
+  Genre
 })
 
 export default moviesApp
