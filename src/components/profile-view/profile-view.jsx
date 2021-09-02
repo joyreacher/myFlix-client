@@ -14,8 +14,6 @@ const mapStateToProps = state => {
 }
 
 function ProfileView ({ user, updatedProfile, updatedUser, handleUpdate, profile, updateProfile, loadUser, loadImage }) {
-  console.log('this is the image')
-  console.log(loadImage)
   const [list, setList] = useState([])
   const [modal, setModal] = useState(false)
   let [movies, setMovies] = useState([])
@@ -33,6 +31,32 @@ function ProfileView ({ user, updatedProfile, updatedUser, handleUpdate, profile
     email: '',
     birthday: ''
   })
+  // Check if passwords match
+  const passwordMatch = (e) => {
+    console.log(e.target.value)
+    const newPassword = passwordRef.current.value
+    if (e.target.value != newPassword) {
+      setProfileError(
+        {
+          username: !usernameRef.current.value ? <p className='text-danger'>Enter a username</p> : '',
+          password: !passwordRef.current.value ? <p className='text-danger'>Enter a password</p> : '',
+          passwordConfirm: <p className='text-danger'>Passwords done match</p>,
+          email: !emailRef.current.value ? <p className='text-danger'>Enter an email address</p> : '',
+          birthday: !birthdayRef.current.value ? <p className='text-danger'>Enter your birthday</p> : ''
+        }
+      )
+    } else {
+      setProfileError(
+        {
+          username: !usernameRef.current.value ? <p className='text-danger'>Enter a username</p> : '',
+          password: !passwordRef.current.value ? <p className='text-danger'>Enter a password</p> : '',
+          passwordConfirm: '',
+          email: !emailRef.current.value ? <p className='text-danger'>Enter an email address</p> : '',
+          birthday: !birthdayRef.current.value ? <p className='text-danger'>Enter your birthday</p> : ''
+        }
+      )
+    }
+  }
   // if a movie is marked for delation
   const deleteMovies = (e) => {
     const accessToken = localStorage.getItem('token')
@@ -74,21 +98,58 @@ function ProfileView ({ user, updatedProfile, updatedUser, handleUpdate, profile
 
   const handleSubmitUpdate = (e) => {
     e.preventDefault()
+    const accessToken = localStorage.getItem('token')
+    if (usernameRef.current.value.length < 5) {
+      return setProfileError(
+        {
+          username: <p className='text-danger'>Username needs to be more than 5 chars</p>,
+          password: !passwordRef.current.value ? <p className='text-danger'>Enter a password</p> : '',
+          passwordConfirm: !confirmPasswordRef.current.value ? <p className='text-danger'>Passwords done match</p> : '',
+          email: !emailRef.current.value ? <p className='text-danger'>Enter an email address</p> : '',
+          birthday: !birthdayRef.current.value ? <p className='text-danger'>Enter your birthday</p> : ''
+        }
+      )
+    }
     if (!usernameRef.current.value || !passwordRef.current.value || !confirmPasswordRef || !emailRef || !birthdayRef) {
-      // if (!usernameRef.current.value) {
-      setProfileError(
+      return setProfileError(
         {
           username: !usernameRef.current.value ? <p className='text-danger'>Enter a username</p> : '',
           password: !passwordRef.current.value ? <p className='text-danger'>Enter a password</p> : '',
           passwordConfirm: !confirmPasswordRef.current.value ? <p className='text-danger'>Passwords done match</p> : '',
-          email: !emailRef.current.value ? <p className='text-danger'>Passwords do not match</p> : '',
+          email: !emailRef.current.value ? <p className='text-danger'>Enter an email address</p> : '',
           birthday: !birthdayRef.current.value ? <p className='text-danger'>Enter your birthday</p> : ''
         }
       )
     } else {
-      console.log('submit no errros!')
+      return axios.put(`https://cinema-barn.herokuapp.com/users/${user.username}`, {
+        // send new data
+        Username: updatedUser.username,
+        Password: updatedUser.password,
+        Email: updatedUser.email,
+        Birthday: updatedUser.birthday
+      }, {
+        headers: { Authorization: `Bearer ${accessToken}` }
+      }).then(res => {
+        localStorage.setItem('user', updatedUser.username)
+        // const accessToken = localStorage.getItem('token')
+        axios.get(`https://cinema-barn.herokuapp.com/user/${updatedUser.username}`, {
+          headers: { Authorization: `Bearer ${accessToken}` }
+        }).then(res => {
+          let mongoData = ''
+          mongoData = res.data
+          loadUser(mongoData.username, mongoData.email, mongoData.birthday, mongoData.favorite_movies)
+          window.location.reload()
+          return mongoData
+        })
+      }).catch(e => {
+        if (e.response.status == 422) {
+          console.log(e.response.data.errors[0].msg)
+        }
+        if (e.response.status == 400) {
+          console.log(e.response.data)
+        }
+      })
     }
-    console.log(profileError)
   }
 
   const deleteUser = (e) => {
@@ -106,7 +167,7 @@ function ProfileView ({ user, updatedProfile, updatedUser, handleUpdate, profile
       localStorage.removeItem('token')
       localStorage.removeItem('user')
       localStorage.removeItem('image')
-      handleUpdate()
+      window.location.reload()
     })
       .catch(e => {
         console.log(e)
@@ -209,6 +270,8 @@ function ProfileView ({ user, updatedProfile, updatedUser, handleUpdate, profile
 
   // GET USER DATA ON LOAD INCLUDING PICTURE
   useEffect(() => {
+    updateProfile(false)
+    updatedProfile({})
     const username = localStorage.getItem('user')
     const accessToken = localStorage.getItem('token')
     let mongoData = ''
@@ -253,19 +316,26 @@ function ProfileView ({ user, updatedProfile, updatedUser, handleUpdate, profile
                       </FloatingLabel>
                       <FloatingLabel label='Password' controlId='Password'>
                         {!profileError.password ? '' : profileError.password}
-                        <Form.Control 
-                          ref={passwordRef} 
-                          placeholder='Password' 
-                          type='password' 
+                        <Form.Control
+                          ref={passwordRef}
+                          placeholder='Password'
+                          type='password'
                           onChange={e => {
-                            // setProfileError({password: ''})
                             profileError.password = ''
                             updatedProfile(updatedUser.username, e.target.value, updatedUser.email, updatedUser.birthday, updatedUser.favorite_movies)
                           }} />
                       </FloatingLabel>
                       <FloatingLabel label='Re-enter Password' controlId='Password'>
                         {!profileError.passwordConfirm ? '' : profileError.passwordConfirm}
-                        <Form.Control ref={confirmPasswordRef} placeholder='Re-enter Password' type='password' onChange={e => setPassword(e.target.value)} />
+                        <Form.Control 
+                          ref={confirmPasswordRef} 
+                          placeholder='Re-enter Password' 
+                          type='password' 
+                          onChange={e => {
+                            passwordMatch(e)
+                            profileError.passwordConfirm = ''
+                            setPassword(e.target.value)}
+                          }/>
                       </FloatingLabel>
                     </Form.Group>
                   </Row>
@@ -319,8 +389,8 @@ function ProfileView ({ user, updatedProfile, updatedUser, handleUpdate, profile
                 </Form>
               </Col>
               <Col lg={12} className='d-flex my-5 justify-content-around'>
-                <Form.Control className='mx-5 w-25 btn btn-outline-dark flex-shrink-0' type='submit' value='submit' onClick={handleSubmitUpdate} />
-                <Form.Control className='mx-5 w-25 btn btn-outline-dark flex-shrink-0' type='submit' onClick={()=> cancelChanges(false)} value='cancel' />
+                <Form.Control className={!profileError.password ? 'mx-5 w-25 btn btn-outline-dark flex-shrink-0' : 'mx-5 w-25 btn btn-outline-danger flex-shrink-0'} type='submit' value='submit' onClick={handleSubmitUpdate} />
+                <Form.Control className={!profileError.password ? 'mx-5 w-25 btn btn-outline-dark flex-shrink-0' : 'mx-5 w-25 btn btn-outline-danger flex-shrink-0'} type='submit' onClick={()=> cancelChanges(false)} value='cancel' />
               </Col>
         </Row>
       </Container>
