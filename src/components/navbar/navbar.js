@@ -3,16 +3,16 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { LoginView } from '../login-view/login-view'
 // Bootstrap
-
+import { image } from '../../actions/actions'
 const mapStateToProps = state => {
-  const { profile } = state
-  return { profile }
+  const { profile, loadImage, movies } = state
+  return { profile, loadImage, movies }
 }
 // Custom styles
 import './navbar.scss'
+import ElementLoader from '../element-loader/element-loader'
 
-function Nav ({ onLogOutClick, user, profile }) {
-  console.log(profile)
+function Nav ({ onLogOutClick, user, profile, loadImage, movies }) {
   if (!localStorage.getItem('token')) {
     return (    
       <nav className="navbar navbar-expand-lg navbar-light">
@@ -35,24 +35,13 @@ function Nav ({ onLogOutClick, user, profile }) {
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span className="navbar-toggler-icon"></span></button>
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul className="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                    <li className="nav-item"><a className="nav-link active" aria-current="page" href="#!">Home</a></li>
-                    <li className="nav-item"><a className="nav-link" href="#!">About</a></li>
-                    <li className="nav-item dropdown">
-                        <a className="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
-                        <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a className="dropdown-item" href="#!">All Products</a></li>
-                            <li><hr className="dropdown-divider" /></li>
-                            <li><a className="dropdown-item" href="#!">Popular Items</a></li>
-                            <li><a className="dropdown-item" href="#!">New Arrivals</a></li>
-                        </ul>
-                    </li>
-                    <li className="nav-item"><a className="nav-link" href="#!">Signed in as: <Link to={`/user/${profile.username}`}>{profile.username}</Link></a></li>
+                    <li className="nav-item mt-4 mt-md-0"><Link className="nav-link" to={`/user/${profile.username}`}>Signed in as: {profile.username}</Link></li>
                 </ul>
                 <Link to={`/user/${profile.username}`}>
-                    <img className="badge bg-dark text-white ms-1 rounded-pill d-inline-block w-50" src={localStorage.getItem('image')} />
+                  {!loadImage.image ? <ElementLoader /> : <img className="shadow-1 badge bg-dark text-white ms-1 rounded-pill d-inline-block w-50" src={loadImage.image} /> }
                 </Link>
                 <form className="d-flex">
-                    <button className="btn btn-outline-dark d-flex" type="button" onClick={() => onLogOutClick()}>
+                    <button className="shadow-1 btn btn-outline-dark d-flex" type="button" onClick={() => onLogOutClick()}>
                         <i className="bi-cart-fill me-1"></i>
                         Logout
                     </button>
@@ -63,4 +52,4 @@ function Nav ({ onLogOutClick, user, profile }) {
   )
 }
 
-export default connect(mapStateToProps)(Nav)
+export default connect(mapStateToProps, { image })(Nav)
