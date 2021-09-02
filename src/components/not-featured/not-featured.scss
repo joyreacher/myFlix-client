@@ -1,0 +1,18 @@
+@import '../../scss/typography';
+@import '../../scss/abstracts';
+
+.shadow-1{
+  box-shadow: $shadow-1;
+}
+
+.genre {
+  @include font(poppins, italic, 200);
+}
+
+.card{
+  background-color: var(--color-light);
+}
+
+.color-accent-2{
+  color: var(--color-accent-2);
+}
