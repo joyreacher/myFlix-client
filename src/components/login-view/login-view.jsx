@@ -34,7 +34,6 @@ function LoginView (props) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(profile)
     setUser({errMsg: ''})
     const pattern = new RegExp(/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/)
     // console.log(username.value)
@@ -54,10 +53,7 @@ function LoginView (props) {
         Username: profile.username,
         Password: password.value
       }).then(res => {
-        console.log(res)
         const data = res.data
-        console.log(data.user.username)
-        console.log(data.token)
         props.onLoggedIn(data)
       }).catch(e => {
         // contains error response
