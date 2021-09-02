@@ -6,6 +6,8 @@ import { Col } from 'react-bootstrap'
 
 // Actions
 import { loadUser } from '../../actions/actions'
+// styles
+import './featured.scss'
 
 const mapStateToProps = state => {
   const { user } = state
@@ -65,20 +67,20 @@ function Featured ({ movies, user, loadUser }) {
             <div className='container px-4 px-lg-5 my-5' key={`featured-${movie._id}`}>
               <div className='row gx-4 gx-lg-5 align-items-center'>
                 <Col lg={4}>
-                  <img className="card-img-top mb-5 mb-md-0" src={movie.ImagePath} alt='movie poster' />
+                  <img className="shadow-1 card-img-top mb-5 mb-md-0" src={movie.ImagePath} alt='movie poster' />
                 </Col>
                 <Col  md={6} lg={8}>
-                  <h1 className="display-5 fw-bolder">{movie.Title}</h1>
+                  <h2 className="display-5 fw-bolder">{movie.Title}</h2>
                   <div className="fs-5 mb-3">
-                      <span>{movie.Genre.Name}</span>
+                      <p>{movie.Genre.Name}</p>
                   </div>
-                  <p className="lead">{movie.Description}</p>
+                  <p className="fs-6 genre">{movie.Description}</p>
                   <div className="d-flex justify-content-lg-evenly">
-                      <button className="btn btn-outline-dark flex-shrink-0" type="button" value={movie._id} onClick={addMovie}>
+                      <button className="shadow-1 btn btn-outline-dark flex-shrink-0" type="button" value={movie._id} onClick={addMovie}>
                           <i className="bi-cart-fill me-1"></i>
                           Add to favorites
                       </button>
-                      <Link className="btn btn-outline-dark flex-shrink-0" to={`/movies/${movie._id}`}>
+                      <Link className="shadow-1 btn btn-outline-dark flex-shrink-0" to={`/movies/${movie._id}`}>
                         <i className="bi-cart-fill me-1"></i>
                           More
                       </Link>
