@@ -1,5 +1,16 @@
 import { combineReducers } from 'redux'
-import { SET_FILTER, SET_MOVIES, LOGIN, REGISTER, UPDATE, LOAD_USER, ADD, REMOVE, LOAD, CANCEL_UPDATE, UPDATE_USER, LOAD_IMAGE, DIRECTOR } from '../actions/actions'
+import {
+  SET_FILTER,
+  SET_MOVIES,
+  LOGIN,
+  REGISTER,
+  UPDATE,
+  LOAD_USER,
+  CANCEL_UPDATE,
+  UPDATE_USER,
+  LOAD_IMAGE,
+  DIRECTOR,
+  GENRE } from '../actions/actions'
 
 /**
  *
@@ -119,6 +130,18 @@ function loadDirector (state = {}, action) {
   }
 }
 
+function Genre (state = {}, action) {
+  switch (action.type) {
+    case GENRE:
+      return {
+        Name: action.name,
+        Description: action.description
+      }
+    default:
+      return state
+  }
+}
+
 // ? COMBINE REDUCERS ABOVE
 const moviesApp = combineReducers({
   visibilityFilter,
@@ -127,7 +150,8 @@ const moviesApp = combineReducers({
   user,
   updatedUser,
   loadImage,
-  loadDirector
+  loadDirector,
+  Genre
 })
 
 export default moviesApp

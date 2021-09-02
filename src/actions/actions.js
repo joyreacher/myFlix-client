@@ -11,6 +11,7 @@ export const CANCEL_UPDATE = 'CANCEL_UPDATE'
 export const UPDATE_USER = 'UPDATE_USER'
 export const LOAD_IMAGE = 'LOAD_IMAGE'
 export const DIRECTOR = 'DIRECTOR'
+export const GENRE = 'GENRE'
 
 export const setMovies = (value) => ({
   type: SET_MOVIES,
@@ -87,4 +88,10 @@ export const director = (name, bio, birth, death) => ({
   bio,
   birth,
   death
+})
+
+export const loadGenre = (name, description) => ({
+  type: GENRE,
+  name,
+  description
 })
