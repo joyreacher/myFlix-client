@@ -412,7 +412,7 @@ function ProfileView ({ user, updatedProfile, updatedUser, handleUpdate, profile
                     ? '..loading'
                     : movies.map(movie => {
                       return (
-                        <Col key={movie._id} lg={6} className=''>
+                        <Col key={movie._id} lg={3} className=''>
                           <Card>
                             <Card.Title className='movie__title fs-6'>{movie.title}</Card.Title>
                             <Form.Label htmlFor={movie._id} className='btn btn-secondary'>
