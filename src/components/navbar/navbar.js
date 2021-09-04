@@ -1,18 +1,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { LoginView } from '../login-view/login-view'
 // Bootstrap
 import { image } from '../../actions/actions'
 // Custom styles
 import './navbar.scss'
 import ElementLoader from '../element-loader/element-loader'
 const mapStateToProps = state => {
-  const { profile, loadImage, movies } = state
-  return { profile, loadImage, movies }
+  const { profile, loadImage, user } = state
+  return { profile, loadImage, user }
 }
 
-function Nav ({ onLogOutClick, user, profile, loadImage, movies }) {
+function Nav ({ onLogOutClick, user, loadImage }) {
   if (!localStorage.getItem('token')) {
     return (
       <nav className='navbar navbar-expand-lg navbar-light'>
@@ -37,9 +36,9 @@ function Nav ({ onLogOutClick, user, profile, loadImage, movies }) {
 
         <div className='collapse navbar-collapse' id='navbarSupportedContent'>
           <ul className='navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4 d-flex align-content-center'>
-            <li className='nav-item mt-4 mt-md-0 d-flex align-content-lg-end'><Link className='nav-link' to={`/user/${profile.username}`}>Signed in as: {profile.username}</Link></li>
+            <li className='nav-item mt-4 mt-md-0 d-flex align-content-lg-end'><Link className='nav-link' to={`/user/${user.username}`}>Signed in as: {user.username}</Link></li>
             <li className='nav-item mt-4 mt-md-0'>
-              <Link to={`/user/${profile.username}`}>
+              <Link to={`/user/${user.username}`}>
                 {!loadImage.image ? <ElementLoader /> : <img className='nav-link shadow-1 badge bg-dark text-white ms-1 rounded-pill d-inline-block w-50' src={loadImage.image} />}
               </Link>
             </li>
