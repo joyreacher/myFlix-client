@@ -5,7 +5,14 @@ import { Navbar, Container, Col } from 'react-bootstrap'
 import './footer.scss'
 
 function Footer ({ user }) {
-  const path = '/user/' + user
+  const path = '/user/' + user.username
+  console.log(user)
+  if (!user) {
+    return (
+      <>
+      </>
+    )
+  }
   return (
     <Navbar className='footer'>
       <Container className='d-flex align-items-start'>
@@ -20,7 +27,7 @@ function Footer ({ user }) {
         <Col className='footer__col d-flex flex-column align-items-sm-center pe-5' sm={6} md={6} lg={6}>
           <div>
             <h3 className='fs-3'>My Account</h3>
-            <Link className='footer-link' target='_blank' to={path}>My Profile</Link>
+            <Link className='footer-link' to={path}>My Profile</Link>
           </div>
         </Col>
       </Container>
