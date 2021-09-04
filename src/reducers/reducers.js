@@ -10,7 +10,8 @@ import {
   UPDATE_USER,
   LOAD_IMAGE,
   DIRECTOR,
-  GENRE } from '../actions/actions'
+  GENRE
+} from '../actions/actions'
 
 /**
  *

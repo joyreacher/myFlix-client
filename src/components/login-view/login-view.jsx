@@ -14,7 +14,7 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel'
 
 const mapStateToProps = state => {
   const { profile } = state
-  return {profile}
+  return { profile }
 }
 function LoginView (props) {
   const { profile } = props
@@ -34,7 +34,7 @@ function LoginView (props) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    setUser({errMsg: ''})
+    setUser({ errMsg: '' })
     const pattern = new RegExp(/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/)
     // console.log(username.value)
     if (!password.value || password.value.length == 0) {
@@ -59,7 +59,7 @@ function LoginView (props) {
         // contains error response
         // console.log(e.response)
         if (e.response.status == 400) {
-          setUser({errMsg: 'This user may not exist.'})
+          setUser({ errMsg: 'This user may not exist.' })
         }
         console.log('error')
       })
@@ -78,7 +78,7 @@ function LoginView (props) {
           </Form.Group>
           <Form.Group>
             <FloatingLabel label='Username' controlId='floatingInput'>
-              <Form.Control name='username' placeholder='Username' type='text' onChange={e => {props.login(e.target.value); setUsername({value: e.target.value})}} />
+              <Form.Control name='username' placeholder='Username' type='text' onChange={e => { props.login(e.target.value); setUsername({ value: e.target.value }) }} />
             </FloatingLabel>
             <label className='text-danger'>
               {

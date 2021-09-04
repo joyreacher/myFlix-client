@@ -34,19 +34,19 @@ function Director ({ movies, name, onBackClick, user, director, loadDirector }) 
             <h1 className='fs-1'>{name}</h1>
             <p>{loadDirector.Bio}</p>
             <div>
-                <p>Birth: <span>{loadDirector.Birth}</span></p>
+              <p>Birth: <span>{loadDirector.Birth}</span></p>
             </div>
-            
+
           </Col>
         </Row>
-        
-          {
+
+        {
             movies.map(movie => {
               if (movie.Director.Name === name) {
                 return (
                   <Row lg={12} key={`director-${name}-${movie._id}`} className='my-5'>
                     <Col lg={4}>
-                      <img src={movie.ImagePath}/>
+                      <img src={movie.ImagePath} />
                     </Col>
                     <Col lg={7}>
                       <h2>{movie.Title}</h2>
@@ -63,7 +63,7 @@ function Director ({ movies, name, onBackClick, user, director, loadDirector }) 
           }
         <button className='btn btn-outline-dark flex-shrink-0' onClick={() => onBackClick(null)}>Back</button>
       </Container>
-      
+
     </>
   )
 }

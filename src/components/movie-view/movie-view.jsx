@@ -31,7 +31,7 @@ class MovieView extends React.Component {
     // console.log(movie.Genre)
     return (
       <Container className='my-5'>
-        <Row lg={12} >
+        <Row lg={12}>
           <Col lg={3} className='my-5'>
             <Image className='shadow-1' src={movie.ImagePath} />
           </Col>

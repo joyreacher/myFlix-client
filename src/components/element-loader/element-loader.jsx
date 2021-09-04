@@ -9,7 +9,7 @@ function ElementLoader () {
   useEffect(() => {
     const LoadingText = document.querySelector('.loading__text')
     const tl = gsap.timeline({ yoyo: true })
-    tl.from(LoadingText, { duration: .1, opacity: 0, yoyo: true, repeat: -1 })
+    tl.from(LoadingText, { duration: 0.1, opacity: 0, yoyo: true, repeat: -1 })
   }, [])
   return (
     <Container>
