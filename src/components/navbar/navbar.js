@@ -28,18 +28,22 @@ function Nav ({ onLogOutClick, user, profile, loadImage, movies }) {
   return (
     <nav className="navbar navbar-expand-lg navbar-light">
         <div className="container px-4 px-lg-5">
-          <Link className='home-link' to='/'>
+          <Link className='home-link w-50' to='/'>
             <span className='cinema'>Cinema</span>
             <span className='barn'>Barn</span>
           </Link>
+          
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span className="navbar-toggler-icon"></span></button>
+            
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul className="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                    <li className="nav-item mt-4 mt-md-0"><Link className="nav-link" to={`/user/${profile.username}`}>Signed in as: {profile.username}</Link></li>
+                <ul className="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4 d-flex align-content-center">
+                    <li className="nav-item mt-4 mt-md-0 d-flex align-content-lg-end"><Link className="nav-link" to={`/user/${profile.username}`}>Signed in as: {profile.username}</Link></li>
+                    <li className="nav-item mt-4 mt-md-0">
+                    <Link to={`/user/${profile.username}`}>
+                      {!loadImage.image ? <ElementLoader /> : <img className="nav-link shadow-1 badge bg-dark text-white ms-1 rounded-pill d-inline-block w-50" src={loadImage.image} /> }
+                    </Link>
+                    </li>
                 </ul>
-                <Link to={`/user/${profile.username}`}>
-                  {!loadImage.image ? <ElementLoader /> : <img className="shadow-1 badge bg-dark text-white ms-1 rounded-pill d-inline-block w-50" src={loadImage.image} /> }
-                </Link>
                 <form className="d-flex">
                     <button className="shadow-1 btn btn-outline-dark d-flex" type="button" onClick={() => onLogOutClick()}>
                         <i className="bi-cart-fill me-1"></i>
