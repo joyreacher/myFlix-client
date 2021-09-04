@@ -271,11 +271,10 @@ function ProfileView ({ user, updatedProfile, updatedUser, handleUpdate, profile
     const username = localStorage.getItem('user')
     const accessToken = localStorage.getItem('token')
     let mongoData = ''
-    axios.get(`https://cinema-barn.herokuapp.com/user/${username}`, {
+    axios.get(`https://cinema-barn.herokuapp.com/user/${!updatedUser.username ? user.username : updatedUser.username}`, {
       headers: { Authorization: `Bearer ${accessToken}` }
     }).then(res => {
       mongoData = res.data
-      console.log(mongoData.favorite_movies)
       return mongoData
     }).then(response => {
       const data = response.data
@@ -434,7 +433,7 @@ function ProfileView ({ user, updatedProfile, updatedUser, handleUpdate, profile
       </div>
       {/* section start */}
       <Container>
-        <h1 className='my-5 bg-dark text-light d-inline-block'>{profile.username}'s Profile</h1>
+        <h1 className='my-5 bg-dark text-light d-inline-block'>{user.username}'s Profile</h1>
         <div className='p-2 my-5'>
           <Row>
             <Col lg={6}>

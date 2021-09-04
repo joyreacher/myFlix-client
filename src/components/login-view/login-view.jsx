@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import axios from 'axios'
 import { connect } from 'react-redux'
-import { login } from '../../actions/actions'
+import { login, updateProfile } from '../../actions/actions'
 import './login-view.scss'
 
 // Bootstrap
@@ -78,7 +78,7 @@ function LoginView (props) {
           </Form.Group>
           <Form.Group>
             <FloatingLabel label='Username' controlId='floatingInput'>
-              <Form.Control name='username' placeholder='Username' type='text' onChange={e => { props.login(e.target.value); setUsername({ value: e.target.value }) }} />
+              <Form.Control name='username' placeholder='Username' type='text' onChange={e => { props.login(e.target.value); updateProfile(e.target.value); setUsername({ value: e.target.value }) }} />
             </FloatingLabel>
             <label className='text-danger'>
               {
@@ -104,7 +104,7 @@ function LoginView (props) {
     </Row>
   )
 }
-export default connect(mapStateToProps, { login })(LoginView)
+export default connect(mapStateToProps, { login, updateProfile })(LoginView)
 LoginView.propTypes = {
   onLoggedIn: PropTypes.func.isRequired
 }
