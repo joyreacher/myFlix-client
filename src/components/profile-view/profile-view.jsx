@@ -33,7 +33,6 @@ function ProfileView ({ user, updatedProfile, updatedUser, handleUpdate, profile
   })
   // Check if passwords match
   const passwordMatch = (e) => {
-    console.log(e.target.value)
     const newPassword = passwordRef.current.value
     if (e.target.value != newPassword) {
       setProfileError(
@@ -61,7 +60,6 @@ function ProfileView ({ user, updatedProfile, updatedUser, handleUpdate, profile
   const deleteMovies = (e) => {
     const accessToken = localStorage.getItem('token')
     e.preventDefault()
-    console.log(e.target.value)
     // console.log(removeMovieRef.current.id)
 
     return axios.post('https://cinema-barn.herokuapp.com/users/mymovies/delete', {
@@ -137,8 +135,7 @@ function ProfileView ({ user, updatedProfile, updatedUser, handleUpdate, profile
           let mongoData = ''
           mongoData = res.data
           loadUser(mongoData.username, mongoData.email, mongoData.birthday, mongoData.favorite_movies)
-          window.location.reload()
-          return mongoData
+          return updateProfile(false)
         })
       }).catch(e => {
         if (e.response.status == 422) {
