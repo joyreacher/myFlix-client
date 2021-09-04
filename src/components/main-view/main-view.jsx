@@ -112,61 +112,61 @@ class MainView extends React.Component {
       <Router>
         <Navbar onLogOutClick={() => this.onLoggedOut()} user={profile} />
         <Container>
-        <Route
-          exact
-          path='/'
-          render={() => {
-            if (!localStorage.getItem('token')) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
-            if (!loadImage.image) return <Loading />
-            return <MoviesList movies={movies} />
-          }}
-        />
-        <Route
-          exact
-          path='/register'
-          render={() => {
-            if (user) return <Redirect to='/' />
-            return <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} onRegisterClick={() => this.triggerUpdate()} />
-          }}
-        />
-        <Route
-          exact
-          path='/movies/:movieId'
-          render={({ match, history }) => {
-            if (!profile.username) return <Redirect to='/' />
-            return <MovieView movie={movies.find(m => m._id === match.params.movieId)} onBackClick={() => history.goBack()} />
-          }}
-        />
-        <Route
-          exact
-          path='/directors/:name'
-          // match and history are objects we can use
-          // to pull data from path/request
-          render={({ match, history }) => {
-            if (!movies) return <Loading />
-            if (!profile.username) return <Redirect to='/' />
-            return <DirectorView movies={movies} name={match.params.name} onBackClick={() => history.goBack()} />
-          }}
-        />
-        <Route
-          exact
-          path='/genres/:genre'
-          render={({ match, history }) => {
-            if (!movies) return <Loading />
-            if (!profile.username) return <Redirect to='/' />
-            return <GenreView movies={movies} genre={match.params.genre} onBackClick={() => history.goBack()} />
-          }}
-        />
-        <Route
-          exact
-          path='/user/:name'
-          render={({ match, history }) => {
-            if (!profile.username) return <Redirect to='/' />
-            return <ProfileView handleUpdate={() => this.triggerUpdate()} user={profile} onLoggedIn={user => this.onLoggedIn(user)} getMovies={user => this.getMovies(user)} />
-          }}
-        />
+          <Route
+            exact
+            path='/'
+            render={() => {
+              if (!localStorage.getItem('token')) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
+              if (!loadImage.image) return <Loading />
+              return <MoviesList movies={movies} />
+            }}
+          />
+          <Route
+            exact
+            path='/register'
+            render={() => {
+              if (user) return <Redirect to='/' />
+              return <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} onRegisterClick={() => this.triggerUpdate()} />
+            }}
+          />
+          <Route
+            exact
+            path='/movies/:movieId'
+            render={({ match, history }) => {
+              if (!profile.username) return <Redirect to='/' />
+              return <MovieView movie={movies.find(m => m._id === match.params.movieId)} onBackClick={() => history.goBack()} />
+            }}
+          />
+          <Route
+            exact
+            path='/directors/:name'
+            // match and history are objects we can use
+            // to pull data from path/request
+            render={({ match, history }) => {
+              if (!movies) return <Loading />
+              if (!profile.username) return <Redirect to='/' />
+              return <DirectorView movies={movies} name={match.params.name} onBackClick={() => history.goBack()} />
+            }}
+          />
+          <Route
+            exact
+            path='/genres/:genre'
+            render={({ match, history }) => {
+              if (!movies) return <Loading />
+              if (!profile.username) return <Redirect to='/' />
+              return <GenreView movies={movies} genre={match.params.genre} onBackClick={() => history.goBack()} />
+            }}
+          />
+          <Route
+            exact
+            path='/user/:name'
+            render={({ match, history }) => {
+              if (!profile.username) return <Redirect to='/' />
+              return <ProfileView handleUpdate={() => this.triggerUpdate()} user={profile} onLoggedIn={user => this.onLoggedIn(user)} getMovies={user => this.getMovies(user)} />
+            }}
+          />
         </Container>
-        <Footer user={user} />
+        <Footer user={profile} />
       </Router>
     )
   }
