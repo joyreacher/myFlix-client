@@ -6,13 +6,6 @@ import './footer.scss'
 
 function Footer ({ user }) {
   const path = '/user/' + user.username
-  console.log(user)
-  if (!user) {
-    return (
-      <>
-      </>
-    )
-  }
   return (
     <Navbar className='footer'>
       <Container className='d-flex align-items-start'>

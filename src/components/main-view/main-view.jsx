@@ -166,7 +166,7 @@ class MainView extends React.Component {
             }}
           />
         </Container>
-        <Footer user={profile} />
+        {!localStorage.getItem('user') ? '' : <Footer user={profile} />}
       </Router>
     )
   }
