@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import Loading from '../loading-view/loading-view'
-import { Row, Col, Container, Button, Form, CardGroup, Card, FloatingLabel } from 'react-bootstrap'
+import AddMovieModal from '../modal/modal'
+import { Row, Col, Container, Button, Form, CardGroup, Card, FloatingLabel, Modal } from 'react-bootstrap'
 import './profile-view.scss'
 // ACTIONS
 import { image, updatedProfile, updateProfile, loadUser, add, remove, load, cancelUpdate } from '../../actions/actions'
@@ -250,11 +251,12 @@ function ProfileView ({ user, updatedProfile, updatedUser, handleUpdate, profile
         })
       })
       // const remove = movies.map(({ _id }) => _id === user.favorite_movies._id)
-      console.log(movies)
-      console.log(user.favorite_movies)
+      // console.log(movies)
+      // console.log(user.favorite_movies)
+      // show what movies are in your favorites
       user.favorite_movies.map((movie, i) => {
         if (movies[i]._id != movie._id) {
-          console.log(movies[i].title)
+          // console.log(movies[i].title)
         }
       })
       setModal(true)
@@ -398,40 +400,7 @@ function ProfileView ({ user, updatedProfile, updatedUser, handleUpdate, profile
   }
   return (
     <>
-      <div className='modal' tabIndex='-1' id='exampleModal'>
-        <div className='modal-dialog'>
-          <div className='modal-content'>
-            <div className='modal-header'>
-              <h5 className='modal-title'>Add movie to your favorites list</h5>
-              <button onClick={() => setModal(false)} type='button' className='btn-close' data-bs-dismiss='modal' aria-label='Close' />
-            </div>
-            <div className='modal-body'>
-              <Form onSubmit={handleSubmit}>
-                <CardGroup>
-                  {movies.length == 0
-                    ? '..loading'
-                    : movies.map(movie => {
-                      return (
-                        <Col key={movie._id} lg={3} className=''>
-                          <Card>
-                            <Card.Title className='movie__title fs-6'>{movie.title}</Card.Title>
-                            <Form.Label htmlFor={movie._id} className='btn btn-secondary'>
-                              <Card.Img src={movie.ImgPath} className='movie__img' />
-                            </Form.Label>
-                            <input readOnly className='d-none' id={movie._id} value={movie._id} />
-                            <Button onClick={handleSubmit} value={movie._id} type='submit' className='fs-6'>Add to favorites</Button>
-                          </Card>
-                        </Col>
-                      )
-                    })}
-                </CardGroup>
-                <Form.Group className='modal-footer' />
-              </Form>
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* section start */}
+      <AddMovieModal handleSubmit={handleSubmit} />
       <Container>
         <h1 className='my-5 bg-dark text-light d-inline-block'>{user.username}'s Profile</h1>
         <div className='p-2 my-5'>
