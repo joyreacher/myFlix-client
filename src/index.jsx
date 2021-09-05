@@ -7,7 +7,6 @@ import MainView from './components/main-view/main-view'
 
 // styles
 import './index.scss'
-import ErrorBoundary from './components/ErrorBoundary'
 import { devToolsEnhancer } from 'redux-devtools-extension'
 
 // setup store AFTER importing MainView and styles
@@ -17,9 +16,7 @@ class MyFlixApplication extends React.Component {
   render () {
     return (
       <Provider store={store}>
-        <ErrorBoundary>
           <MainView />
-        </ErrorBoundary>
       </Provider>
     )
   }
