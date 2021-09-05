@@ -19,6 +19,7 @@ import Footer from '../footer/footer'
 
 import './main-view.scss'
 import { Container } from 'react-bootstrap'
+import ErrorBoundary from '../ErrorBoundary'
 class MainView extends React.Component {
   constructor () {
     super()
@@ -110,6 +111,7 @@ class MainView extends React.Component {
     const { movies, genre, user, profile, isLoggedIn, loadImage } = this.props
     return (
       <Router>
+        <ErrorBoundary logout={(e) => this.onLoggedOut(e)}>
         <Navbar onLogOutClick={() => this.onLoggedOut()} user={profile} />
         <Container>
           <Route
@@ -166,6 +168,7 @@ class MainView extends React.Component {
             }}
           />
         </Container>
+        </ErrorBoundary>
         {!localStorage.getItem('user') ? '' : <Footer user={profile} />}
       </Router>
     )
