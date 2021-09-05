@@ -7,8 +7,8 @@ import Loading from '../loading-view/loading-view'
 import { Row, Container, Col } from 'react-bootstrap'
 import { director } from '../../actions/actions'
 const mapStateToProps = state => {
-  const { loadDirector } = state
-  return { loadDirector }
+  const { loadDirector, movies } = state
+  return { loadDirector, movies }
 }
 function Director ({ movies, name, onBackClick, user, director, loadDirector }) {
   const [list, setList] = useState([])
@@ -50,7 +50,7 @@ function Director ({ movies, name, onBackClick, user, director, loadDirector }) 
                     </Col>
                     <Col lg={7}>
                       <h2>{movie.Title}</h2>
-                      <Link to={`/movies/${movie.Genre.Name}`}>{movie.Genre.Name}</Link>
+                      <Link to={`/genres/${movie.Genre.Name}`}>{movie.Genre.Name}</Link>
                       <p>{movie.Description}</p>
                       <Link to={`/movies/${movie._id}`}>
                         <button className='btn btn-outline-dark flex-shrink-0'>More</button>
