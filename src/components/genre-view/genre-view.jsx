@@ -7,10 +7,11 @@ import Loading from '../loading-view/loading-view'
 import { Container, Row, Col, Button, Image } from 'react-bootstrap'
 import { loadGenre } from '../../actions/actions'
 const mapStateToProps = state => {
-  const { Genre } = state
-  return { Genre }
+  const { Genre, movies } = state
+  return { Genre, movies }
 }
-function Genre ({ genre, onBackClick, loadGenre, Genre }) {
+function Genre ({ movies, genre, onBackClick, loadGenre, Genre }) {
+  console.log(movies)
   const [list, setList] = useState([])
   useEffect(() => {
     const accessToken = localStorage.getItem('token')
@@ -20,7 +21,7 @@ function Genre ({ genre, onBackClick, loadGenre, Genre }) {
       setList(res.data)
       const data = res.data[0]
       const list = res.data
-      console.log(data.Genre.Name, data.Genre.Description)
+      // console.log(data.Genre.Name, data.Genre.Description)
       loadGenre(data.Genre.Name, data.Genre.Description)
       return list
     }).catch(function (error) {
@@ -28,29 +29,30 @@ function Genre ({ genre, onBackClick, loadGenre, Genre }) {
     })
   }, [])
   if (!Genre) return <Loading />
-  console.log(Genre)
   return (
     <>
       <Container className='my-5'>
         <h1>All {genre}s</h1>
         <p>{Genre.Description}</p>
         {
-          list.map(movie => {
-            return (
-              <Row key={`genre-${genre}-${movie._id}`} className='mb-5'>
-                <Col lg={4}>
-                  <Image src={movie.ImagePath} />
-                </Col>
-                <Col lg={8}>
-                  <h2>{movie.Title}</h2>
-                  <Link to={`/directors/${movie.Director.Name}`}>{movie.Director.Name}</Link>
-                  <p className='text-truncate fs-4'>{movie.Description}</p>
-                  <Link to={`/movies/${movie._id}`}>
-                    <button className='btn btn-outline-dark flex-shrink-0'>More</button>
-                  </Link>
-                </Col>
-              </Row>
-            )
+          movies.map(movie => {
+            if (movie.Genre.Name === genre) {
+              return (
+                <Row key={`genre-${genre}-${movie._id}`} className='mb-5'>
+                  <Col lg={4}>
+                    <Image src={movie.ImagePath} />
+                  </Col>
+                  <Col lg={8}>
+                    <h2>{movie.Title}</h2>
+                    <Link to={`/directors/${movie.Director.Name}`}>{movie.Director.Name}</Link>
+                    <p className='text-truncate fs-4'>{movie.Description}</p>
+                    <Link to={`/movies/${movie._id}`}>
+                      <button className='btn btn-outline-dark flex-shrink-0'>More</button>
+                    </Link>
+                  </Col>
+                </Row>
+              ) 
+            }
           })
         }
         <button className='btn btn-outline-dark flex-shrink-0 ' onClick={() => onBackClick(null)}>Back</button>
