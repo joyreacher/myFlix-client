@@ -47,8 +47,7 @@ function LoginView (props) {
       console.log('unwanted chars')
       return setUsername({ value: false, errMsg: 'Please only use letters and numbers in your username' })
     } else {
-      const value = e.target.value
-      props.login(e.target.value)
+      props.login({username: e.target.value, update: false})
       axios.post('https://cinema-barn.herokuapp.com/login', {
         Username: profile.username,
         Password: password.value
