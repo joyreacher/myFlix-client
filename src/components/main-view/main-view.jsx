@@ -135,7 +135,11 @@ class MainView extends React.Component {
             render={() => {
               if (!localStorage.getItem('token')) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
               if (!loadImage.image) return <Loading />
-              return <MoviesList movies={movies} />
+              return (
+                <MainContainer title='Home'>
+                  <MoviesList movies={movies} />
+                </MainContainer>
+              )
             }}
           />
           <Route
@@ -143,7 +147,11 @@ class MainView extends React.Component {
             path='/register'
             render={() => {
               // if (user) return <Redirect to='/' />
-              return <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} onRegisterClick={() => this.triggerUpdate()} />
+              return (
+                <MainContainer title='Register'>
+                  <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} onRegisterClick={() => this.triggerUpdate()} />
+                </MainContainer>
+              )
             }}
           />
           <Route
@@ -151,7 +159,12 @@ class MainView extends React.Component {
             path='/movies/:movieId'
             render={({ match, history }) => {
               if (!profile.username) return <Redirect to='/' />
-              return <MovieView movie={movies.find(m => m._id === match.params.movieId)} onBackClick={() => history.goBack()} />
+              let movieTitle = movies.find(m => m._id === match.params.movieId).Title
+              return (
+                <MainContainer title={movieTitle}>
+                  <MovieView movie={movies.find(m => m._id === match.params.movieId)} onBackClick={() => history.goBack()} />
+                </MainContainer>
+              )
             }}
           />
           <Route
@@ -162,7 +175,11 @@ class MainView extends React.Component {
             render={({ match, history }) => {
               if (!movies) return <Loading />
               if (!profile.username) return <Redirect to='/' />
-              return <DirectorView movies={movies} name={match.params.name} onBackClick={() => history.goBack()} />
+              return (
+                <MainContainer title='Directors'>
+                  <DirectorView movies={movies} name={match.params.name} onBackClick={() => history.goBack()} />
+                </MainContainer>
+              )
             }}
           />
           <Route
@@ -184,7 +201,7 @@ class MainView extends React.Component {
             render={({ match, history }) => {
               if (!profile.username) return <Redirect to='/' />
               return (
-                <MainContainer title='Profile'>
+                <MainContainer title={profile.username}>
                   {
                     !this.state.updateProfile
                     ? <Container>
