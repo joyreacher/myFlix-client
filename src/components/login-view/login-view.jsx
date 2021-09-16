@@ -7,9 +7,7 @@ import { login, updateProfile } from '../../actions/actions'
 import './login-view.scss'
 
 // Bootstrap
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-import Form from 'react-bootstrap/Form'
+import { Row, Col, Form, Button } from 'react-bootstrap'
 import FloatingLabel from 'react-bootstrap/FloatingLabel'
 
 const mapStateToProps = state => {
@@ -92,7 +90,7 @@ function LoginView (props) {
                 !password.value ? password.errMsg : ''
               }
             </label>
-            <Form.Control type='submit' value='submit' />
+            <Button className='mt-3' variant='success' type='submit' onClick={handleSubmit}>Login</Button>
           </Form.Group>
           <Form.Group className='d-flex justify-content-start mt-5'>
             <p className='me-2 text-start'>Dont have an account?</p>
