@@ -12,7 +12,7 @@ import LoginView from '../login-view/login-view'
 import MovieView from '../movie-view/movie-view'
 import GenreView from '../genre-view/genre-view'
 import DirectorView from '../director-view/director-view'
-import ProfileContainer from '../containers/profile-container'
+import MainContainer from '../containers/main-container'
 import Loading from '../loading-view/loading-view'
 import Navbar from '../navbar/navbar'
 import Footer from '../footer/footer'
@@ -171,7 +171,11 @@ class MainView extends React.Component {
             render={({ match, history }) => {
               if (!movies) return <Loading />
               if (!profile.username) return <Redirect to='/' />
-              return <GenreView movies={movies} genre={match.params.genre} onBackClick={() => history.goBack()} />
+              return (
+                <MainContainer title='Genre'>
+                  <GenreView movies={movies} genre={match.params.genre} onBackClick={() => history.goBack()} />
+                </MainContainer>
+              )
             }}
           />
           <Route
@@ -180,9 +184,9 @@ class MainView extends React.Component {
             render={({ match, history }) => {
               if (!profile.username) return <Redirect to='/' />
               return (
-                <ProfileContainer>
+                <MainContainer title='Profile'>
                   {
-                    !this.state.updateProfile 
+                    !this.state.updateProfile
                     ? <Container>
                     <div className='update update-container'>
                       <button className='btn btn-outline-dark custom-btn' onClick={() => this.handleUpdate()}>Update Profile</button>
@@ -222,7 +226,7 @@ class MainView extends React.Component {
                     
                     </Container>
                   }
-                </ProfileContainer>
+                </MainContainer>
                 )
             }}
           />
