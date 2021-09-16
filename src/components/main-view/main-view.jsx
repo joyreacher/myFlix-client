@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import axios from 'axios'
 import { connect } from 'react-redux'
 
-import { login, setMovies, image } from '../../actions/actions'
+import { login, setMovies, image, updateProfile, updatedProfile, loadUser } from '../../actions/actions'
 import MoviesList from '../movies-list/movies-list'
 
 import RegistrationView from '../registration-view/registration-view'
@@ -12,14 +12,16 @@ import LoginView from '../login-view/login-view'
 import MovieView from '../movie-view/movie-view'
 import GenreView from '../genre-view/genre-view'
 import DirectorView from '../director-view/director-view'
-import ProfileView from '../profile-view/profile-view'
+import ProfileContainer from '../profile/profile-container'
 import Loading from '../loading-view/loading-view'
 import Navbar from '../navbar/navbar'
 import Footer from '../footer/footer'
 
 import './main-view.scss'
-import { Container } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
 import ErrorBoundary from '../ErrorBoundary'
+import ProfileView from '../profile/profile-view'
+import ProfileUpdate from '../profile/profile-update'
 class MainView extends React.Component {
   constructor () {
     super()
@@ -28,7 +30,8 @@ class MainView extends React.Component {
       genre: [],
       directors: [],
       register: false,
-      hasError: false
+      hasError: false,
+      updateProfile: false
     }
   }
 
@@ -107,8 +110,20 @@ class MainView extends React.Component {
     window.location.reload()
   }
 
+  handleUpdate () {
+    this.setState({
+      updateProfile: true
+    })
+  }
+  
+  cancelUpdate () {
+    this.setState({
+      updateProfile: false
+    })
+  }
+
   render () {
-    const { movies, genre, user, profile, isLoggedIn, loadImage } = this.props
+    const { movies, genre, user, profile, isLoggedIn, loadImage, update, updateProfile, updatedUser } = this.props
     return (
       <Router>
         <ErrorBoundary logout={(e) => this.onLoggedOut(e)}>
@@ -127,7 +142,7 @@ class MainView extends React.Component {
             exact
             path='/register'
             render={() => {
-              if (user) return <Redirect to='/' />
+              // if (user) return <Redirect to='/' />
               return <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} onRegisterClick={() => this.triggerUpdate()} />
             }}
           />
@@ -164,7 +179,51 @@ class MainView extends React.Component {
             path='/user/:name'
             render={({ match, history }) => {
               if (!profile.username) return <Redirect to='/' />
-              return <ProfileView handleUpdate={() => this.triggerUpdate()} user={profile} onLoggedIn={user => this.onLoggedIn(user)} getMovies={user => this.getMovies(user)} />
+              return (
+                <ProfileContainer>
+                  {
+                    !this.state.updateProfile 
+                    ? <Container>
+                    <div className='update update-container'>
+                      <button className='btn btn-outline-dark custom-btn' onClick={() => this.handleUpdate()}>Update Profile</button>
+                    </div>
+                    
+                    <ProfileView 
+                    handleUpdate={() => this.triggerUpdate()} 
+                    user={user}
+                    movies={movies} 
+                    profile={profile}
+                    updateProfile={updateProfile}
+                    loadImage={loadImage}
+                    onLoggedIn={user => this.onLoggedIn(user)} 
+                    getMovies={user => this.getMovies(user)} 
+                    loadUser={this.props.loadUser}
+                    updatedUser={updatedUser}
+                    />
+                    
+                    </Container>
+                    : <Container>
+                    <Row>
+                      
+                    </Row>
+                    <div className='update update-container'>
+                      <button className='btn btn-outline-dark custom-btn' onClick={() => this.handleUpdate()}>Delete Profile</button>
+                      <button className='btn btn-outline-dark custom-btn' onClick={() => this.cancelUpdate()}>Cancel Update</button>
+                    </div>
+                    <ProfileUpdate
+                      loadUser={this.props.loadUser}
+                      loadImage={loadImage}
+                      user={user}
+                      profile={profile}
+                      updatedProfile={() => updatedProfile()}
+                      updateProfile={updateProfile}
+                      cancelUpdate={() => this.setState({updateProfile: false})}
+                    />
+                    
+                    </Container>
+                  }
+                </ProfileContainer>
+                )
             }}
           />
         </Container>
@@ -175,9 +234,16 @@ class MainView extends React.Component {
   }
 }
 const mapStateToProps = state => {
-  return { movies: state.movies, profile: state.profile, isLoggedIn: state.profile, loadImage: state.loadImage }
+  return {
+    user: state.user,
+    movies: state.movies,
+    profile: state.profile,
+    isLoggedIn: state.profile,
+    loadImage: state.loadImage,
+    updatedUser: state.updatedUser
+  }
 }
-export default connect(mapStateToProps, { setMovies, login, image })(MainView)
+export default connect(mapStateToProps, { setMovies, login, image, updateProfile, loadUser })(MainView)
 MainView.propTypes = {
   movies: PropTypes.arrayOf(PropTypes.shape({
     Title: PropTypes.string.isRequired,
