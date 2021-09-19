@@ -135,6 +135,7 @@ class MainView extends React.Component {
             render={() => {
               if (!localStorage.getItem('token')) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
               if (!loadImage.image) return <Loading />
+              
               return (
                 <MainContainer title='Home'>
                   <MoviesList movies={movies} />
@@ -283,6 +284,6 @@ MainView.propTypes = {
     }).isRequired
   })),
   selectedMovie: PropTypes.string,
-  user: PropTypes.string,
+  user: PropTypes.object,
   register: PropTypes.bool
 }
