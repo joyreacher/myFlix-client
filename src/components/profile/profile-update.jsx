@@ -155,11 +155,11 @@ function ProfileUpdate({ user, loadImage, loadUser, updatedProfile, updatedUser,
       })
     }
   }
-  
+
   return (
     <Container>
-    <h1 className='my-5 bg-dark text-light d-inline-block'>{user.username}'s Profile</h1>
-    <Row>
+    {/* <h1 className='my-5 bg-dark text-light d-inline-block'>{user.username}'s Profile</h1> */}
+    <div className='custom__update-container'>
       <Col lg={6}>
         <img className='badge bg-dark text-white ms-1 rounded-pill d-flex w-50' src={loadImage.image} />
         {notification === '' ? '' : notification}
@@ -263,7 +263,7 @@ function ProfileUpdate({ user, loadImage, loadUser, updatedProfile, updatedUser,
           </CardGroup>
         </Form>
       </Col>
-    </Row>
+    </div>
   </Container>
   )
 }
