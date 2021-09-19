@@ -115,15 +115,31 @@ class MainView extends React.Component {
       updateProfile: true
     })
   }
-  
+
   cancelUpdate () {
     this.setState({
       updateProfile: false
     })
   }
 
+  deleteUser = (e) => {
+    const accessToken = localStorage.getItem('token')
+    // e.preventDefault()
+    return axios.post('https://cinema-barn.herokuapp.com/users/unregister', {
+      Username: e.username,
+      Email: e.email
+    }, 
+    {
+    headers: { Authorization: `Bearer ${accessToken}` }
+    }
+      ).then(res => {
+      this.onLoggedOut()
+    })
+  }
+
+
   render () {
-    const { movies, genre, user, profile, isLoggedIn, loadImage, update, updateProfile, updatedUser } = this.props
+    const { movies, genre, user, profile, isLoggedIn, loadImage, update, updateProfile, updatedUser, deleteUser } = this.props
     return (
       <Router>
         <ErrorBoundary logout={(e) => this.onLoggedOut(e)}>
@@ -229,7 +245,7 @@ class MainView extends React.Component {
                       
                     </Row>
                     <div className='update update-container'>
-                      <button className='btn btn-outline-dark custom-btn' onClick={() => this.handleUpdate()}>Delete Profile</button>
+                      <button className='btn btn-outline-dark custom-btn' onClick={(e) => this.deleteUser(user)}>Delete Profile</button>
                       <button className='btn btn-outline-dark custom-btn' onClick={() => this.cancelUpdate()}>Cancel Update</button>
                     </div>
                     <ProfileUpdate
