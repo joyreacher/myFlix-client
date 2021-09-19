@@ -70,7 +70,6 @@ function RegistrationView (props) {
         Birthday: profile.birthday
       }).then(res => {
         const data = res.data
-        console.log(data)
         setSignin({ value: <Link className='text-info' to='/'>Awesome 🙂  {data.username} click here to Sign in</Link> })
       }).catch(e => {
         if (e.response.status == 422) {
