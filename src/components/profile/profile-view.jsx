@@ -3,11 +3,8 @@ import axios from 'axios'
 import Modal from '../modal/modal'
 import { Link } from 'react-router-dom'
 import { Container, Row, Col, CardGroup, Card, Form } from 'react-bootstrap'
-
-function ProfileView({profile, user, loadImage, updateProfile, movies, loadUser, handleUpdate, updatedUser  }) {
-  const updateInformation = () => {
-    updateProfile(true)
-  }
+import './profile.scss'
+function ProfileView ({profile, user, loadImage, updateProfile, movies, loadUser, handleUpdate, updatedUser }) {
 
   // GET USER DATA ON LOAD INCLUDING PICTURE
   useEffect(() => {
@@ -34,7 +31,7 @@ function ProfileView({profile, user, loadImage, updateProfile, movies, loadUser,
     <>
       <Modal loadUser={loadUser}/>
       <Container>
-        <h1 className='my-5 bg-dark text-light d-inline-block'>{user.username}'s Profile</h1>
+        {/* <h1 className='d-inline-block custom-heading'>{user.username}'s Profile</h1> */}
         <div className='p-2 my-5'>
           <Row>
             <Col lg={6}>
@@ -43,8 +40,8 @@ function ProfileView({profile, user, loadImage, updateProfile, movies, loadUser,
               </div>
             </Col>
             <Col lg={6} className='my-5'>
-              <p className='fs-1'>{user.username}</p>
-              <p className='fs-4'>{user.email}</p>
+              <h1 className='fs-1'>{user.username}</h1>
+              <h2 className='fs-4'>{user.email}</h2>
               <p className='fs-4'>{user.birthday}</p>
             </Col>
             <Col lg={12}>
