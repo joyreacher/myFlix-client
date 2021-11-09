@@ -41,14 +41,16 @@ class MovieView extends React.Component {
             <p className='fs-5'>{movie.Genre.Name}</p>
             <p className='fs-6'>{movie.Description}</p>
           </Col>
-          <Col lg={12} className='mb-5 d-flex justify-content-evenly'>
-            <Link to={`/directors/${movie.Director.Name}`}>
-              <button className='shadow-1  btn btn-outline-dark'>Director</button>
-            </Link>
-            <Link to={`/genres/${movie.Genre.Name}`}>
-              <button className='shadow-1  btn btn-outline-dark'>Genre</button>
-            </Link>
-            <button className='shadow-1  btn btn-outline-dark' onClick={() => onBackClick(null)}>Back</button>
+          <Col lg={12} className='mb-5 d-flex flex-column justify-content-evenly'>
+            <div className='d-flex justify-content-between justify-content-lg-around mb-5'>
+              <Link to={`/directors/${movie.Director.Name}`}>
+                <button className='shadow-1  btn btn-outline-dark'>Director</button>
+              </Link>
+              <Link to={`/genres/${movie.Genre.Name}`}>
+                <button className='shadow-1  btn btn-outline-dark'>Genre</button>
+              </Link>
+            </div>
+            <a className='fs-3' onClick={() => onBackClick(null)}>Back</a>
           </Col>
         </Row>
       </Container>

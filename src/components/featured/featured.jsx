@@ -75,8 +75,8 @@ function Featured ({ movies, user, loadUser }) {
                     <p>{movie.Genre.Name}</p>
                   </div>
                   <p className='fs-6 genre'>{movie.Description}</p>
-                  <div className='d-flex justify-content-lg-evenly'>
-                    <button className='shadow-1 btn btn-outline-dark flex-shrink-0' type='button' value={movie._id} onClick={addMovie}>
+                  <div className='d-flex flex-column flex-lg-row justify-content-lg-evenly'>
+                    <button className='shadow-1 btn btn-outline-dark flex-shrink-0 mb-3' type='button' value={movie._id} onClick={addMovie}>
                       <i className='bi-cart-fill me-1' />
                       Add to favorites
                     </button>
