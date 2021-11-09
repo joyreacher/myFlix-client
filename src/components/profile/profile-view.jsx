@@ -44,8 +44,8 @@ function ProfileView ({profile, user, loadImage, updateProfile, movies, loadUser
               <h2 className='fs-4'>{user.email}</h2>
               <p className='fs-4'>{user.birthday}</p>
             </Col>
-            <Col lg={12}>
-              <CardGroup className='w-50'>
+            <Col md={12}>
+              <CardGroup className='d-flex'>
                 {
                   user.favorite_movies.length === 0
                     ? <Container>
@@ -53,11 +53,16 @@ function ProfileView ({profile, user, loadImage, updateProfile, movies, loadUser
                       </Container>
                     : user.favorite_movies.map(movie => {
                       return (
-                        <Card key={movie._id} className='m-3'>
+                        <>
+                          <Link to={`/movies/${movie._id}`}>
+                            <img src={movie.ImagePath} alt='no image available' />
+                          </Link>
+                        {/* <Card key={movie._id}>
                           <Link to={`/movies/${movie._id}`}>
                             <Card.Img src={movie.ImagePath} alt='no image available' />
                           </Link>
-                        </Card>
+                        </Card> */}
+                        </>
                       )
                     })
                 }
